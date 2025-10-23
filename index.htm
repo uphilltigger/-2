@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="UTF-8">
-<title>飼料計算</title>
+<meta charset="UTF-8">
+<title>馬の栄養充足チェッカー</title>
 <style>
-	body { font-family: sans-serif; background-color: #f0f0f0; margin: 0; padding: 2rem; display: flex; flex-direction: column; align-items: center;}
-	h1 { font-size: 2rem; margin-bottom: 1rem; }
-	.container { background-color: #fff; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 900px; }
-	label { display:block; margin-top:1rem; font-weight:bold; }
-	select, input { padding:0.3rem; margin:0.3rem 0; border-radius:0.25rem; border:1px solid #ccc; width:100%; box-sizing:border-box; }
-	table { width:100%; border-collapse: collapse; margin-top:1rem; }
-	th, td { border:1px solid #ccc; padding:0.5rem; text-align:left; }
-	thead { background-color:#eee; }
-	button { margin-top:1rem; padding:0.5rem 1rem; border:none; border-radius:0.25rem; background-color:#28a745; color:#fff; font-weight:bold; cursor:pointer; }
-	button:hover { background-color:#218838; }
-	.remove-btn { background-color:#dc3545; margin-left:0.5rem; }
-	.remove-btn:hover { background-color:#c82333; }
+body { font-family: sans-serif; background-color: #f0f0f0; margin: 0; padding: 2rem; display: flex; flex-direction: column; align-items: center;}
+h1 { font-size: 2rem; margin-bottom: 1rem; }
+.container { background-color: #fff; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 1000px; }
+label { display:block; margin-top:1rem; font-weight:bold; }
+select, input { padding:0.3rem; margin:0.3rem 0; border-radius:0.25rem; border:1px solid #ccc; width:100%; box-sizing:border-box; }
+table { width:100%; border-collapse: collapse; margin-top:1rem; }
+th, td { border:1px solid #ccc; padding:0.5rem; text-align:left; }
+thead { background-color:#eee; }
+button { margin-top:1rem; padding:0.5rem 1rem; border:none; border-radius:0.25rem; background-color:#28a745; color:#fff; font-weight:bold; cursor:pointer; }
+button:hover { background-color:#218838; }
+.remove-btn { background-color:#dc3545; margin-left:0.5rem; }
+.remove-btn:hover { background-color:#c82333; }
 </style>
 </head>
 <body>
 
-<h1>飼料計算</h1>
+<h1>🐴 馬の栄養充足チェッカー</h1>
 <div class="container">
   <label>体重（kg）</label>
   <select id="weight">
@@ -56,7 +56,7 @@
 </div>
 
 <script>
-// ?? 飼料データ
+// 🔹 飼料データ
 const feeds = [
   {name:"ビート", DE:2.85, CP:109, Lys:7.2, Ca:5.11, P:0.78, Mg:2.68, Na:1.04, K:4.16, Fe:519.6, Cu:9.27, Zn:27.71, Mn:53.69, Se:0, Co:0.2, VA:0, VD:0, VE:0},
   {name:"燕麦", DE:2.76, CP:106.58, Lys:5.6, Ca:0.45, P:3.01, Mg:1.22, Na:0.34, K:3.55, Fe:44.01, Cu:3.52, Zn:31.6, Mn:45.61, Se:0.05, Co:0.11, VA:5, VD:0, VE:4},
@@ -69,7 +69,7 @@ const feeds = [
   {name:"乾草", DE:1.35, CP:57, Lys:2.7, Ca:0, P:0, Mg:0, Na:81.3, K:7.07, Fe:21.95, Cu:94.31, Zn:0, Mn:0.03, Se:0, Co:0, VA:75, VD:0, VE:0}
 ];
 
-// ?? 要求量データ
+// 🔹 要求量データ
 const reqTable = [
   {weight:500, work:"無", DE:16.4, CP:656, Lys:28.21, Ca:20, P:14, Mg:7.5, Na:10, K:25, Fe:400, Cu:150, Zn:450, Mn:450, Se:1.88, Co:0.5, VA:20000, VD:3300, VE:800},
   {weight:500, work:"軽", DE:19.68, CP:787.2, Lys:33.85, Ca:30, P:18, Mg:9.05, Na:26.25, K:61.25, Fe:400, Cu:150, Zn:450, Mn:450, Se:2.19, Co:0.5, VA:20000, VD:3300, VE:800},
@@ -89,9 +89,9 @@ function getRequirements(weight, work){
   return found||reqTable[0];
 }
 
-// ?? 飼料追加
+// 🔹 最初に全飼料表示
 const feedBody = document.getElementById("feed-body");
-document.getElementById("add-feed").onclick = ()=>{
+function addFeedRow(feedName=""){
   const row=document.createElement("tr");
   row.innerHTML=`
     <td><select class="feed-select"></select></td>
@@ -102,57 +102,28 @@ document.getElementById("add-feed").onclick = ()=>{
   `;
   const select = row.querySelector(".feed-select");
   feeds.forEach(f=>{ const opt=document.createElement("option"); opt.value=f.name; opt.text=f.name; select.appendChild(opt); });
+  if(feedName) select.value = feedName;
   feedBody.appendChild(row);
 
   const input1=row.querySelector(".feed-amount1");
   const input2=row.querySelector(".feed-amount2");
   const total=row.querySelector(".feed-total");
   function updateTotal(){
-    total.value=(parseFloat(input1.value||0)+parseFloat(input2.value||0)).toFixed(1);
+    const val1 = parseFloat(input1.value||0);
+    const val2 = parseFloat(input2.value||0);
+    total.value = ((val1 + val2)*2).toFixed(1); // ← 合計2倍
     calculate();
   }
-  input1.addEventListener("input",updateTotal);
-  input2.addEventListener("input",updateTotal);
+  input1.addEventListener("input", updateTotal);
+  input2.addEventListener("input", updateTotal);
 
   row.querySelector(".remove-btn").onclick = ()=>{
     row.remove();
     calculate();
   }
 
-  calculate();
+  updateTotal();
 }
 
-// ?? 計算関数
-function calculate(){
-  const weight=parseFloat(document.getElementById("weight").value);
-  const work=document.getElementById("work").value;
-  const req=getRequirements(weight, work);
-  const keys=Object.keys(feeds[0]).filter(k=>"name"!==k);
-  const total={};
-  keys.forEach(k=>total[k]=0);
-
-  document.querySelectorAll("#feed-body tr").forEach(row=>{
-    const feedName=row.querySelector(".feed-select").value;
-    const feed=feeds.find(f=>f.name===feedName);
-    const amount=parseFloat(row.querySelector(".feed-total").value||0);
-    keys.forEach(k=>{ total[k]+= (feed[k]||0)*amount; });
-  });
-
-  let html=`<table><thead><tr><th>栄養素</th><th>要求量</th><th>供給量</th><th>充足率</th></tr></thead><tbody>`;
-  keys.forEach(k=>{
-    let ratio = total[k]/req[k]*100;
-    let color="black";
-    if(ratio>120) color="red";
-    else if(ratio<80) color="blue";
-    html+=`<tr><td>${k}</td><td>${req[k]}</td><td>${total[k].toFixed(1)}</td><td style="color:${color}">${ratio.toFixed(1)}%</td></tr>`;
-  });
-  html+="</tbody></table>";
-  document.getElementById("result").innerHTML=html;
-}
-
-document.getElementById("weight").addEventListener("change",calculate);
-document.getElementById("work").addEventListener("change",calculate);
-</script>
-</body>
-
-</html>
+// 最初に全飼料表示
+feeds.forEach(f=>

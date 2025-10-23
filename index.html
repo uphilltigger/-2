@@ -18,28 +18,28 @@ thead { background-color:#eee; }
 
 <h1>飼料計算</h1>
 <div class="container">
-  <label>体重（kg）</label>
+  <label>Weight（kg）</label>
   <select id="weight">
     <option value="400">400</option>
     <option value="450">450</option>
     <option value="500" selected>500</option>
   </select>
 
-  <label>運動強度</label>
+  <label>Activity</label>
   <select id="work">
-    <option value="無">無</option>
-    <option value="軽">軽</option>
-    <option value="中" selected>中</option>
-    <option value="強">強</option>
+    <option value="無">None</option>
+    <option value="軽">*</option>
+    <option value="中" selected>**</option>
+    <option value="強">***</option>
   </select>
 
   <table id="feed-table">
     <thead>
       <tr>
-        <th>飼料名</th>
-        <th>給与量1(kg)</th>
-        <th>給与量2(kg)</th>
-        <th>合計(kg)</th>
+        <th></th>
+        <th>朝夕 /kg</th>
+        <th>昼夜 /kg</th>
+        <th>TOTAL /kg</th>
       </tr>
     </thead>
     <tbody id="feed-body"></tbody>
@@ -140,5 +140,6 @@ document.getElementById("work").onchange = calculate;
 </script>
 </body>
 </html>
+
 
 

@@ -90,6 +90,9 @@ function getRequirements(weight, work){
 }
 
 // 🔹 最初に全飼料表示
+window.onload = ()=>{
+  feeds.forEach(f=> addFeedRow(f.name)); // 各飼料を追加
+};
 const feedBody = document.getElementById("feed-body");
 function addFeedRow(feedName=""){
   const row=document.createElement("tr");
@@ -127,3 +130,4 @@ function addFeedRow(feedName=""){
 
 // 最初に全飼料表示
 feeds.forEach(f=>
+

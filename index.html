@@ -25,9 +25,7 @@ select { padding:0.3rem; margin-bottom:0.5rem; }
 </style>
 </head>
 <body>
-
 <h1>飼料計算</h1>
-
 <div>
   <label>体重：
     <select id="weight">
@@ -46,7 +44,6 @@ select { padding:0.3rem; margin-bottom:0.5rem; }
   </label>
 <br>※"強"は500kgのみ
 </div>
-
 <div class="table-container">
   <table id="feed-table">
     <thead>
@@ -55,11 +52,14 @@ select { padding:0.3rem; margin-bottom:0.5rem; }
     <tbody id="feed-body"></tbody>
   </table>
 </div>
-
 <div class="table-container" id="result"></div>
 <div class="table-container" id="result-balance"></div>
 <hr>
 <p style="text-align: right;">CREATED BY CHAT GPT.</p>
+<details>
+  <summary style="text-decoration: underline; color: blue;">説明を見る</summary>
+  <div>準備中</div>
+</details>
 <script>
 // 飼料データ
 const feeds = [
@@ -187,4 +187,5 @@ document.getElementById("work").onchange = calculate;
 </script>
 </body>
 </html>
+
 

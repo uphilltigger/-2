@@ -148,16 +148,17 @@ function calculate(){
 }
 
 // 🔹 初期表示と追加ボタン
-window.onload = ()=>feeds.forEach(f=>addFeedRow(f.name));
+window.onload = createRows;
 document.getElementById("add-feed").onclick = ()=>addFeedRow();
 document.getElementById("weight").onchange = calculate;
 document.getElementById("work").onchange = calculate;
 
-window.onload = createRows;
+
 </script>
 
 </body>
 </html>
+
 
 
 

@@ -37,7 +37,7 @@ button:hover { background-color:#218838; }
     <option value="強">強</option>
   </select>
 
-  <button id="add-feed">飼料を追加</button>
+<!--  <button id="add-feed">飼料を追加</button>  -->
 
   <table id="feed-table">
     <thead>
@@ -46,7 +46,7 @@ button:hover { background-color:#218838; }
         <th>給与量1(kg)</th>
         <th>給与量2(kg)</th>
         <th>合計(kg)</th>
-        <th>削除</th>
+<!--    <th>削除</th>  -->
       </tr>
       <tr>
         <td><select class="feed-select"></select></td>
@@ -95,7 +95,7 @@ function getRequirements(weight, work){
   return found||reqTable[0];
 }
 
-// 🔹 飼料行追加関数
+//  飼料行追加関数
 const feedBody = document.getElementById("feed-body");
 function addFeedRow(feedName=""){
   const row=document.createElement("tr");
@@ -104,7 +104,6 @@ function addFeedRow(feedName=""){
     <td><input type="number" class="feed-amount1" value="0"></td>
     <td><input type="number" class="feed-amount2" value="0"></td>
     <td><input type="number" class="feed-total" value="0" readonly></td>
-    <td><button class="remove-btn">削除</button></td>
   `;
   const select = row.querySelector(".feed-select");
   feeds.forEach(f=>{ const opt=document.createElement("option"); opt.value=f.name; opt.text=f.name; select.appendChild(opt); });
@@ -171,4 +170,5 @@ document.getElementById("work").onchange = calculate;
 
 </body>
 </html>
+
 

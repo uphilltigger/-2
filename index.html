@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -21,11 +22,15 @@ select { padding:0.3rem; margin-bottom:0.5rem; }
   vertical-align:left;
 }
 .bar-fill { height:100%; width:0%; border-radius:8px;}
-
+#toggle:checked + label + #content {
+  display: block;
+}
 </style>
 </head>
 <body>
+
 <h1>飼料計算</h1>
+
 <div>
   <label>体重：
     <select id="weight">
@@ -44,6 +49,7 @@ select { padding:0.3rem; margin-bottom:0.5rem; }
   </label>
 <br>※"強"は500kgのみ
 </div>
+
 <div class="table-container">
   <table id="feed-table">
     <thead>
@@ -52,13 +58,27 @@ select { padding:0.3rem; margin-bottom:0.5rem; }
     <tbody id="feed-body"></tbody>
   </table>
 </div>
+
 <div class="table-container" id="result"></div>
 <div class="table-container" id="result-balance"></div>
 <hr>
 <p style="text-align: right;">CREATED BY CHAT GPT.</p>
 <details>
   <summary style="text-decoration: underline; color: blue;">説明を見る</summary>
-  <div>準備中</div>
+  <div>
+	＜各値＞<br>
+	青＝不足，緑＝理想，赤＝過剰<br>
+	<br>
+	＜運動強度＞<br>
+	無＝積雪期<br>
+	軽＝春先，馬場凍結前<br>
+	中＝普段<br>
+	強＝真夏<br>
+	<br>
+	DE＝エネルギー<br>
+	CP＝タンパク質<br>
+	この2つと下の表の3つの値が正常ならとりあえず大丈夫．
+</div>
 </details>
 <script>
 // 飼料データ
@@ -140,8 +160,8 @@ function calculate(){
   const total_bw = totalFeed / weight*100; 
 
   // カラー設定関数
-  function colorize(value, min, max) {
-    return (value < min || value > max) ? "red" : "green";
+	function colorize(value, min, max) {
+	  return (value < min) ? "blue" : (value > max ? "red" : "green");
   }
 
   // 栄養素テーブル
@@ -187,5 +207,3 @@ document.getElementById("work").onchange = calculate;
 </script>
 </body>
 </html>
-
-

@@ -136,7 +136,7 @@ function calculate(){
   const req = getRequirements(weight, work);
 
   const ca_p = sum["Ca"] / sum["P"];
-  const cu_zn = sum["Cu"] / sum["Zn"];
+  const zn_cu = sum["Zn"] / sum["Cu"];
   const total_bw = totalFeed / weight*100; 
 
   // カラー設定関数
@@ -172,7 +172,7 @@ function calculate(){
     </thead>
     <tbody>
       <tr><td>Ca/P</td><td>1.5~2.0</td><td style="color:${colorize(ca_p,1.5,2.0)}; text-align:right;">${ca_p.toFixed(1)}</td></tr>
-      <tr><td>Cu/Zn</td><td>0.1~0.2</td><td style="color:${colorize(cu_zn,0.1,0.2)}; text-align:right;">${cu_zn.toFixed(1)}</td></tr>
+      <tr><td>Zn/Cu</td><td>3~6</td><td style="color:${colorize(zn_cu,3,6)}; text-align:right;">${zn_cu.toFixed(1)}</td></tr>
       <tr><td>体重比</td><td>1.5~2.5%</td><td style="color:${colorize(total_bw,1.5,2.5)}; text-align:right;">${total_bw.toFixed(1)}%</td></tr>
     </tbody>
   </table>`;
@@ -187,3 +187,4 @@ document.getElementById("work").onchange = calculate;
 </script>
 </body>
 </html>
+

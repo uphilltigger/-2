@@ -89,7 +89,7 @@ function getRequirements(weight, work){
   return found||reqTable[0];
 }
 
-// 🔹 行追加関数
+// 🔹 飼料行追加関数
 const feedBody = document.getElementById("feed-body");
 function addFeedRow(feedName=""){
   const row=document.createElement("tr");
@@ -98,5 +98,70 @@ function addFeedRow(feedName=""){
     <td><input type="number" class="feed-amount1" value="0"></td>
     <td><input type="number" class="feed-amount2" value="0"></td>
     <td><input type="number" class="feed-total" value="0" readonly></td>
-    <td><button class="remove
+    <td><button class="remove-btn">削除</button></td>
+  `;
+  const select = row.querySelector(".feed-select");
+  feeds.forEach(f=>{ const opt=document.createElement("option"); opt.value=f.name; opt.text=f.name; select.appendChild(opt); });
+  if(feedName) select.value = feedName;
+  feedBody.appendChild(row);
 
+  const input1=row.querySelector(".feed-amount1");
+  const input2=row.querySelector(".feed-amount2");
+  const total=row.querySelector(".feed-total");
+  function updateTotal(){
+    const val1 = parseFloat(input1.value||0);
+    const val2 = parseFloat(input2.value||0);
+    total.value = ((val1 + val2)*2).toFixed(1);
+    calculate();
+  }
+  input1.addEventListener("input", updateTotal);
+  input2.addEventListener("input", updateTotal);
+
+  row.querySelector(".remove-btn").onclick = ()=>{
+    row.remove();
+    calculate();
+  }
+
+  updateTotal();
+}
+
+// 🔹 計算関数
+function calculate(){
+  const weight = parseInt(document.getElementById("weight").value);
+  const work = document.getElementById("work").value;
+  const req = getRequirements(weight, work);
+
+  let sum = {DE:0, CP:0, Lys:0, Ca:0, P:0, Mg:0, Na:0, K:0, Fe:0, Cu:0, Zn:0, Mn:0, Se:0, Co:0, VA:0, VD:0, VE:0};
+  document.querySelectorAll("#feed-body tr").forEach(tr=>{
+    const feedName = tr.querySelector(".feed-select").value;
+    const total = parseFloat(tr.querySelector(".feed-total").value||0);
+    const feed = feeds.find(f=>f.name===feedName);
+    for(const key in sum){
+      sum[key]+=feed[key]*total;
+    }
+  });
+
+  // 充足率
+  let html="<h2>充足率</h2><table><thead><tr>";
+  for(const key in sum) html+="<th>"+key+"</th>";
+  html+="</tr></thead><tbody><tr>";
+  for(const key in sum){
+    const rate = (sum[key]/req[key]*100).toFixed(1);
+    let color="black";
+    if(rate>120) color="red";
+    else if(rate<80) color="blue";
+    html+=`<td style="color:${color}">${rate}%</td>`;
+  }
+  html+="</tr></tbody></table>";
+  document.getElementById("result").innerHTML=html;
+}
+
+// 🔹 初期表示と追加ボタン
+window.onload = ()=>feeds.forEach(f=>addFeedRow(f.name));
+document.getElementById("add-feed").onclick = ()=>addFeedRow();
+document.getElementById("weight").onchange = calculate;
+document.getElementById("work").onchange = calculate;
+</script>
+
+</body>
+</html>

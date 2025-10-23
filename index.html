@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>飼料計算</title>
+<style>
+body { font-family:sans-serif; margin:0; padding:2rem; background:#f0f0f0;}
+h1 { text-align:center; margin-bottom:1rem; }
+.container { display:flex; gap:2rem; justify-content:center; flex-wrap:wrap; }
+.table-container { background:#fff; padding:1rem; border-radius:1rem; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+table { border-collapse:collapse; width:100%; }
+th, td { border:1px solid #ccc; padding:0.2rem; text-align:center; }
+thead { background:#eee; }
+input { width:60px; text-align: right; }
+select { padding:0.3rem; margin-bottom:0.5rem; }
+</style>
+</head>
+<body>
+
+<h1>飼料計算</h1>
+
+<div>
+  <label>体重：
+    <select id="weight">
+      <option value="400">400</option>
+      <option value="450">450</option>
+      <option value="500" selected>500</option>
+    </select>
+  </label>
+  <label>運動強度：
+    <select id="work">
+      <option value="無">無</option>
+      <option value="軽">軽</option>
+      <option value="中" selected>中</option>
+      <option value="強">強</option>
+    </select>
+  </label>
+</div>
+
+<div class="container">
+  <!-- 左側：給与量入力表 -->
+  <div class="table-container" style="flex:1; min-width:300px;">
+    <table id="feed-table">
+      <thead>
+        <tr><th>飼料名</th><th>朝夕</th><th>昼夜</th><th>合計</th></tr>
+      </thead>
+      <tbody id="feed-body"></tbody>
+    </table>
+  </div>
+
+  <!-- 右側：充足率表 -->
+  <div class="table-container" style="flex:1; min-width:400px;">
+    <div id="result"></div>
+  </div>
+</div>
+
+<script>
+// 飼料データ
+const feeds = [
+  {name:"ビート", DE:2.85, CP:109.00, Lys:7.20, Ca:5.11, P:0.78, Mg:2.68, Na:1.04, K:4.16, Fe:519.60, Cu:9.27, Zn:27.71, Mn:53.69, Se:0.00, Co:0.20, VA:0.00, VD:0.00, VE:0.00, default1:0, default2:0},
+  {name:"燕麦", DE:2.76, CP:106.58, Lys:5.60, Ca:0.45, P:3.01, Mg:1.22, Na:0.34, K:3.55, Fe:44.01, Cu:3.52, Zn:31.60, Mn:45.61, Se:0.05, Co:0.11, VA:5, VD:0.00, VE:4, default1:0, default2:0},
+  {name:"ヘイキューブ", DE:1.80, CP:147.00, Lys:0.00, Ca:11.80, P:2.60, Mg:2.60, Na:1.60, K:22.40, Fe:446.00, Cu:8.20, Zn:24.00, Mn:34.80, Se:0.00, Co:1.52, VA:0.00, VD:0.00, VE:0.00, default1:0, default2:0},
+  {name:"大豆粕", DE:13.13, CP:461.00, Lys:28.30, Ca:2.90, P:6.20, Mg:3.20, Na:0.30, K:0.00, Fe:0.00, Cu:18.00, Zn:56.00, Mn:0.00, Se:0.45, Co:0.00, VA:0.00, VD:0.00, VE:0.00, default1:0, default2:0},
+  {name:"ベルテ", DE:2.52, CP:184.8, Lys:9.90, Ca:13.40, P:24.20, Mg:2.50, Na:12.00, K:13.40, Fe:563.42, Cu:133.63, Zn:331.66, Mn:206.02, Se:0.00, Co:0.53, VA:45866, VD:4080, VE:688, default1:0, default2:0},
+  {name:"濃厚", DE:3.12, CP:144.00, Lys:7.00, Ca:31.00, P:12.30, Mg:2.20, Na:9.30, K:9.80, Fe:340.01, Cu:88.69, Zn:219.27, Mn:153.67, Se:1.21, Co:0.54, VA:29, VD:3, VE:865, default1:0, default2:0},
+  {name:"ふすま", DE:2.68, CP:157.00, Lys:6.30, Ca:1.20, P:9.80, Mg:4.40, Na:0.80, K:0.00, Fe:0.00, Cu:11.00, Zn:70.00, Mn:0.00, Se:0.00, Co:0.00, VA:0.00, VD:0.00, VE:0.00, default1:0, default2:0},
+  {name:"塩", DE:0.00, CP:0.00, Lys:0.00, Ca:0.30, P:0.00, Mg:0.00, Na:392.00, K:0.00, Fe:0.00, Cu:0.00, Zn:0.00, Mn:0.00, Se:0.00, Co:0.00, VA:0.00, VD:0.00, VE:0.00, default1:0.01, default2:0.01},
+  {name:"乾草", DE:1.35, CP:57.00, Lys:2.70, Ca:0.00, P:0.00, Mg:0.00, Na:0.00, K:0.00, Fe:81.30, Cu:7.07, Zn:21.95, Mn:94.31, Se:0.00, Co:0.03, VA:0.00, VD:0.00, VE:75, default1:1, default2:1}
+];
+
+// 要求量データ
+const reqTable = [
+  {weight:500, work:"無", DE:16.4, CP:656, Lys:28.21, Ca:20, P:14, Mg:7.5, Na:10, K:25, Fe:400, Cu:150, Zn:450, Mn:450, Se:1.88, Co:0.5, VA:20000, VD:3300, VE:800},
+  {weight:500, work:"軽", DE:19.68, CP:787.2, Lys:33.85, Ca:30, P:18, Mg:9.05, Na:26.25, K:61.25, Fe:400, Cu:150, Zn:450, Mn:450, Se:2.19, Co:0.5, VA:20000, VD:3300, VE:800},
+  {weight:500, work:"中", DE:22.96, CP:918.4, Lys:39.49, Ca:35, P:21, Mg:10.56, Na:26.25, K:61.25, Fe:450, Cu:168.75, Zn:506.25, Mn:506.25, Se:2.81, Co:0.56, VA:22500, VD:3300, VE:900},
+  {weight:500, work:"強", DE:26.24, CP:1049.6, Lys:45.13, Ca:40, P:29, Mg:12.07, Na:33.75, K:78.75, Fe:500, Cu:187.5, Zn:562.5, Mn:562.5, Se:3.13, Co:0.63, VA:25000, VD:3300, VE:1000},
+  {weight:450, work:"無", DE:14.9, CP:596, Lys:25.63, Ca:18, P:12.6, Mg:6.75, Na:9, K:22.5, Fe:360, Cu:135, Zn:405, Mn:405, Se:1.69, Co:0.45, VA:18000, VD:2970, VE:720},
+  {weight:450, work:"軽", DE:17.88, CP:715.2, Lys:30.75, Ca:27, P:16.2, Mg:8.22, Na:23.63, K:55.13, Fe:360, Cu:135, Zn:405, Mn:405, Se:1.97, Co:0.45, VA:18000, VD:2970, VE:720},
+  {weight:450, work:"中", DE:20.86, CP:834.4, Lys:35.88, Ca:31.5, P:18.9, Mg:9.6, Na:23.63, K:55.13, Fe:405, Cu:151.88, Zn:455.63, Mn:455.63, Se:2.53, Co:0.51, VA:20250, VD:2970, VE:810},
+  {weight:400, work:"無", DE:13.4, CP:536, Lys:23.05, Ca:16, P:11.2, Mg:6, Na:8, K:20, Fe:320, Cu:120, Zn:360, Mn:360, Se:1.5, Co:0.4, VA:16000, VD:2640, VE:640},
+  {weight:400, work:"軽", DE:16.08, CP:643.2, Lys:27.66, Ca:24, P:14.4, Mg:7.4, Na:21, K:49, Fe:320, Cu:120, Zn:360, Mn:360, Se:1.75, Co:0.4, VA:16000, VD:2640, VE:640},
+  {weight:400, work:"中", DE:18.76, CP:750.4, Lys:32.27, Ca:28, P:16.8, Mg:8.63, Na:21, K:49, Fe:360, Cu:135, Zn:405, Mn:405, Se:2.25, Co:0.45, VA:18000, VD:2640, VE:720}
+]
+function getRequirements(weight, work){
+  return reqTable.find(r=>r.weight==weight && r.work==work) || reqTable[0];
+}
+
+// 行作成
+function createRows(){
+  const feedBody = document.getElementById("feed-body");
+  feeds.forEach(f=>{
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${f.name}</td>
+      <td><input type="number" class="feed-amount1" value="${f.default1}" step="0.1" min="0">kg</td>
+      <td><input type="number" class="feed-amount2" value="${f.default2}" step="0.1" min="0">kg</td>
+      <td><input type="number" class="feed-total" value="0" readonly>kg</td>
+    `;
+    feedBody.appendChild(row);
+
+    const input1 = row.querySelector(".feed-amount1");
+    const input2 = row.querySelector(".feed-amount2");
+    const total = row.querySelector(".feed-total");
+
+    function updateTotal(){
+      total.value = ((parseFloat(input1.value||0)+parseFloat(input2.value||0))*2).toFixed(2);
+      calculate();
+    }
+
+    input1.addEventListener("input", updateTotal);
+    input2.addEventListener("input", updateTotal);
+    updateTotal();
+  });
+}
+
+// 計算
+function calculate(){
+  const weight = parseInt(document.getElementById("weight").value);
+  const work = document.getElementById("work").value;
+  const req = getRequirements(weight, work);
+
+  let sum = {DE:0, CP:0, Lys:0, Ca:0, P:0, Mg:0, Na:0, K:0, Fe:0, Cu:0, Zn:0, Mn:0, Se:0, Co:0, VA:0, VD:0, VE:0};
+  document.querySelectorAll("#feed-body tr").forEach((tr,i)=>{
+    const total = parseFloat(tr.querySelector(".feed-total").value||0);
+    const feed = feeds[i];
+    for(const key in sum) sum[key]+=feed[key]*total;
+  });
+
+  let html="<table><thead><tr><th>栄養素</th><th>要求量</th><th>摂取量</th><th>充足率</th></tr></thead><tbody>";
+  for(const key in sum){
+    const rate = (sum[key]/req[key]*100).toFixed(1);
+    let color="black";
+    if(rate>120) color="red";
+    else if(rate<80) color="blue";
+    html+=`<tr><td>${key}</td><td style="text-align: right;">${req[key]}</td><td style="text-align: right;">${sum[key].toFixed(2)}</td><td style="color:${color}; text-align: right;">${rate}%</td></tr>`;
+  }
+  html+="</tbody></table>";
+  document.getElementById("result").innerHTML=html;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap; /* 幅が狭ければ折り返す */
+}
+
+@media (max-width: 800px) {
+  .container {
+    flex-direction: column; /* 幅が狭い時は縦並び */
+  }
+}
+
+// 初期化
+window.onload=()=>{
+  createRows();
+  calculate();
+};
+document.getElementById("weight").onchange = calculate;
+document.getElementById("work").onchange = calculate;
+</script>
+</body>
+</html>

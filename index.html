@@ -25,12 +25,30 @@ select { padding:0.3rem; margin-bottom:0.5rem; }
 #toggle:checked + label + #content {
   display: block;
 }
+a{color: blue; text-dexoration: undereline;}
+a:active{color : red;}
 </style>
 </head>
 <body>
-
 <h1>飼料計算</h1>
-
+<p><a href="https://uphilltigger.github.io/-/" target="_blank">量変えるときの計算はこっち使って～</a>
+<details>
+  <summary style="text-decoration: underline; color: blue;">説明を見る</summary>
+  <div>
+	＜各値＞<br>
+	青＝不足，緑＝理想，赤＝過剰<br>
+	<br>
+	＜運動強度＞<br>
+	無＝積雪期<br>
+	軽＝春先，馬場凍結前<br>
+	中＝普段<br>
+	強＝真夏<br>
+	<br>
+	DE＝エネルギー<br>
+	CP＝タンパク質<br>
+	この2つと下の表の3つの値が正常ならとりあえず大丈夫．
+</div>
+</details></p>
 <div>
   <label>体重：
     <select id="weight">
@@ -63,23 +81,6 @@ select { padding:0.3rem; margin-bottom:0.5rem; }
 <div class="table-container" id="result-balance"></div>
 <hr>
 <p style="text-align: right;">CREATED BY CHAT GPT.</p>
-<details>
-  <summary style="text-decoration: underline; color: blue;">説明を見る</summary>
-  <div>
-	＜各値＞<br>
-	青＝不足，緑＝理想，赤＝過剰<br>
-	<br>
-	＜運動強度＞<br>
-	無＝積雪期<br>
-	軽＝春先，馬場凍結前<br>
-	中＝普段<br>
-	強＝真夏<br>
-	<br>
-	DE＝エネルギー<br>
-	CP＝タンパク質<br>
-	この2つと下の表の3つの値が正常ならとりあえず大丈夫．
-</div>
-</details>
 <script>
 // 飼料データ
 const feeds = [
@@ -207,6 +208,7 @@ document.getElementById("work").onchange = calculate;
 </script>
 </body>
 </html>
+
 
 
 

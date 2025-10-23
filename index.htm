@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>馬の栄養充足チェッカー</title>
+<title>飼料計算</title>
 <style>
 body { font-family: sans-serif; background-color: #f0f0f0; margin: 0; padding: 2rem; display: flex; flex-direction: column; align-items: center;}
 h1 { font-size: 2rem; margin-bottom: 1rem; }
@@ -20,7 +20,7 @@ button:hover { background-color:#218838; }
 </head>
 <body>
 
-<h1>🐴 馬の栄養充足チェッカー</h1>
+<h1>飼料計算</h1>
 <div class="container">
   <label>体重（kg）</label>
   <select id="weight">
@@ -89,6 +89,8 @@ function getRequirements(weight, work){
 }
 
 //  飼料
+function createRows(){
+  const feedBody = document.getElementById("feed-body");
 feeds.forEach(f=>{
   const row = document.createElement("tr");
   row.innerHTML =`
@@ -150,10 +152,13 @@ window.onload = ()=>feeds.forEach(f=>addFeedRow(f.name));
 document.getElementById("add-feed").onclick = ()=>addFeedRow();
 document.getElementById("weight").onchange = calculate;
 document.getElementById("work").onchange = calculate;
+
+window.onload = createRows;
 </script>
 
 </body>
 </html>
+
 
 
 

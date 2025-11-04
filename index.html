@@ -21,11 +21,11 @@ a:active{color : red;}
 <body>
 <h1>飼料計算</h1>
 <p>
-	<!--<a href="https://uphilltigger.github.io/-/" target="_blank">量変えるときの計算はこっち使って～</a>-->
 <details>
   <summary style="text-decoration: underline; color: blue;">説明を見る</summary>
   <div>
 	<hr>
+	入力値は一食あたり．<br>
 	＜各値＞<br>
 	青＝不足，緑＝理想，赤＝過剰<br>
 	<br>
@@ -72,7 +72,7 @@ a:active{color : red;}
 <div class="table-container" id="result"></div>
 <div class="table-container" id="result-balance"></div>
 <hr>
-<p style="text-align: center;">&copy;2025 Sota MIURA</p>
+<p style="text-align: center;">&copy;2025 Sota MIURA 	<a href="https://uphilltigger.github.io/-/" target="_blank">↗量変えるとき用</a></p>
 <script>
 // 飼料データ
 const feeds = [
@@ -200,6 +200,7 @@ document.getElementById("work").onchange = calculate;
 </script>
 </body>
 </html>
+
 
 
 

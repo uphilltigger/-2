@@ -72,7 +72,7 @@ a:active{color : red;}
 <div class="table-container" id="result"></div>
 <div class="table-container" id="result-balance"></div>
 <hr>
-<p style="text-align: center;"><a href="https://uphilltigger.github.io/-/" target="_blank">量変えるとき用↗</a><br>&copy;2025 Sota MIURA</p>
+<p style="text-align: center;"><a href="https://uphilltigger.github.io/-/" target="_blank">量変えるとき用?</a><br>&copy;2025 Sota MIURA</p>
 <script>
 // 飼料データ
 const feeds = [
@@ -103,6 +103,12 @@ const reqTable = [
 function getRequirements(weight, work){
   return reqTable.find(r=>r.weight==weight && r.work==work) || reqTable[0];
 }
+
+//単位
+const units = {
+  DE: "Mcal", CP: "g", Lys: "g", Ca: "g", P: "g", Mg: "g", Na: "g", K: "g", Fe: "mg", Cu: "mg", Zn: "mg", Mn: "mg", Se: "mg", Co: "mg", VA: "IU", VD: "IU", VE: "IU"
+};
+
 
 // 行作成
 function createRows(){
@@ -158,24 +164,37 @@ function calculate(){
   }
 
   // 栄養素テーブル
-  let html="<table><thead><tr><th>栄養素</th><th>要求量</th><th>給餌量</th><th>充足率</th><th></th></tr></thead><tbody>";
-  for(const key in sum){
-    const rate = (sum[key]/req[key]*100);
-    const rateText = rate.toFixed(1);
-    let color="green";
-    if(rate>120) color="red";
-    else if(rate<80) color="blue";
+	let html = `
+	<table>
+	  <thead>
+	    <tr><th colspan="2">栄養素</th><th>要求量</th><th>給餌量</th><th colspan="2">充足率</th></tr>
+	  </thead>
+	  <tbody>
+	`;
 
-    html+=`<tr>
-      <td>${key}</td>
-      <td style="text-align: right;">${req[key]}</td>
-      <td style="text-align: right;">${sum[key].toFixed(2)}</td>
-      <td><div class="bar-container"><div class="bar-fill" style="width:${Math.min(rate,150)}%;background:${color}"></div></div></td>
-      <td style="color:${color}; border-left: 0px; text-align: right;">${rateText}%</td>
-    </tr>`;
-  }
-  html+="</tbody></table>";
-  document.getElementById("result").innerHTML=html;
+	for (const key in sum) {
+	  const rate = (sum[key] / req[key] * 100);
+	  const rateText = rate.toFixed(1);
+	  let color = "green";
+	  if (rate > 120) color = "red";
+	  else if (rate < 80) color = "blue";
+
+	  html += `
+	    <tr>
+	      <td>${key}</td>
+	      <td style="font-size: 15px;">${units[key] || ""}</td>
+	      <td style="text-align: right;">${req[key]}</td>
+	      <td style="text-align: right;">${sum[key].toFixed(2)}</td>
+	      <td>
+	        <div class="bar-container">
+	          <div class="bar-fill" style="width:${Math.min(rate,150)}%;background:${color}"></div>
+	        </div>
+	      </td>
+	      <td style="color:${color}; border-left:0; text-align:right;">${rateText}%</td>
+	    </tr>`;
+	}
+	html += "</tbody></table>";
+	document.getElementById("result").innerHTML = html;
 
   // 栄養バランス比テーブル
   let htmlbalance = `
@@ -200,20 +219,3 @@ document.getElementById("work").onchange = calculate;
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

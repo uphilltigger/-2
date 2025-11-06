@@ -58,6 +58,8 @@ a:active{color : red;}
     </select>
   </label>
 <br>※"強"は500kgのみ
+<br><button id="reset-btn">Reset</button>
+
 </div>
 
 <div class="table-container">
@@ -72,7 +74,7 @@ a:active{color : red;}
 <div class="table-container" id="result"></div>
 <div class="table-container" id="result-balance"></div>
 <hr>
-<p style="text-align: center;"><a href="https://uphilltigger.github.io/-/" target="_blank">量変えるとき用?</a><br>&copy;2025 Sota MIURA</p>
+<p style="text-align: center;"><a href="https://uphilltigger.github.io/-/" target="_blank">量変えるとき用↗</a><br>&copy;2025 Sota MIURA</p>
 <script>
 // 飼料データ
 const feeds = [
@@ -210,12 +212,32 @@ function calculate(){
   </table>`;
   document.getElementById("result-balance").innerHTML = htmlbalance;
 }
-window.onload=()=>{
+
+// 初期値に戻す関数
+function resetInputs() {
+  const rows = document.querySelectorAll("#feed-body tr");
+  rows.forEach((tr, i) => {
+    const feed = feeds[i];
+    const input1 = tr.querySelector(".feed-amount1");
+    const input2 = tr.querySelector(".feed-amount2");
+    const total = tr.querySelector(".feed-total");
+
+    // 初期値を設定（空文字は0扱いにする）
+    input1.value = feed.default1 || "";
+    input2.value = feed.default2 || "";
+
+    total.value = ((parseFloat(input1.value || 0) + parseFloat(input2.value || 0)) * 2).toFixed(2);
+  });
+  calculate();
+}
+
+window.onload = () => {
   createRows();
   calculate();
+  document.getElementById("reset-btn").addEventListener("click", resetInputs);
+  document.getElementById("weight").addEventListener("change", calculate);
+  document.getElementById("work").addEventListener("change", calculate);
 };
-document.getElementById("weight").onchange = calculate;
-document.getElementById("work").onchange = calculate;
 </script>
 </body>
 </html>

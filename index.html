@@ -82,7 +82,7 @@ button:hover{background: #fff; color: #000; cursor: pointer;}
 <hr>
 <p style="text-align: center;"><a href="https://uphilltigger.github.io/-/" target="_blank">量変えるとき用↗</a><br>&copy;2025 Sota MIURA</p>
 <script>
-// 飼料データ
+// 飼料
 const feeds = [
   {name:"ビート", DE:2.85, CP:109.00, Lys:7.20, Ca:5.11, P:0.78, Mg:2.68, Na:1.04, K:4.16, Fe:519.60, Cu:9.27, Zn:27.71, Mn:53.69, Se:0.00, Co:0.20, VA:0.00, VD:0.00, VE:0.00, default1:"", default2:""},
   {name:"燕麦", DE:2.76, CP:106.58, Lys:5.60, Ca:0.45, P:3.01, Mg:1.22, Na:0.34, K:3.55, Fe:44.01, Cu:3.52, Zn:31.60, Mn:45.61, Se:0.05, Co:0.11, VA:5, VD:0.00, VE:4, default1:"", default2:0.5},
@@ -95,7 +95,7 @@ const feeds = [
   {name:"乾草", DE:1.35, CP:57.00, Lys:2.70, Ca:0.00, P:0.00, Mg:0.00, Na:0.00, K:0.00, Fe:81.30, Cu:7.07, Zn:21.95, Mn:94.31, Se:0.00, Co:0.03, VA:0.00, VD:0.00, VE:75, default1:1, default2:1}
 ];
 
-// 要求量データ
+// 要求量
 const reqTable = [
   {weight:500, work:"無", DE:16.4, CP:656, Lys:28.21, Ca:20, P:14, Mg:7.5, Na:10, K:25, Fe:400, Cu:150, Zn:450, Mn:450, Se:1.88, Co:0.5, VA:20000, VD:3300, VE:800},
   {weight:500, work:"軽", DE:19.68, CP:787.2, Lys:33.85, Ca:30, P:18, Mg:9.05, Na:26.25, K:61.25, Fe:400, Cu:150, Zn:450, Mn:450, Se:2.19, Co:0.5, VA:20000, VD:3300, VE:800},
@@ -168,7 +168,6 @@ function calculate() {
   const zn_cu = sum["Zn"] / sum["Cu"];
   const total_bw = totalFeedWeight / weight * 100; 
 
-  // 栄養素テーブルやバランス表の描画（既存コード）
   // カラー設定関数
 	function colorize(value, min, max) {
 	  return (value < min) ? "darkblue" : (value > max ? "firebrick" : "darkgreen");
@@ -220,7 +219,7 @@ function calculate() {
   </table>`;
   document.getElementById("result-balance").innerHTML = htmlbalance;
 
-  // 合計表用の計算（別変数で整理）
+  // 合計表用の計算
   let sum1 = 0, sum2 = 0, totalSum = 0;
   document.querySelectorAll("#feed-body tr").forEach(tr => {
     const val1 = parseFloat(tr.querySelector(".feed-amount1").value || 0);
@@ -241,7 +240,7 @@ function calculate() {
 }
 
 
-// 初期値に戻す関数
+// リセット
 function resetInputs() {
   const rows = document.querySelectorAll("#feed-body tr");
   rows.forEach((tr, i) => {

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -82,7 +80,7 @@ button:hover{background: #fff; color: #000; cursor: pointer;}
 <div class="table-container" id="result"></div>
 <div class="table-container" id="result-balance"></div>
 <hr>
-<p style="text-align: center;"><a href="https://uphilltigger.github.io/-/" target="_blank">量変えるとき用?</a><br>&copy;2025 Sota MIURA</p>
+<p style="text-align: center;"><a href="https://uphilltigger.github.io/-/" target="_blank">量変えるとき用↗</a><br>&copy;2025 Sota MIURA</p>
 <script>
 // 飼料データ
 const feeds = [
@@ -252,7 +250,7 @@ function resetInputs() {
     const input2 = tr.querySelector(".feed-amount2");
     const total = tr.querySelector(".feed-total");
 
-    // 初期値を設定（空文字は0扱いにする）
+    // 初期値を設定
     input1.value = feed.default1 || "";
     input2.value = feed.default2 || "";
 
@@ -284,4 +282,3 @@ window.onload = () => {
 </script>
 </body>
 </html>
-

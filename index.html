@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,6 +13,7 @@ th, td { border:1px solid #ccc; padding-left:0.5rem; padding-right:0.5rem; text-
 thead { background:#eee; }
 input { font-size: 20px; width:60px; text-align: right; font-family: sans-serif;}
 .feed-total{border: 0px;}
+input.sum{border: 0px;}
 select { padding:0.3rem; margin-bottom:0.5rem; font-family: sans-serif;}
 .bar-container {width: 100%; height: 24px; background: lightgray; border-radius: 4px; overflow: hidden; display:inline-block; position: relative;}
 .bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease;}
@@ -71,6 +74,7 @@ button:hover{background: #fff; color: #000; cursor: pointer;}
       <tr><th>飼料名</th><th>朝夕</th><th>昼夜</th><th>合計</th></tr>
     </thead>
     <tbody id="feed-body"></tbody>
+    <tbody id="sum-body"></tbody>
   </table>
 <button id="reset-btn">CLEAR</button>
 </div>
@@ -145,25 +149,28 @@ function createRows(){
 }
 
 
-function calculate(){
+function calculate() {
   let sum = {DE:0, CP:0, Lys:0, Ca:0, P:0, Mg:0, Na:0, K:0, Fe:0, Cu:0, Zn:0, Mn:0, Se:0, Co:0, VA:0, VD:0, VE:0};
-  let totalFeed = 0; 
+  let totalFeedWeight = 0; // 栄養素計算用の総給餌量
 
-  document.querySelectorAll("#feed-body tr").forEach((tr,i)=>{
-    const total = parseFloat(tr.querySelector(".feed-total").value||0);
-    totalFeed += total; 
+  document.querySelectorAll("#feed-body tr").forEach((tr, i) => {
+    const val1 = parseFloat(tr.querySelector(".feed-amount1").value || 0);
+    const val2 = parseFloat(tr.querySelector(".feed-amount2").value || 0);
+    const total = (val1 + val2) * 2;
+    totalFeedWeight += total; // 栄養素計算用
+
     const feed = feeds[i];
-    for(const key in sum) sum[key]+=feed[key]*total;
+    for(const key in sum) sum[key] += feed[key] * total;
   });
 
   const weight = parseInt(document.getElementById("weight").value);
   const work = document.getElementById("work").value;
   const req = getRequirements(weight, work);
-
   const ca_p = sum["Ca"] / sum["P"];
   const zn_cu = sum["Zn"] / sum["Cu"];
-  const total_bw = totalFeed / weight*100; 
+  const total_bw = totalFeedWeight / weight * 100; 
 
+  // 栄養素テーブルやバランス表の描画（既存コード）
   // カラー設定関数
 	function colorize(value, min, max) {
 	  return (value < min) ? "darkblue" : (value > max ? "firebrick" : "darkgreen");
@@ -214,7 +221,27 @@ function calculate(){
     </tbody>
   </table>`;
   document.getElementById("result-balance").innerHTML = htmlbalance;
+
+  // 合計表用の計算（別変数で整理）
+  let sum1 = 0, sum2 = 0, totalSum = 0;
+  document.querySelectorAll("#feed-body tr").forEach(tr => {
+    const val1 = parseFloat(tr.querySelector(".feed-amount1").value || 0);
+    const val2 = parseFloat(tr.querySelector(".feed-amount2").value || 0);
+    sum1 += val1;
+    sum2 += val2;
+    totalSum += (val1 + val2) * 2;
+  });
+
+  document.getElementById("sum-body").innerHTML = `
+    <tr>
+      <td><b>合計</b></td>
+      <td><input type="number" class="sum" value="${sum1.toFixed(2)}" readonly>kg</td></td>
+      <td><input type="number" class="sum" value="${sum2.toFixed(2)}" readonly>kg</td></td>
+      <td><input type="number" class="sum" value="${totalSum.toFixed(2)}" readonly>kg</td></td>
+    </tr>
+  `;
 }
+
 
 // 初期値に戻す関数
 function resetInputs() {
@@ -232,6 +259,19 @@ function resetInputs() {
     total.value = ((parseFloat(input1.value || 0) + parseFloat(input2.value || 0)) * 2).toFixed(2);
   });
   calculate();
+
+	let sum1 = 0, sum2 = 0;
+	  document.querySelectorAll("#feed-body tr").forEach(tr=>{
+	    sum1 += parseFloat(tr.querySelector(".feed-amount1").value || 0);
+	    sum2 += parseFloat(tr.querySelector(".feed-amount2").value || 0);
+	    const totalInput = tr.querySelector(".feed-total");
+	    totalInput.value = ((parseFloat(tr.querySelector(".feed-amount1").value||0)+parseFloat(tr.querySelector(".feed-amount2").value||0))*2).toFixed(2);
+	  });
+	  document.getElementById("sum1").innerText = sum1.toFixed(2);
+	  document.getElementById("sum2").innerText = sum2.toFixed(2);
+	  document.getElementById("totalSum").innerText = ((sum1+sum2)*2).toFixed(2);
+
+
 }
 
 window.onload = () => {

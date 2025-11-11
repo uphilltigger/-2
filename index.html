@@ -20,7 +20,7 @@ select { padding:0.3rem; margin-bottom:0.5rem; font-family: sans-serif;}
 a{color: darkblue;}
 a:active{color: red;}
 button{background: #000; color: #fff; width: 100%; font-family: sans-serif;}
-button:hover{background: #fff; color: #000; cursor: pointer;}
+button:hover{background: #fff; color: #000; cursor: pointer; border: 1px solid black;}
 
 </style>
 </head>
@@ -267,8 +267,6 @@ function resetInputs() {
 	  document.getElementById("sum1").innerText = sum1.toFixed(2);
 	  document.getElementById("sum2").innerText = sum2.toFixed(2);
 	  document.getElementById("totalSum").innerText = ((sum1+sum2)*2).toFixed(2);
-
-
 }
 
 window.onload = () => {
@@ -281,7 +279,3 @@ window.onload = () => {
 </script>
 </body>
 </html>
-
-
-
-

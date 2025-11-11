@@ -14,12 +14,13 @@ input { font-size: 20px; width:60px; text-align: right; font-family: sans-serif;
 select { padding:0.3rem; margin-bottom:0.5rem; font-family: sans-serif;}
 .bar-container {width: 100%; height: 24px; background: lightgray; border-radius: 4px; overflow: hidden; display:inline-block; position: relative;}
 .bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease;}
-.bar-container .bar-label{position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); line-height: 1; color: #000; -webkit-text-stroke: 0.5px #fff;}
+.bar-container .bar-label{position: absolute; line-height: 1; color: #000; font-size: 15px; right: 4px; -webkit-text-stroke: 0.3px #fff;}
 #toggle:checked + label + #content { display: block;}
-a{color: blueviolet;}
+a{color: darkblue;}
 a:active{color: red;}
-button{background: #000; color: #fff; width: 100%;}
+button{background: #000; color: #fff; width: 100%; font-family: sans-serif;}
 button:hover{background: #fff; color: #000; cursor: pointer;}
+
 </style>
 </head>
 <body>
@@ -191,9 +192,8 @@ function calculate(){
 	      <td style="text-align: right;">${req[key]}</td>
 	      <td style="text-align: right;">${sum[key].toFixed(2)}</td>
 	      <td>
-	        <div class="bar-container">
+	        <div class="bar-container"><span class="bar-label">${rateText}%</span>
 	          <div class="bar-fill" style="width:${Math.min(rate,150)}%; background:${color};"></div>
-	          <span class="bar-label">${rateText}%</span>
 	        </div>
 	      </td>
 	    </tr>`;
@@ -244,3 +244,4 @@ window.onload = () => {
 </script>
 </body>
 </html>
+

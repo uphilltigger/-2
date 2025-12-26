@@ -32,8 +32,8 @@ button:hover{background: #fff; color: #000; cursor: pointer; border: 1px solid b
   <div>
 	<hr>
 	ウマと運動強度を選んで、給餌量を入力すれば充足率がわかるようになっています．<br>
-	考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう。<br>  
-	・入力値は一食あたり．<br>
+	考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう．<br>  
+	・入力値は一食あたり<br>
 	・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
 	<br>
 	DE＝エネルギー<br>
@@ -255,7 +255,7 @@ const alertEl = document.getElementById("alert-messages");
   const selectedOption = weightSelect.options[weightSelect.selectedIndex];
 
   if (selectedOption.classList.contains("senior")) {
-      messages.push("<span>&#12959; 高齢馬なので濃厚は控えめに．</span>");
+      messages.push("<span>&#12959; 高齢馬なので濃厚は控えめに</span>");
   }
   if (selectedOption.classList.contains("nobeet")) {
       const beetRow = document.querySelectorAll("#feed-body tr")[0]; // ビートは一番上の行
@@ -381,4 +381,5 @@ window.onload = () => {
 </script>
 </body>
 </html>
+
 

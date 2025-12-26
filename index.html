@@ -31,15 +31,16 @@ button:hover{background: #fff; color: #000; cursor: pointer; border: 1px solid b
   <summary style="text-decoration: underline; color: blue;">説明を見る</summary>
   <div>
 	<hr>
-	入力値は一食あたり．<br>
-	＜各値＞<br>
-	青＝不足，緑＝理想，赤＝過剰<br>
+	ウマと運動強度を選んで、給餌量を入力すれば充足率がわかるようになっています．<br>
+	考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければよしとしましょう。<br>  
+		・入力値は一食あたり．<br>
+	・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
 	<br>
 	DE＝エネルギー<br>
 	CP＝タンパク質<br>
 	Zn=亜鉛：蹄の角質化に必要<br>
-	VA：過剰に注意<br>
-	VD：日光浴びれば大丈夫
+	VA（ビタミンA）：過剰に注意<br>
+	VD（ビタミンD）：日光浴びれば大丈夫
 	<hr>
 </div>
 </details></p>
@@ -89,7 +90,7 @@ button:hover{background: #fff; color: #000; cursor: pointer; border: 1px solid b
 <div class="table-container" id="result-balance"></div>
 <hr>
 <p style="text-align: center;"><!--<a href="https://uphilltigger.github.io/-/" target="_blank">量変えるとき用?</a><br>-->
-	&copy;2025 MIURA SOTA</p>
+	&copy;2025-2026 MIURA SOTA</p>
 <script>
 // 飼料
 const feeds = [
@@ -233,10 +234,10 @@ function calculate() {
   let htmlbalance = `
   <table class="balance-table">
     <thead>
-      <tr><th>値</th><th>理想</th><th>計算結果</th></tr>
+      <tr><th></th><th>理想値</th><th>計算結果</th></tr>
     </thead>
     <tbody>
-      <tr><td>Ca/P</td><td>1.5~2.0</td><td style="color:${colorize(ca_p,1.5,2.0)}; text-align:right;">${ca_p.toFixed(1)}</td></tr>
+      <tr><td>Ca/P</td><td>1.5~2.0（1~6ならOK）</td><td style="color:${colorize(ca_p,1,6)}; text-align:right;">${ca_p.toFixed(1)}</td></tr>
       <tr><td>Zn/Cu</td><td>3~6</td><td style="color:${colorize(zn_cu,3,6)}; text-align:right;">${zn_cu.toFixed(1)}</td></tr>
       <tr><td>体重比</td><td>1.5~2.5%</td><td style="color:${colorize(total_bw,1.5,2.5)}; text-align:right;">${total_bw.toFixed(1)}%</td></tr>
     </tbody>
@@ -305,6 +306,7 @@ window.onload = () => {
 </script>
 </body>
 </html>
+
 
 
 

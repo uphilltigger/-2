@@ -1,102 +1,104 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>飼料計算</title>
-<style>
-body { font-size: 20px; margin:0; padding:2rem; background:#ffffff; width: 90%; max-width: 600px; font-family: NotoSansJP; user-select: none; }
-.table-container { padding:1rem; }
-table { border-collapse:collapse; width: 100%; }
-th, td { border:1px solid #ccc; padding-left:0.5rem; padding-right:0.5rem; text-align:center; vertical-align:middle; }
-thead { background:#eee; }
-input { font-size: 20px; width:60px; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
-input:focus { border-color: #3182ce; outline: none; }
-.feed-total{border: 0px; background:#ffffff; }
-.sum{border: 0px; background:#ffffff; }
-select { font-size: 20px; margin-bottom:0.5rem; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
-.bar-container {width: 100%; height: 24px; background: silver; border-radius: 4px; overflow: hidden; display:inline-block; position: relative; }
-.bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease; }
-.bar-container .bar-label{position: absolute; line-height: 1; color: #fff; font-size: 15px; right: 4px; font-weight: bold; }
-button{ background: #000; color: #fff; width: 100%; font-family: sans-serif; }
-button:hover{ background: #fff; color: #000; cursor: pointer; border: 1px solid black; }
-#main-content { display: none; }
-</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>飼料計算</title>
+	<style>
+	body { font-size: 20px; margin:0; padding:2rem; background:#ffffff; width: 90%; max-width: 600px; font-family: NotoSansJP; user-select: none; }
+	.table-container { padding:1rem; }
+	table { border-collapse:collapse; width: 100%; }
+	th, td { border:1px solid #ccc; padding-left:0.5rem; padding-right:0.5rem; text-align:center; vertical-align:middle; }
+	thead { background:#eee; }
+	input { font-size: 20px; width:60px; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
+	input:focus { border-color: #3182ce; outline: none; }
+	.feed-total{border: 0px; background:#ffffff; }
+	.sum{border: 0px; background:#ffffff; }
+	select { font-size: 20px; margin-bottom:0.5rem; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
+	.bar-container {width: 100%; height: 24px; background: silver; border-radius: 4px; overflow: hidden; display:inline-block; position: relative; }
+	.bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease; }
+	.bar-container .bar-label{position: absolute; line-height: 1; color: #fff; font-size: 15px; right: 4px; font-weight: bold; }
+	button{ background: #000; color: #fff; width: 100%; font-family: sans-serif; }
+	button:hover{ background: #fff; color: #000; cursor: pointer; border: 1px solid black; }
+	#main-content { display: none; }
+	</style>
 </head>
 <body>
-<h1>飼料計算</h1>
-<p>
-<details>
-  <summary style="text-decoration: underline; color: blue;">説明を見る</summary>
-  <div>
-	<hr>
-	ウマと運動強度を選んで、給餌量を入力すれば充足率がわかるようになっています．<br>
-	考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう。<br>  
-	・入力値は一食あたり．<br>
-	・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
-	<br>
-	DE＝エネルギー<br>
-	CP＝タンパク質<br>
-	Zn=亜鉛：蹄の角質化に必要<br>
-	VA（ビタミンA）：過剰に注意<br>
-	VD（ビタミンD）：日光浴びれば大丈夫
-	<hr>
-</div>
-</details></p>
-<div>
-  <label>ウマ：
-    <select id="weight">
-      <option value="" selected disabled>--選択してください--</option>
-      <option value="500" class="senior">アップヒルティガー</option>
-      <option value="540">グランシエロ</option>
-      <option value="500">キタノインパクト</option>
-      <option value="520">テイエムシュンソク</option>
-      <option value="470">ワイルドヒロイン</option>
-      <option value="500">ドラゴンケーニッヒ</option>
-      <option value="470">フェンネル</option>
-      <option value="520" class="senior">タイダルベイスン</option>
-      <option value="520">ノガロ</option>
-      <option value="540" class="nobeet">ダノンクライム</option>
-      <option value="470">ピースオブエイト</option>
-      <option value="500" class="senior">アドマイヤカーリン</option>
-      <option value="470">キタノブルー</option>
-      <hr>
-      <option value="400">汎用：400 kg</option>
-      <option value="450">汎用：450 kg</option>
-      <option value="500">汎用：500 kg</option>
-    </select>
-  </label>
-  <br>
-  <label>運動強度：
-    <select id="work">
-      <option value="" selected disabled>--選択してください--</option>
-      <option value="無">無（積雪期）</option>
-      <option value="軽">軽（春先，馬場凍結前）</option>
-      <option value="中">中（普段）</option>
-      <option value="強">強（真夏）</option>
-    </select>
-  </label>
-</div>
-<hr>
-<div id="main-content">
-	<div class="table-container" id="alert-messages"><span id="horse-attribute"></span></span></div>
-	<hr>
-	<div class="table-container">
-	  <table id="feed-table">
-	    <thead>
-	      <tr><th>飼料名</th><th>朝夕</th><th>昼夜</th><th>合計</th></tr>
-	    </thead>
-	    <tbody id="feed-body"></tbody>
-	    <tbody id="sum-body"></tbody>
-	  </table>
-	<button id="reset-btn">CLEAR</button>
+	<h1>飼料計算</h1>
+	<p>
+	<details>
+  	<summary style="text-decoration: underline; color: blue;">説明を見る</summary>
+	  	<div>
+		<hr>
+		ウマと運動強度を選んで、給餌量を入力すれば充足率がわかるようになっています．<br>
+		考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう。<br>  
+		・入力値は一食あたり．<br>
+		・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
+		<br>
+		DE＝エネルギー<br>
+		CP＝タンパク質<br>
+		Zn=亜鉛：蹄の角質化に必要<br>
+		VA（ビタミンA）：過剰に注意<br>
+		VD（ビタミンD）：日光浴びれば大丈夫
+		<hr>
+		</div>
+	</details>
+	</p>
+	<div>
+	  <label>ウマ：
+	    <select id="weight">
+	      <option value="" selected disabled>--選択してください--</option>
+	      <option value="500" class="senior">アップヒルティガー</option>
+	      <option value="540">グランシエロ</option>
+	      <option value="500">キタノインパクト</option>
+	      <option value="520">テイエムシュンソク</option>
+	      <option value="470">ワイルドヒロイン</option>
+	      <option value="500">ドラゴンケーニッヒ</option>
+	      <option value="470">フェンネル</option>
+	      <option value="520" class="senior">タイダルベイスン</option>
+	      <option value="520">ノガロ</option>
+	      <option value="540" class="nobeet">ダノンクライム</option>
+	      <option value="470">ピースオブエイト</option>
+	      <option value="500" class="senior">アドマイヤカーリン</option>
+	      <option value="470">キタノブルー</option>
+	      <hr>
+	      <option value="400">汎用：400 kg</option>
+	      <option value="450">汎用：450 kg</option>
+	      <option value="500">汎用：500 kg</option>
+	    </select>
+	  </label>
+	  <br>
+	  <label>運動強度：
+	    <select id="work">
+	      <option value="" selected disabled>--選択してください--</option>
+	      <option value="無">無（積雪期）</option>
+	      <option value="軽">軽（春先，馬場凍結前）</option>
+	      <option value="中">中（普段）</option>
+	      <option value="強">強（真夏）</option>
+	    </select>
+	  </label>
 	</div>
-
-	<div class="table-container" id="result"></div>
-	<div class="table-container" id="result-balance"></div>
-
 <hr>
-</div>
-<p style="text-align: center;"><b>&copy;2025-2026 MIURA SOTA</b></p>
+	<div id="main-content">
+		<div class="table-container" id="alert-messages"><span id="horse-attribute"></span></div>
+		<hr>
+		<div class="table-container">
+		  <table id="feed-table">
+		    <thead><tr><th>飼料名</th><th>朝夕</th><th>昼夜</th><th>合計</th></tr></thead>
+		    <tbody id="feed-body"></tbody>
+		    <tbody id="sum-body"></tbody>
+		  </table>
+		<button id="reset-btn">CLEAR</button>
+		</div>
+		<div class="table-container" id="result"></div>
+		<div class="table-container" id="result-balance"></div>
+<hr>
+	</div>
+<p style="text-align: center;">
+	<b>&copy;2025-2026 MIURA SOTA</b>
+</p>
+
+	
 <script>
 // 飼料
 const feeds = [
@@ -394,5 +396,8 @@ window.onload = () => {
   document.getElementById("work").addEventListener("change", calculate);
 };
 </script>
+
+
 </body>
 </html>
+

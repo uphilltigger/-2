@@ -311,7 +311,7 @@ const alertEl = document.getElementById("alert-messages");
   const cpRate = (sum["CP"] / req["CP"]) * 100;
   if (cpRate < 90) {
       messages.push("<span style='color: darkblue;'>&#9888; タンパク質(CP)が不足しています（" + cpRate.toFixed(1) + "%）</span>");
-  } else if (cpRate > 150) {
+  } else if (cpRate > 120) {
       messages.push("<span style='color: firebrick;'>&#9888; タンパク質(CP)が過剰です（" + cpRate.toFixed(1) + "%）</span>");
   } else {
       messages.push("<span style='color: darkgreen;'>&check; タンパク質(CP)は十分です（" + cpRate.toFixed(1) + "%）</span>");
@@ -409,6 +409,7 @@ window.onload = () => {
 </script>
 </body>
 </html>
+
 
 
 

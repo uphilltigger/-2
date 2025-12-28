@@ -1,4 +1,11 @@
 
+<!--このサイトはChatGPTとGemini様の助けを受けて作りました．ただ、規約上著作者はみうらさんのようです．-->
+<!--このサイトはあくまで計算の補助を目的としており、実際の給餌量を指示するものではありません．最終決定はご自身の責任でお願いします．-->
+<!--不具合、改善のご要望、ご質問等あれば何でもどうぞ-->
+
+
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,12 +13,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>飼料計算</title>
 	<style>
-	body { font-size: 16px; margin:0; padding:1rem; background:#ffffff; width: 100%; max-width: 600px; font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; user-select: none; }
+	body { font-size: 16px; margin:0; padding:2rem; background:#ffffff; width: 100%; max-width: 600px; font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; user-select: none; }
 	.table-container { padding:1rem; }
 	table { border-collapse:collapse; width: 100%; }
-	th, td { border:1px solid #ccc; padding-left:0.5rem; padding-right:0.5rem; text-align:center; white-space: nowrap;　vertical-align:middle; }
+	th, td { border:1px solid #ccc; padding-left:0.5rem; padding-right:0.5rem; text-align:center; vertical-align:middle; }
 	thead { background:#eee; }
-	input { font-size: 20px; width: 2.2em; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; }
+	input { font-size: 20px; width: 2.5em; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; }
 	input:focus { border-color: #3182ce; outline: none; }
 	.feed-total{border: 0px; background:#ffffff; }
 	.sum{border: 0px; background:#ffffff; }
@@ -99,8 +106,6 @@
 <p style="text-align: center;">
 	<b>&copy;2025-2026 MIURA SOTA</b>
 </p>
-
-	
 <script>
 // 飼料
 const feeds = [
@@ -295,7 +300,7 @@ const alertEl = document.getElementById("alert-messages");
   } else if (deRate > 120) {
       messages.push("<span style='color: firebrick;'>&#9888; エネルギー(DE)が過剰です（" + deRate.toFixed(1) + "%）</span>");
   } else {
-      messages.push("<span style='color: darkgreen;'>&check; エネルギー(DE)は十分です</span>");
+      messages.push("<span style='color: darkgreen;'>&check; エネルギー(DE)は十分です（" + deRate.toFixed(1) + "%）</span>");
   }
 
   //タンパク質
@@ -305,7 +310,7 @@ const alertEl = document.getElementById("alert-messages");
   } else if (cpRate > 150) {
       messages.push("<span style='color: firebrick;'>&#9888; タンパク質(CP)が過剰です（" + cpRate.toFixed(1) + "%）</span>");
   } else {
-      messages.push("<span style='color: darkgreen;'>&check; タンパク質(CP)は十分です</span>");
+      messages.push("<span style='color: darkgreen;'>&check; タンパク質(CP)は十分です（" + cpRate.toFixed(1) + "%）</span>");
   }
 
   // Ca/P
@@ -330,7 +335,7 @@ const alertEl = document.getElementById("alert-messages");
   if (total_bw < 1.5) {
       messages.push("<span style='color: darkblue;'>&#9888; 総量が少ないです</span>");
   } else if (total_bw > 2.5) {
-      messages.push("<span style='color: firebrick;'>&#9888;餌総量が過剰です</span>");
+      messages.push("<span style='color: firebrick;'>&#9888; 総量が過剰です</span>");
   } else {
       messages.push("<span style='color: darkgreen;'>&check; 総量は適正です</span>");
   }
@@ -398,13 +403,5 @@ window.onload = () => {
   document.getElementById("work").addEventListener("change", calculate);
 };
 </script>
-
-
 </body>
 </html>
-
-
-
-
-
-

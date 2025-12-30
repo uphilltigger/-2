@@ -40,9 +40,10 @@
 	  	<div>
 		<hr>
 		ウマと運動強度を選んで、給餌量を入力すれば充足率がわかるようになっています．<br>
-		考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう。<br>  
+		考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう．<br>  
 		・入力値は一食あたり．<br>
-		・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
+		・各値の表示：	青＝不足，緑＝適正，赤＝過剰<br>
+			※適正値は80~120%にしています．<br>
 		<br>
 		DE＝エネルギー<br>
 		CP＝タンパク質<br>
@@ -89,8 +90,8 @@
 	</div>
 <hr>
 	<div id="main-content">
-		<div class="table-container" id="alert-messages"><small>（下表に値を入れると文言が変わります）</small>
-			<span id="horse-attribute"></span></div>
+		<small>（下表に値を入れると文言が変わります）</small>
+		<div class="table-container" id="alert-messages"><span id="horse-attribute"></span></div>
 		<hr>
 		<div class="table-container">
 		  <table id="feed-table">
@@ -410,6 +411,7 @@ window.onload = () => {
 </script>
 </body>
 </html>
+
 
 
 

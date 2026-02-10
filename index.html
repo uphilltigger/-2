@@ -1,3 +1,12 @@
+
+
+<!--このサイトはChatGPT様とGemini様の助けを受けて作りました．ただ、規約上著作者はみうらさんになるようです．-->
+<!--このサイトはあくまで計算の補助を目的としており、実際の給餌量を指示するものではありません．最終決定はご自身の責任でお願いします．-->
+<!--不具合、改善のご要望、ご質問等あれば何でもどうぞ-->
+
+
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -21,7 +30,6 @@
 	button{ background: #000; color: #fff; width: 100%; font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; }
 	button:hover{ background: #fff; color: #000; cursor: pointer; border: 1px solid black; }
 	h1{ font-weight: normal; }
-	#main-content { display: none; }
 	</style>
 </head>
 <body>
@@ -32,10 +40,9 @@
 	  	<div>
 		<hr>
 		ウマと運動強度を選んで、給餌量を入力すれば充足率がわかるようになっています．<br>
-		考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう．<br>  
+		考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう。<br>  
 		・入力値は一食あたり．<br>
-		・各値の表示：	青＝不足，緑＝適正，赤＝過剰<br>
-			※適正値は80~120%にしています．<br>
+		・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
 		<br>
 		DE＝エネルギー<br>
 		CP＝タンパク質<br>
@@ -91,7 +98,7 @@
 		    <tbody id="feed-body"></tbody>
 		    <tbody id="sum-body"></tbody>
 		  </table>
-			<button id="reset-btn">CLEAR</button>
+		<button id="reset-btn">CLEAR</button>
 		</div>
 		<div class="table-container" id="result"></div>
 		<div class="table-container" id="result-balance"></div>
@@ -100,7 +107,9 @@
 <p style="text-align: center;">
 	<b>&copy;2025-2026 MIURA SOTA</b>
 	<br>
-	<span style="font-size: 2px;">このサイトはChatGPT様とGoogle Gemini様の助けを受けて作りました．ただ、規約上著作者は<big>みうら</big>さんになるようです．このサイトはあくまで計算の補助を目的としており、実際の給餌量を指示するものではありません．最終決定はご自身の責任でお願いします．不具合、改善のご要望、ご質問等あれば何でもどうぞ</span>
+	<span style="font-size: 2px;">
+		このサイトはChatGPT様とGemini様の助けを受けて作りました．ただ、規約上著作者は<big>みうら</big>さんになるようです．このサイトはあくまで計算の補助を目的としており、実際の給餌量を指示するものではありません．最終決定はご自身の責任でお願いします．不具合、改善のご要望、ご質問等あれば何でもどうぞ
+	</span>
 </p>
 <script>
 // 飼料
@@ -187,14 +196,6 @@ function calculate() {
   const weightVal = document.getElementById("weight").value;
   const workVal = document.getElementById("work").value;
   const mainContent = document.getElementById("main-content");
-
-  // 両方選択されていない場合は非表示にして処理を抜ける
-  if (!weightVal || !workVal) {
-    mainContent.style.display = "none";
-    return;
-  } else {
-    mainContent.style.display = "block";
-  }
 
   let sum = {DE:0, CP:0, Lys:0, Ca:0, P:0, Mg:0, Na:0, K:0, Fe:0, Cu:0, Zn:0, Mn:0, Se:0, Co:0, VA:0, VD:0, VE:0};
   let totalFeedWeight = 0; // 栄養素計算用の総給餌量
@@ -291,7 +292,7 @@ const alertEl = document.getElementById("alert-messages");
 
   //エネルギー
   const deRate = (sum["DE"] / req["DE"]) * 100;
-  if (deRate < 80) {
+  if (deRate < 90) {
       messages.push("<span style='color: darkblue;'>&#9888;エネルギー(DE)が不足しています（" + deRate.toFixed(1) + "%）</span>");
   } else if (deRate > 120) {
       messages.push("<span style='color: firebrick;'>&#9888; エネルギー(DE)が過剰です（" + deRate.toFixed(1) + "%）</span>");
@@ -301,9 +302,9 @@ const alertEl = document.getElementById("alert-messages");
 
   //タンパク質
   const cpRate = (sum["CP"] / req["CP"]) * 100;
-  if (cpRate < 80) {
+  if (cpRate < 90) {
       messages.push("<span style='color: darkblue;'>&#9888; タンパク質(CP)が不足しています（" + cpRate.toFixed(1) + "%）</span>");
-  } else if (cpRate > 120) {
+  } else if (cpRate > 150) {
       messages.push("<span style='color: firebrick;'>&#9888; タンパク質(CP)が過剰です（" + cpRate.toFixed(1) + "%）</span>");
   } else {
       messages.push("<span style='color: darkgreen;'>&check; タンパク質(CP)は十分です（" + cpRate.toFixed(1) + "%）</span>");
@@ -401,13 +402,3 @@ window.onload = () => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

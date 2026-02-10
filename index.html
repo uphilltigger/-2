@@ -1,12 +1,3 @@
-
-
-<!--このサイトはChatGPT様とGemini様の助けを受けて作りました．ただ、規約上著作者はみうらさんになるようです．-->
-<!--このサイトはあくまで計算の補助を目的としており、実際の給餌量を指示するものではありません．最終決定はご自身の責任でお願いします．-->
-<!--不具合、改善のご要望、ご質問等あれば何でもどうぞ-->
-
-
-
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -14,27 +5,31 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>飼料計算</title>
 	<style>
-	body { font-size: 16px; margin:0; padding: 1rem; background:#ffffff; width: 100%; max-width: 600px; font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; user-select: none; }
+	body { font-size: 16px; margin:0; padding: 1rem; background:#ffffff; width: 100%; max-width: 600px; user-select: none; }
 	.table-container { padding:1rem; }
 	table { border-collapse:collapse; width: 100%; }
 	th, td { border:1px solid #ccc; padding-left:0.5rem; padding-right:0.5rem; text-align:center; vertical-align:middle; white-space: nowrap; }
 	thead { background:#eee; }
-	input { font-size: 20px; width: 2.2em; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; }
+	input { font-size: 20px; width: 2.2em; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
 	input:focus { border-color: #3182ce; outline: none; }
 	.feed-total{border: 0px; background:#ffffff; }
 	.sum{border: 0px; background:#ffffff; }
-	select { font-size: 20px; margin-bottom:0.5rem; border-color: red; background-color:rgba(255, 255, 0, 0.2); font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; }
+	select { font-size: 20px; margin-bottom:0.5rem; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
 	.bar-container {width: 100%; height: 24px; background: silver; border-radius: 4px; overflow: hidden; display:inline-block; position: relative; }
 	.bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease; }
 	.bar-container .bar-label{position: absolute; line-height: 1; color: #fff; font-size: 15px; right: 4px; font-weight: bold; }
-	button{ background: #000; color: #fff; width: 100%; font-family: 'Times New Roman','ヒラギノ丸ゴ ProN','Hiragino Maru Gothic ProN',YuGothic,'Yu Gothic',sans-serif; }
-	button:hover{ background: #fff; color: #000; cursor: pointer; border: 1px solid black; }
-	h1{ font-weight: normal; }
+	button{ background: darkgrey; color: #000; width: 20%; }
+	button:hover{ background: #fff; color: #000; cursor: pointer; }
+	a{ color: blue; }
+	a:visited{ color: blue; }
+	a:hover{ color: red; }
 	</style>
 </head>
 <body>
 	<h1>飼料計算</h1>
 	<p>
+	<a href="https://github.com/uphilltigger/-2" target="_blank">説明を見る↗（別タブで開きます）</a>
+<!--
 	<details>
   	<summary style="text-decoration: underline; color: blue;">説明を見る</summary>
 	  	<div>
@@ -52,6 +47,7 @@
 		<hr>
 		</div>
 	</details>
+-->
 	</p>
 	<div>
 	  <label>ウマ：
@@ -92,13 +88,13 @@
 		<small>（下表に値を入れると文言が変わります）</small>
 		<div class="table-container" id="alert-messages"><span id="horse-attribute"></span></div>
 		<hr>
+		<button id="reset-btn">初期化する</button>
 		<div class="table-container">
 		  <table id="feed-table">
 		    <thead><tr><th>飼料名</th><th>朝夕</th><th>昼夜</th><th>合計</th></tr></thead>
 		    <tbody id="feed-body"></tbody>
 		    <tbody id="sum-body"></tbody>
 		  </table>
-		<button id="reset-btn">CLEAR</button>
 		</div>
 		<div class="table-container" id="result"></div>
 		<div class="table-container" id="result-balance"></div>
@@ -106,10 +102,6 @@
 	</div>
 <p style="text-align: center;">
 	<b>&copy;2025-2026 MIURA SOTA</b>
-	<br>
-	<span style="font-size: 2px;">
-		このサイトはChatGPT様とGemini様の助けを受けて作りました．ただ、規約上著作者は<big>みうら</big>さんになるようです．このサイトはあくまで計算の補助を目的としており、実際の給餌量を指示するものではありません．最終決定はご自身の責任でお願いします．不具合、改善のご要望、ご質問等あれば何でもどうぞ
-	</span>
 </p>
 <script>
 // 飼料

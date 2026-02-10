@@ -5,7 +5,7 @@
 		・入力値は一食あたり．<br>
 		・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
 
-<table border="1" font-size="2px">
+<table border="1">
   <thead>
     <tr><th>飼料名</th><th>分類</th><th>特徴・注意事項</th></tr>
   </thead>

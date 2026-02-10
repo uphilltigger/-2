@@ -21,4 +21,5 @@
 <br>
 不具合、改善のご要望、ご質問等あれば何でもどうぞ
 <hr>
-&copy;2025-2026 MIURA SOTA
+<br>
+<b>&copy;2025-2026 MIURA SOTA</b>

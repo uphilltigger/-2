@@ -35,12 +35,12 @@
 	  	<div>
 		<hr>
 		ウマと運動強度を選んで、給餌量を入力すれば充足率がわかるようになっています．<br>
-		考え出したらキリが無いので、DE,CPと下の表の3つの値が問題なければ良しとしましょう。<br>  
+		考え出したらキリが無いので、エネルギー,タンパク質と下の表の3つの値が問題なければ良しとしましょう。<br>  
 		・入力値は一食あたり．<br>
 		・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
 		<br>
-		DE＝エネルギー<br>
-		CP＝タンパク質<br>
+		エネルギー＝エネルギー<br>
+		タンパク質＝タンパク質<br>
 		Zn=亜鉛：蹄の角質化に必要<br>
 		VA（ビタミンA）：過剰に注意<br>
 		VD（ビタミンD）：日光浴びれば大丈夫
@@ -96,9 +96,11 @@
 		  </table>
 		</div>
 		<hr>
+		<div style="display: flex; align-items: flex-start;">
+		    <div class="table-container" id="alert-messages" style="flex: 1;"><span id="horse-attribute"></span></div>
+		    <div class="table-container" id="result-balance" style="flex: 1;"></div>
+		</div>
 		<small>（表に値を入れると文言が変わります）</small>
-		<div class="table-container" id="alert-messages"><span id="horse-attribute"></span></div>
-		<div class="table-container" id="result-balance"></div>
 		<div class="table-container" id="result"></div>
 <hr>
 	</div>
@@ -108,43 +110,43 @@
 <script>
 // 飼料
 const feeds = [
-  {name:"ビート", DE:2.85, CP:109.00, Lys:7.20, Ca:5.11, P:0.78, Mg:2.68, Na:1.04, K:4.16, Fe:519.60, Cu:9.27, Zn:27.71, Mn:53.69, Se:0.00, Co:0.20, VA:28, VD:9, VE:0.00, default1:"", default2:""},
-  {name:"燕麦", DE:2.76, CP:106.58, Lys:5.60, Ca:0.45, P:3.01, Mg:1.22, Na:0.34, K:3.55, Fe:44.01, Cu:3.52, Zn:31.60, Mn:45.61, Se:0.05, Co:0.11, VA:5, VD:0.00, VE:4, default1:"", default2:0.5},
-  {name:"キューブ", DE:2.40, CP:149.95, Lys:6.60, Ca:12.41, P:2.38, Mg:2.45, Na:1.41, K:22.00, Fe:264.00, Cu:8.80, Zn:24.64, Mn:40.48, Se:0.26, Co:0.18, VA:0, VD:0, VE:0, default1:"", default2:""},
-  {name:"大豆粕", DE:13.13, CP:461.00, Lys:28.30, Ca:2.90, P:6.20, Mg:3.20, Na:0.30, K:0.00, Fe:0.00, Cu:18.00, Zn:56.00, Mn:0.00, Se:0.45, Co:0.00, VA:56, VD:18, VE:0.45, default1:"", default2:""},
-  {name:"ベルテ", DE:2.52, CP:184.8, Lys:9.90, Ca:13.40, P:24.20, Mg:2.50, Na:12.00, K:13.40, Fe:563.42, Cu:133.63, Zn:331.66, Mn:206.02, Se:0.00, Co:0.53, VA:45866, VD:4080, VE:688, default1:"", default2:""},
-  {name:"濃厚", DE:3.12, CP:144.00, Lys:7.00, Ca:31.00, P:12.30, Mg:2.20, Na:9.30, K:9.80, Fe:340.01, Cu:88.69, Zn:219.27, Mn:153.67, Se:1.21, Co:0.54, VA:29, VD:3, VE:865, default1:"", default2:""},
-  {name:"ふすま", DE:2.68, CP:157.00, Lys:6.30, Ca:1.20, P:9.80, Mg:4.40, Na:0.80, K:0.00, Fe:0.00, Cu:11.00, Zn:70.00, Mn:0.00, Se:0.00, Co:0.00, VA:70, VD:11, VE:0.51, default1:"", default2:0.4},
-  {name:"塩", DE:0.00, CP:0.00, Lys:0.00, Ca:0.30, P:0.00, Mg:0.00, Na:392.00, K:0.00, Fe:0.00, Cu:0.00, Zn:0.00, Mn:0.00, Se:0.00, Co:0.00, VA:0.00, VD:0.00, VE:0.00, default1:0.01, default2:0.01},
-  {name:"乾草", DE:1.35, CP:57.00, Lys:2.70, Ca:0.00, P:0.00, Mg:0.00, Na:0.00, K:0.00, Fe:81.30, Cu:7.07, Zn:21.95, Mn:94.31, Se:0.00, Co:0.03, VA:20, VD:10, VE:50, default1:1, default2:1}
+  {name:"ビート", エネルギー:2.85, タンパク質:109.00, Lys:7.20, Ca:5.11, P:0.78, Mg:2.68, Na:1.04, K:4.16, Fe:519.60, Cu:9.27, Zn:27.71, Mn:53.69, Se:0.00, Co:0.20, VA:28, VD:9, VE:0.00, default1:"", default2:""},
+  {name:"燕麦", エネルギー:2.76, タンパク質:106.58, Lys:5.60, Ca:0.45, P:3.01, Mg:1.22, Na:0.34, K:3.55, Fe:44.01, Cu:3.52, Zn:31.60, Mn:45.61, Se:0.05, Co:0.11, VA:5, VD:0.00, VE:4, default1:"", default2:0.5},
+  {name:"キューブ", エネルギー:2.40, タンパク質:149.95, Lys:6.60, Ca:12.41, P:2.38, Mg:2.45, Na:1.41, K:22.00, Fe:264.00, Cu:8.80, Zn:24.64, Mn:40.48, Se:0.26, Co:0.18, VA:0, VD:0, VE:0, default1:"", default2:""},
+  {name:"大豆粕", エネルギー:13.13, タンパク質:461.00, Lys:28.30, Ca:2.90, P:6.20, Mg:3.20, Na:0.30, K:0.00, Fe:0.00, Cu:18.00, Zn:56.00, Mn:0.00, Se:0.45, Co:0.00, VA:56, VD:18, VE:0.45, default1:"", default2:""},
+  {name:"ベルテ", エネルギー:2.52, タンパク質:184.8, Lys:9.90, Ca:13.40, P:24.20, Mg:2.50, Na:12.00, K:13.40, Fe:563.42, Cu:133.63, Zn:331.66, Mn:206.02, Se:0.00, Co:0.53, VA:45866, VD:4080, VE:688, default1:"", default2:""},
+  {name:"濃厚", エネルギー:3.12, タンパク質:144.00, Lys:7.00, Ca:31.00, P:12.30, Mg:2.20, Na:9.30, K:9.80, Fe:340.01, Cu:88.69, Zn:219.27, Mn:153.67, Se:1.21, Co:0.54, VA:29, VD:3, VE:865, default1:"", default2:""},
+  {name:"ふすま", エネルギー:2.68, タンパク質:157.00, Lys:6.30, Ca:1.20, P:9.80, Mg:4.40, Na:0.80, K:0.00, Fe:0.00, Cu:11.00, Zn:70.00, Mn:0.00, Se:0.00, Co:0.00, VA:70, VD:11, VE:0.51, default1:"", default2:0.4},
+  {name:"塩", エネルギー:0.00, タンパク質:0.00, Lys:0.00, Ca:0.30, P:0.00, Mg:0.00, Na:392.00, K:0.00, Fe:0.00, Cu:0.00, Zn:0.00, Mn:0.00, Se:0.00, Co:0.00, VA:0.00, VD:0.00, VE:0.00, default1:0.01, default2:0.01},
+  {name:"乾草", エネルギー:1.35, タンパク質:57.00, Lys:2.70, Ca:0.00, P:0.00, Mg:0.00, Na:0.00, K:0.00, Fe:81.30, Cu:7.07, Zn:21.95, Mn:94.31, Se:0.00, Co:0.03, VA:20, VD:10, VE:50, default1:1, default2:1}
 ];
 
 // 要求量
 const reqTable = [
-  {weight:400, work:"無", DE:13.4, CP:536, Lys:23.05, Ca:16, P:11.2, Mg:6, Na:8, K:20, Fe:320, Cu:120, Zn:360, Mn:360, Se:1.5, Co:0.4, VA:16000, VD:2640, VE:640},
-  {weight:400, work:"軽", DE:16.08, CP:643.2, Lys:27.66, Ca:24, P:14.4, Mg:7.4, Na:21, K:49, Fe:320, Cu:120, Zn:360, Mn:360, Se:1.75, Co:0.4, VA:16000, VD:2640, VE:640},
-  {weight:400, work:"中", DE:18.76, CP:750.4, Lys:32.27, Ca:28, P:16.8, Mg:8.63, Na:21, K:49, Fe:360, Cu:135, Zn:405, Mn:405, Se:2.25, Co:0.45, VA:18000, VD:2640, VE:720},
-  {weight:400, work:"強", DE:21.44, CP:857.6, Lys:36.88, Ca:32, P:23.2, Mg:9.86, Na:27, K:63, Fe:400, Cu:150, Zn:450, Mn:450, Se:2.5, Co:0.5, VA:20000, VD:2640, VE:800},
-  {weight:450, work:"無", DE:14.9, CP:596, Lys:25.63, Ca:18, P:12.6, Mg:6.75, Na:9, K:22.5, Fe:360, Cu:135, Zn:405, Mn:405, Se:1.69, Co:0.45, VA:18000, VD:2970, VE:720},
-  {weight:450, work:"軽", DE:17.88, CP:715.2, Lys:30.75, Ca:27, P:16.2, Mg:8.22, Na:23.63, K:55.13, Fe:360, Cu:135, Zn:405, Mn:405, Se:1.97, Co:0.45, VA:18000, VD:2970, VE:720},
-  {weight:450, work:"中", DE:20.86, CP:834.4, Lys:35.88, Ca:31.5, P:18.9, Mg:9.6, Na:23.63, K:55.13, Fe:405, Cu:151.88, Zn:455.63, Mn:455.63, Se:2.53, Co:0.51, VA:20250, VD:2970, VE:810},
-  {weight:450, work:"強", DE:23.84, CP:953.6, Lys:41, Ca:36, P:26.1, Mg:10.97, Na:30.38, K:70.88, Fe:450, Cu:168.75, Zn:506.25, Mn:506.25, Se:2.81, Co:0.56, VA:22500, VD:2970, VE:900},
-  {weight:470, work:"無", DE:15.5, CP:620, Lys:26.66, Ca:18.8, P:13.16, Mg:7.05, Na:9.4, K:23.5, Fe:376, Cu:141, Zn:423, Mn:423, Se:1.762, Co:0.47, VA:18800, VD:3102, VE:752},
-  {weight:470, work:"軽", DE:18.6, CP:744, Lys:31.99, Ca:28.2, P:16.92, Mg:8.56, Na:24.67, K:57.57, Fe:376, Cu:141, Zn:423, Mn:423, Se:2.056, Co:0.47, VA:18800, VD:3102, VE:752},
-  {weight:470, work:"中", DE:21.7, CP:868, Lys:37.32, Ca:32.9, P:19.74, Mg:9.98, Na:24.67, K:57.57, Fe:423, Cu:158.63, Zn:475.88, Mn:475.88, Se:2.644, Co:0.529, VA:21150, VD:3102, VE:846},
-  {weight:470, work:"強", DE:24.8, CP:992, Lys:42.66, Ca:37.6, P:27.26, Mg:11.41, Na:31.72, K:74.02, Fe:470, Cu:176.25, Zn:528.75, Mn:528.75, Se:2.938, Co:0.588, VA:23500, VD:3102, VE:940},
-  {weight:500, work:"無", DE:16.4, CP:656, Lys:28.21, Ca:20, P:14, Mg:7.5, Na:10, K:25, Fe:400, Cu:150, Zn:450, Mn:450, Se:1.88, Co:0.5, VA:20000, VD:3300, VE:800},
-  {weight:500, work:"軽", DE:19.68, CP:787.2, Lys:33.85, Ca:30, P:18, Mg:9.05, Na:26.25, K:61.25, Fe:400, Cu:150, Zn:450, Mn:450, Se:2.19, Co:0.5, VA:20000, VD:3300, VE:800},
-  {weight:500, work:"中", DE:22.96, CP:918.4, Lys:39.49, Ca:35, P:21, Mg:10.56, Na:26.25, K:61.25, Fe:450, Cu:168.75, Zn:506.25, Mn:506.25, Se:2.81, Co:0.56, VA:22500, VD:3300, VE:900},
-  {weight:500, work:"強", DE:26.24, CP:1049.6, Lys:45.13, Ca:40, P:29, Mg:12.07, Na:33.75, K:78.75, Fe:500, Cu:187.5, Zn:562.5, Mn:562.5, Se:3.13, Co:0.63, VA:25000, VD:3300, VE:1000},
-  {weight:520, work:"無", DE:17, CP:680, Lys:29.24, Ca:20.8, P:14.56, Mg:7.8, Na:10.4, K:26, Fe:416, Cu:156, Zn:468, Mn:468, Se:1.95, Co:0.52, VA:20800, VD:3432, VE:832},
-  {weight:520, work:"軽", DE:20.4, CP:816, Lys:35.09, Ca:31.2, P:18.72, Mg:9.38, Na:27.3, K:63.7, Fe:416, Cu:156, Zn:468, Mn:468, Se:2.275, Co:0.52, VA:20800, VD:3432, VE:832},
-  {weight:520, work:"中", DE:23.8, CP:952, Lys:40.94, Ca:36.4, P:21.84, Mg:10.95, Na:27.3, K:63.7, Fe:468, Cu:175.5, Zn:526.5, Mn:526.5, Se:2.925, Co:0.585, VA:23400, VD:3432, VE:936},
-  {weight:520, work:"強", DE:27.2, CP:1088, Lys:46.78, Ca:41.6, P:30.16, Mg:12.51, Na:35.1, K:81.9, Fe:520, Cu:195, Zn:585, Mn:585, Se:3.25, Co:0.65, VA:26000, VD:3432, VE:1040},
-  {weight:540, work:"無", DE:17.6, CP:704, Lys:30.27, Ca:21.6, P:15.12, Mg:8.1, Na:10.8, K:27, Fe:432, Cu:162, Zn:486, Mn:486, Se:2.025, Co:0.54, VA:21600, VD:3564, VE:864},
-  {weight:540, work:"軽", DE:21.12, CP:844.8, Lys:36.33, Ca:32.4, P:19.44, Mg:9.72, Na:28.35, K:66.15, Fe:432, Cu:162, Zn:486, Mn:486, Se:2.363, Co:0.54, VA:21600, VD:3564, VE:864},
-  {weight:540, work:"中", DE:24.64, CP:985.6, Lys:42.38, Ca:37.8, P:22.68, Mg:11.33, Na:28.35, K:66.15, Fe:486, Cu:182.25, Zn:546.75, Mn:546.75, Se:3.038, Co:0.608, VA:24300, VD:3564, VE:972},
-  {weight:540, work:"強", DE:28.16, CP:1126, Lys:48.44, Ca:43.2, P:31.32, Mg:12.95, Na:36.45, K:85.05, Fe:540, Cu:202.5, Zn:607.5, Mn:607.5, Se:3.375, Co:0.675, VA:27000, VD:3564, VE:1080},
+  {weight:400, work:"無", エネルギー:13.4, タンパク質:536, Lys:23.05, Ca:16, P:11.2, Mg:6, Na:8, K:20, Fe:320, Cu:120, Zn:360, Mn:360, Se:1.5, Co:0.4, VA:16000, VD:2640, VE:640},
+  {weight:400, work:"軽", エネルギー:16.08, タンパク質:643.2, Lys:27.66, Ca:24, P:14.4, Mg:7.4, Na:21, K:49, Fe:320, Cu:120, Zn:360, Mn:360, Se:1.75, Co:0.4, VA:16000, VD:2640, VE:640},
+  {weight:400, work:"中", エネルギー:18.76, タンパク質:750.4, Lys:32.27, Ca:28, P:16.8, Mg:8.63, Na:21, K:49, Fe:360, Cu:135, Zn:405, Mn:405, Se:2.25, Co:0.45, VA:18000, VD:2640, VE:720},
+  {weight:400, work:"強", エネルギー:21.44, タンパク質:857.6, Lys:36.88, Ca:32, P:23.2, Mg:9.86, Na:27, K:63, Fe:400, Cu:150, Zn:450, Mn:450, Se:2.5, Co:0.5, VA:20000, VD:2640, VE:800},
+  {weight:450, work:"無", エネルギー:14.9, タンパク質:596, Lys:25.63, Ca:18, P:12.6, Mg:6.75, Na:9, K:22.5, Fe:360, Cu:135, Zn:405, Mn:405, Se:1.69, Co:0.45, VA:18000, VD:2970, VE:720},
+  {weight:450, work:"軽", エネルギー:17.88, タンパク質:715.2, Lys:30.75, Ca:27, P:16.2, Mg:8.22, Na:23.63, K:55.13, Fe:360, Cu:135, Zn:405, Mn:405, Se:1.97, Co:0.45, VA:18000, VD:2970, VE:720},
+  {weight:450, work:"中", エネルギー:20.86, タンパク質:834.4, Lys:35.88, Ca:31.5, P:18.9, Mg:9.6, Na:23.63, K:55.13, Fe:405, Cu:151.88, Zn:455.63, Mn:455.63, Se:2.53, Co:0.51, VA:20250, VD:2970, VE:810},
+  {weight:450, work:"強", エネルギー:23.84, タンパク質:953.6, Lys:41, Ca:36, P:26.1, Mg:10.97, Na:30.38, K:70.88, Fe:450, Cu:168.75, Zn:506.25, Mn:506.25, Se:2.81, Co:0.56, VA:22500, VD:2970, VE:900},
+  {weight:470, work:"無", エネルギー:15.5, タンパク質:620, Lys:26.66, Ca:18.8, P:13.16, Mg:7.05, Na:9.4, K:23.5, Fe:376, Cu:141, Zn:423, Mn:423, Se:1.762, Co:0.47, VA:18800, VD:3102, VE:752},
+  {weight:470, work:"軽", エネルギー:18.6, タンパク質:744, Lys:31.99, Ca:28.2, P:16.92, Mg:8.56, Na:24.67, K:57.57, Fe:376, Cu:141, Zn:423, Mn:423, Se:2.056, Co:0.47, VA:18800, VD:3102, VE:752},
+  {weight:470, work:"中", エネルギー:21.7, タンパク質:868, Lys:37.32, Ca:32.9, P:19.74, Mg:9.98, Na:24.67, K:57.57, Fe:423, Cu:158.63, Zn:475.88, Mn:475.88, Se:2.644, Co:0.529, VA:21150, VD:3102, VE:846},
+  {weight:470, work:"強", エネルギー:24.8, タンパク質:992, Lys:42.66, Ca:37.6, P:27.26, Mg:11.41, Na:31.72, K:74.02, Fe:470, Cu:176.25, Zn:528.75, Mn:528.75, Se:2.938, Co:0.588, VA:23500, VD:3102, VE:940},
+  {weight:500, work:"無", エネルギー:16.4, タンパク質:656, Lys:28.21, Ca:20, P:14, Mg:7.5, Na:10, K:25, Fe:400, Cu:150, Zn:450, Mn:450, Se:1.88, Co:0.5, VA:20000, VD:3300, VE:800},
+  {weight:500, work:"軽", エネルギー:19.68, タンパク質:787.2, Lys:33.85, Ca:30, P:18, Mg:9.05, Na:26.25, K:61.25, Fe:400, Cu:150, Zn:450, Mn:450, Se:2.19, Co:0.5, VA:20000, VD:3300, VE:800},
+  {weight:500, work:"中", エネルギー:22.96, タンパク質:918.4, Lys:39.49, Ca:35, P:21, Mg:10.56, Na:26.25, K:61.25, Fe:450, Cu:168.75, Zn:506.25, Mn:506.25, Se:2.81, Co:0.56, VA:22500, VD:3300, VE:900},
+  {weight:500, work:"強", エネルギー:26.24, タンパク質:1049.6, Lys:45.13, Ca:40, P:29, Mg:12.07, Na:33.75, K:78.75, Fe:500, Cu:187.5, Zn:562.5, Mn:562.5, Se:3.13, Co:0.63, VA:25000, VD:3300, VE:1000},
+  {weight:520, work:"無", エネルギー:17, タンパク質:680, Lys:29.24, Ca:20.8, P:14.56, Mg:7.8, Na:10.4, K:26, Fe:416, Cu:156, Zn:468, Mn:468, Se:1.95, Co:0.52, VA:20800, VD:3432, VE:832},
+  {weight:520, work:"軽", エネルギー:20.4, タンパク質:816, Lys:35.09, Ca:31.2, P:18.72, Mg:9.38, Na:27.3, K:63.7, Fe:416, Cu:156, Zn:468, Mn:468, Se:2.275, Co:0.52, VA:20800, VD:3432, VE:832},
+  {weight:520, work:"中", エネルギー:23.8, タンパク質:952, Lys:40.94, Ca:36.4, P:21.84, Mg:10.95, Na:27.3, K:63.7, Fe:468, Cu:175.5, Zn:526.5, Mn:526.5, Se:2.925, Co:0.585, VA:23400, VD:3432, VE:936},
+  {weight:520, work:"強", エネルギー:27.2, タンパク質:1088, Lys:46.78, Ca:41.6, P:30.16, Mg:12.51, Na:35.1, K:81.9, Fe:520, Cu:195, Zn:585, Mn:585, Se:3.25, Co:0.65, VA:26000, VD:3432, VE:1040},
+  {weight:540, work:"無", エネルギー:17.6, タンパク質:704, Lys:30.27, Ca:21.6, P:15.12, Mg:8.1, Na:10.8, K:27, Fe:432, Cu:162, Zn:486, Mn:486, Se:2.025, Co:0.54, VA:21600, VD:3564, VE:864},
+  {weight:540, work:"軽", エネルギー:21.12, タンパク質:844.8, Lys:36.33, Ca:32.4, P:19.44, Mg:9.72, Na:28.35, K:66.15, Fe:432, Cu:162, Zn:486, Mn:486, Se:2.363, Co:0.54, VA:21600, VD:3564, VE:864},
+  {weight:540, work:"中", エネルギー:24.64, タンパク質:985.6, Lys:42.38, Ca:37.8, P:22.68, Mg:11.33, Na:28.35, K:66.15, Fe:486, Cu:182.25, Zn:546.75, Mn:546.75, Se:3.038, Co:0.608, VA:24300, VD:3564, VE:972},
+  {weight:540, work:"強", エネルギー:28.16, タンパク質:1126, Lys:48.44, Ca:43.2, P:31.32, Mg:12.95, Na:36.45, K:85.05, Fe:540, Cu:202.5, Zn:607.5, Mn:607.5, Se:3.375, Co:0.675, VA:27000, VD:3564, VE:1080},
 
 ];
 function getRequirements(weight, work){
@@ -153,7 +155,7 @@ function getRequirements(weight, work){
 
 //単位
 const units = {
-  DE: "Mcal", CP: "g", Lys: "g", Ca: "g", P: "g", Mg: "g", Na: "g", K: "g", Fe: "mg", Cu: "mg", Zn: "mg", Mn: "mg", Se: "mg", Co: "mg", VA: "IU", VD: "IU", VE: "IU"
+  エネルギー: "Mcal", タンパク質: "g", Lys: "g", Ca: "g", P: "g", Mg: "g", Na: "g", K: "g", Fe: "mg", Cu: "mg", Zn: "mg", Mn: "mg", Se: "mg", Co: "mg", VA: "IU", VD: "IU", VE: "IU"
 };
 
 
@@ -191,7 +193,7 @@ function calculate() {
   const workVal = document.getElementById("work").value;
   const mainContent = document.getElementById("main-content");
 
-  let sum = {DE:0, CP:0, Lys:0, Ca:0, P:0, Mg:0, Na:0, K:0, Fe:0, Cu:0, Zn:0, Mn:0, Se:0, Co:0, VA:0, VD:0, VE:0};
+  let sum = {エネルギー:0, タンパク質:0, Lys:0, Ca:0, P:0, Mg:0, Na:0, K:0, Fe:0, Cu:0, Zn:0, Mn:0, Se:0, Co:0, VA:0, VD:0, VE:0};
   let totalFeedWeight = 0; // 栄養素計算用の総給餌量
 
   document.querySelectorAll("#feed-body tr").forEach((tr, i) => {
@@ -252,11 +254,11 @@ function calculate() {
   let htmlbalance = `
   <table class="balance-table">
     <thead>
-      <tr><th></th><th>理想値</th><th>計算結果</th></tr>
+      <tr><th></th><th>理想値</th><th></th></tr>
     </thead>
     <tbody>
-      <tr><td>Ca/P</td><td>1.5~2.0（1~6ならOK）</td><td style="background-color:${colorize(ca_p,1,6)}; text-align:right;">${ca_p.toFixed(1)}</td></tr>
-      <tr><td>Zn/Cu</td><td>3~6</td><td style="background-color:${colorize(zn_cu,3,6)}; text-align:right;">${zn_cu.toFixed(1)}</td></tr>
+      <tr><td>Ca/P</td><td>1.5~2.5<br>(1.0~6.0ならOK)</td><td style="background-color:${colorize(ca_p,1,6)}; text-align:right;">${ca_p.toFixed(1)}</td></tr>
+      <tr><td>Zn/Cu</td><td>3.0~6.0</td><td style="background-color:${colorize(zn_cu,3,6)}; text-align:right;">${zn_cu.toFixed(1)}</td></tr>
       <tr><td>体重比</td><td>1.5~2.5%</td><td style="background-color:${colorize(total_bw,1.5,2.5)}; text-align:right;">${total_bw.toFixed(1)}%</td></tr>
     </tbody>
   </table>`;
@@ -285,23 +287,23 @@ const alertEl = document.getElementById("alert-messages");
   }
 
   //エネルギー
-  const deRate = (sum["DE"] / req["DE"]) * 100;
+  const deRate = (sum["エネルギー"] / req["エネルギー"]) * 100;
   if (deRate < 90) {
-      messages.push("<span style='color: darkblue;'>&#9888;エネルギー(DE)が不足しています（" + deRate.toFixed(1) + "%）</span>");
+      messages.push("<span style='color: darkblue;'>&#9888; エネルギーが不足しています（" + deRate.toFixed(1) + "%）</span>");
   } else if (deRate > 120) {
-      messages.push("<span style='color: firebrick;'>&#9888; エネルギー(DE)が過剰です（" + deRate.toFixed(1) + "%）</span>");
+      messages.push("<span style='color: firebrick;'>&#9888; エネルギーが過剰です（" + deRate.toFixed(1) + "%）</span>");
   } else {
-      messages.push("<span style='color: darkgreen;'>&check; エネルギー(DE)は十分です（" + deRate.toFixed(1) + "%）</span>");
+      messages.push("<span style='color: darkgreen;'>&check; エネルギーは十分です（" + deRate.toFixed(1) + "%）</span>");
   }
 
   //タンパク質
-  const cpRate = (sum["CP"] / req["CP"]) * 100;
+  const cpRate = (sum["タンパク質"] / req["タンパク質"]) * 100;
   if (cpRate < 90) {
-      messages.push("<span style='color: darkblue;'>&#9888; タンパク質(CP)が不足しています（" + cpRate.toFixed(1) + "%）</span>");
+      messages.push("<span style='color: darkblue;'>&#9888; タンパク質が不足しています（" + cpRate.toFixed(1) + "%）</span>");
   } else if (cpRate > 150) {
-      messages.push("<span style='color: firebrick;'>&#9888; タンパク質(CP)が過剰です（" + cpRate.toFixed(1) + "%）</span>");
+      messages.push("<span style='color: firebrick;'>&#9888; タンパク質が過剰です（" + cpRate.toFixed(1) + "%）</span>");
   } else {
-      messages.push("<span style='color: darkgreen;'>&check; タンパク質(CP)は十分です（" + cpRate.toFixed(1) + "%）</span>");
+      messages.push("<span style='color: darkgreen;'>&check; タンパク質は十分です（" + cpRate.toFixed(1) + "%）</span>");
   }
 
   // Ca/P
@@ -396,6 +398,3 @@ window.onload = () => {
 </script>
 </body>
 </html>
-
-
-

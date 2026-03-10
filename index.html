@@ -203,7 +203,7 @@ function calculate() {
     if (rate > 120) color = "firebrick";
     else if (rate < 80) color = "darkblue";
 
-    html += `<tr><td>${key}</td><td><div class="bar-container"><span class="bar-label">${rateText}%</span><div class="bar-fill" style="width:${Math.min(rate,150)}%; background:${color};"></div></div></td></tr>`;
+    html += `<tr><td>${key}</td><td style="width: 50px;"><div class="bar-container"><span class="bar-label">${rateText}%</span><div class="bar-fill" style="width:${Math.min(rate,150)}%; background:${color};"></div></div></td></tr>`;
   }
   html += "</tbody></table>";
   document.getElementById("result").innerHTML = html;
@@ -330,4 +330,5 @@ window.onload = () => {
   html += "</tbody></table>";
   document.getElementById("result").innerHTML = html;
 -->
+
 

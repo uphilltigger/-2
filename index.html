@@ -195,7 +195,7 @@ function calculate() {
   const total_bw = (totalFeedWeight / weight * 100) || 0;
 
   // 栄養素テーブル生成
-  let html = `<table><thead><tr><th colspan="2">栄養素</th><th width="50%">充足率</th></tr></thead><tbody>`;
+  let html = `<table><thead><tr><th style="width: 50px;">栄養素</th><th width="50%">充足率</th></tr></thead><tbody>`;
   for (const key in sum) {
     const rate = (sum[key] / req[key] * 100);
     const rateText = rate.toFixed(1);
@@ -203,8 +203,7 @@ function calculate() {
     if (rate > 120) color = "firebrick";
     else if (rate < 80) color = "darkblue";
 
-    html += `<tr><td>${key}</td><td style="font-size: 15px;">${units[key] || ""}</td>
-      <td><div class="bar-container"><span class="bar-label">${rateText}%</span><div class="bar-fill" style="width:${Math.min(rate,150)}%; background:${color};"></div></div></td></tr>`;
+    html += `<tr><td>${key}</td><td><div class="bar-container"><span class="bar-label">${rateText}%</span><div class="bar-fill" style="width:${Math.min(rate,150)}%; background:${color};"></div></div></td></tr>`;
   }
   html += "</tbody></table>";
   document.getElementById("result").innerHTML = html;
@@ -331,3 +330,4 @@ window.onload = () => {
   html += "</tbody></table>";
   document.getElementById("result").innerHTML = html;
 -->
+

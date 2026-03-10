@@ -29,25 +29,6 @@
 	<h1>飼料計算</h1>
 	<p>
 	<a href="https://github.com/uphilltigger/-2" target="_blank">説明を見る↗（別タブで開きます）</a>
-<!--
-	<details>
-  	<summary style="text-decoration: underline; color: blue;">説明を見る</summary>
-	  	<div>
-		<hr>
-		ウマと運動強度を選んで、給餌量を入力すれば充足率がわかるようになっています．<br>
-		考え出したらキリが無いので、エネルギー,タンパク質と下の表の3つの値が問題なければ良しとしましょう。<br>  
-		・入力値は一食あたり．<br>
-		・各値の表示：	青＝不足，緑＝理想，赤＝過剰<br>
-		<br>
-		エネルギー＝エネルギー<br>
-		タンパク質＝タンパク質<br>
-		Zn=亜鉛：蹄の角質化に必要<br>
-		VA（ビタミンA）：過剰に注意<br>
-		VD（ビタミンD）：日光浴びれば大丈夫
-		<hr>
-		</div>
-	</details>
--->
 	</p>
 	<div>
 	  <label>ウマ：
@@ -56,11 +37,11 @@
 	      <option value="500" class="senior">アップヒルティガー</option>
 	      <option value="540" selected>グランシエロ</option>
 	      <option value="500">ドラゴンケーニッヒ</option>
-		　<option value="500">キタノインパクト</option>
+	      <option value="500">キタノインパクト</option>
 	      <option value="520">テイエムシュンソク</option>
 	      <option value="470">ワイルドヒロイン</option>
 	      <option value="470">キタノブルー</option>
-		  <option value="470">フェンネル</option>
+	      <option value="470">フェンネル</option>
 	      <option value="520" class="senior">タイダルベイスン</option>
 	      <option value="520">ノガロ</option>
 	      <option value="540" class="nobeet">ダノンクライム</option>
@@ -96,17 +77,21 @@
 		  </table>
 		</div>
 		<hr>
-		<div style="display: flex; align-items: flex-start;">
-		    <div class="table-container" id="alert-messages" style="flex: 1;　white-space: nowrap;"><span id="horse-attribute"></span></div>
-		    <div class="table-container" id="result-balance" style="flex: 1;"></div>
+		<div style="display: flex; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+		        <div class="table-container" id="alert-messages" style="flex: 0 0 40%; min-width: 220px; white-space: normal; line-height: 1.6;">
+		        <span id="horse-attribute"></span>
+		    </div>
+		    <div class="table-container" id="result-balance" style="flex: 1; min-width: 280px; padding: 0;"></div>
 		</div>
+<!--		<div style="display: flex; align-items: flex-start;">
+		    <div class="table-container" id="alert-messages" style="flex: 1; white-space: nowrap;"><span id="horse-attribute"></span></div>
+		    <div class="table-container" id="result-balance" style="flex: 1;"></div>
+		</div>-->
 		<small>（表に値を入れると文言が変わります）</small>
 		<div class="table-container" id="result"></div>
 <hr>
 	</div>
-<p style="text-align: center;">
-	<b>&copy;2025-2026 MIURA SOTA</b>
-</p>
+<p style="text-align: center;"><b>&copy;2025-2026 MIURA SOTA</b></p>
 <script>
 // 飼料
 const feeds = [
@@ -147,7 +132,6 @@ const reqTable = [
   {weight:540, work:"軽", エネルギー:21.12, タンパク質:844.8, Lys:36.33, Ca:32.4, P:19.44, Mg:9.72, Na:28.35, K:66.15, Fe:432, Cu:162, Zn:486, Mn:486, Se:2.363, Co:0.54, VA:21600, VD:3564, VE:864},
   {weight:540, work:"中", エネルギー:24.64, タンパク質:985.6, Lys:42.38, Ca:37.8, P:22.68, Mg:11.33, Na:28.35, K:66.15, Fe:486, Cu:182.25, Zn:546.75, Mn:546.75, Se:3.038, Co:0.608, VA:24300, VD:3564, VE:972},
   {weight:540, work:"強", エネルギー:28.16, タンパク質:1126, Lys:48.44, Ca:43.2, P:31.32, Mg:12.95, Na:36.45, K:85.05, Fe:540, Cu:202.5, Zn:607.5, Mn:607.5, Se:3.375, Co:0.675, VA:27000, VD:3564, VE:1080},
-
 ];
 function getRequirements(weight, work){
   return reqTable.find(r=>r.weight==weight && r.work==work) || reqTable[0];
@@ -157,7 +141,6 @@ function getRequirements(weight, work){
 const units = {
   エネルギー: "Mcal", タンパク質: "g", Lys: "g", Ca: "g", P: "g", Mg: "g", Na: "g", K: "g", Fe: "mg", Cu: "mg", Zn: "mg", Mn: "mg", Se: "mg", Co: "mg", VA: "IU", VD: "IU", VE: "IU"
 };
-
 
 // 行作成
 function createRows(){
@@ -187,205 +170,137 @@ function createRows(){
   });
 }
 
-
 function calculate() {
   const weightVal = document.getElementById("weight").value;
   const workVal = document.getElementById("work").value;
-  const mainContent = document.getElementById("main-content");
-
+  
   let sum = {エネルギー:0, タンパク質:0, Lys:0, Ca:0, P:0, Mg:0, Na:0, K:0, Fe:0, Cu:0, Zn:0, Mn:0, Se:0, Co:0, VA:0, VD:0, VE:0};
-  let totalFeedWeight = 0; // 栄養素計算用の総給餌量
+  let totalFeedWeight = 0; 
 
   document.querySelectorAll("#feed-body tr").forEach((tr, i) => {
     const val1 = parseFloat(tr.querySelector(".feed-amount1").value || 0);
     const val2 = parseFloat(tr.querySelector(".feed-amount2").value || 0);
     const total = (val1 + val2) * 2;
-    totalFeedWeight += total; // 栄養素計算用
+    totalFeedWeight += total;
 
     const feed = feeds[i];
     for(const key in sum) sum[key] += feed[key] * total;
   });
 
-  const weight = parseInt(document.getElementById("weight").value);
-  const work = document.getElementById("work").value;
+  const weight = parseInt(weightVal);
+  const work = workVal;
   const req = getRequirements(weight, work);
-  const ca_p = sum["Ca"] / sum["P"];
-  const zn_cu = sum["Zn"] / sum["Cu"];
-  const total_bw = totalFeedWeight / weight * 100; 
+  const ca_p = sum["Ca"] / sum["P"] || 0; // 0除算対策
+  const zn_cu = sum["Zn"] / sum["Cu"] || 0;
+  const total_bw = (totalFeedWeight / weight * 100) || 0;
 
-  // カラー設定関数
-	function colorize(value, min, max) {
-	  return (value < min) ? "rgba(0, 0, 255, 0.2)" : (value > max ? "rgba(255, 0, 0, 0.2)" : "rgba(0, 255, 0, 0.2)");
+  // 栄養素テーブル生成
+  let html = `<table><thead><tr><th colspan="2">栄養素</th><th>要求量</th><th>給餌量</th><th width="50%">充足率</th></tr></thead><tbody>`;
+  for (const key in sum) {
+    const rate = (sum[key] / req[key] * 100);
+    const rateText = rate.toFixed(1);
+    let color = "darkgreen";
+    if (rate > 120) color = "firebrick";
+    else if (rate < 80) color = "darkblue";
+
+    html += `<tr><td>${key}</td><td style="font-size: 15px;">${units[key] || ""}</td><td style="text-align: right;">${req[key]}</td><td style="text-align: right;">${sum[key].toFixed(2)}</td>
+      <td><div class="bar-container"><span class="bar-label">${rateText}%</span><div class="bar-fill" style="width:${Math.min(rate,150)}%; background:${color};"></div></div></td></tr>`;
   }
+  html += "</tbody></table>";
+  document.getElementById("result").innerHTML = html;
 
-  // 栄養素テーブル
-	let html = `
-	<table>
-	  <thead>
-	    <tr><th colspan="2">栄養素</th><th>要求量</th><th>給餌量</th><th width="50%">充足率</th></tr>
-	  </thead>
-	  <tbody>
-	`;
+  // 数直線グラフの色判定
+  let ca_p_color = ca_p < 1 ? "#1890ff" : (ca_p <= 6 ? (ca_p >= 1.5 && ca_p <= 2.5 ? "#52c41a" : "#73d13d") : "#f5222d");
+  let zn_cu_color = zn_cu < 3 ? "#1890ff" : (zn_cu <= 6 ? "#52c41a" : "#f5222d");
+  let bw_color = total_bw < 1.5 ? "#1890ff" : (total_bw <= 2.5 ? "#52c41a" : "#f5222d");
 
-	for (const key in sum) {
-	  const rate = (sum[key] / req[key] * 100);
-	  const rateText = rate.toFixed(1);
-	  let color = "darkgreen";
-	  if (rate > 120) color = "firebrick";
-	  else if (rate < 80) color = "darkblue";
-
-	  html += `
-	    <tr>
-	      <td>${key}</td>
-	      <td style="font-size: 15px;">${units[key] || ""}</td>
-	      <td style="text-align: right;">${req[key]}</td>
-	      <td style="text-align: right;">${sum[key].toFixed(2)}</td>
-	      <td>
-	        <div class="bar-container"><span class="bar-label">${rateText}%</span>
-	          <div class="bar-fill" style="width:${Math.min(rate,150)}%; background:${color};"></div>
-	        </div>
-	      </td>
-	    </tr>`;
-	}
-	html += "</tbody></table>";
-	document.getElementById("result").innerHTML = html;
-
-  // 栄養バランス比テーブル
+  // 数直線グラフHTML生成
   let htmlbalance = `
-  <table class="balance-table">
-    <thead>
-      <tr><th></th><th>理想値</th><th></th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Ca/P</td><td>1.5~2.5<br>(1.0~6.0ならOK)</td><td style="background-color:${colorize(ca_p,1,6)}; text-align:right;">${ca_p.toFixed(1)}</td></tr>
-      <tr><td>Zn/Cu</td><td>3.0~6.0</td><td style="background-color:${colorize(zn_cu,3,6)}; text-align:right;">${zn_cu.toFixed(1)}</td></tr>
-      <tr><td>体重比</td><td>1.5~2.5%</td><td style="background-color:${colorize(total_bw,1.5,2.5)}; text-align:right;">${total_bw.toFixed(1)}%</td></tr>
-    </tbody>
+  <table class="balance-table" style="table-layout: fixed; width: 100%; border-collapse: collapse;">
+      <tr><td style="font-size:11px; text-align: center; border: 1px solid #ccc;">Ca/P</td><td style="position: relative; height: 75px; vertical-align: middle; border: 1px solid #ccc; padding: 0 10px;">
+        <div style="background: #eee; height: 8px; width: 100%; position: relative; border-radius: 4px; margin-top: 15px;">
+          <div style="position: absolute; left: 0; width: 12.5%; height: 100%; background: #91d5ff; border-radius: 4px 0 0 4px;"></div><div style="position: absolute; left: 12.5%; width: 6.25%; height: 100%; background: #b7eb8f;"></div><div style="position: absolute; left: 18.75%; width: 12.5%; height: 100%; background: #52c41a;"></div><div style="position: absolute; left: 31.25%; width: 43.75%; height: 100%; background: #b7eb8f;"></div><div style="position: absolute; left: 75%; width: 25%; height: 100%; background: #ffa39e; border-radius: 0 4px 4px 0;"></div>
+          <div style="position: absolute; top: 12px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+          <div style="position: absolute; top: 25px; left: 18.75%; font-size: 9px; color: #237804; white-space: nowrap; font-weight: bold;">最適: 1.5-2.5</div>
+          <div style="position: absolute; left: ${Math.min((ca_p / 8) * 100, 98)}%; top: 50%; transform: translateX(-50%); z-index: 2;">
+            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: ${ca_p_color}; white-space: nowrap; background: rgba(255,255,255,0.9); padding: 0 2px; border-radius: 2px;">${ca_p.toFixed(1)}</div>
+            <div style="width: 12px; height: 12px; background: ${ca_p_color}; border-radius: 50%; margin-top: -6px; border: 1px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+          </div>
+        </div>
+      </td></tr>
+      <tr><td style="font-size:11px; text-align: center; border: 1px solid #ccc;">Zn/Cu</td><td style="position: relative; height: 75px; vertical-align: middle; border: 1px solid #ccc; padding: 0 10px;">
+        <div style="background: #eee; height: 8px; width: 100%; position: relative; border-radius: 4px; margin-top: 15px;">
+          <div style="position: absolute; left: 0; width: 37.5%; height: 100%; background: #91d5ff; border-radius: 4px 0 0 4px;"></div><div style="position: absolute; left: 37.5%; width: 37.5%; height: 100%; background: #b7eb8f;"></div><div style="position: absolute; left: 75%; width: 25%; height: 100%; background: #ffa39e; border-radius: 0 4px 4px 0;"></div>
+          <div style="position: absolute; top: 12px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+          <div style="position: absolute; top: 25px; left: 37.5%; font-size: 9px; color: green; white-space: nowrap; font-weight: bold;">理想: 3.0-6.0</div>
+          <div style="position: absolute; left: ${Math.min((zn_cu / 8) * 100, 98)}%; top: 50%; transform: translateX(-50%); z-index: 2;">
+            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: ${zn_cu_color}; white-space: nowrap; background: rgba(255,255,255,0.9); padding: 0 2px; border-radius: 2px;">${zn_cu.toFixed(1)}</div>
+            <div style="width: 12px; height: 12px; background: ${zn_cu_color}; border-radius: 50%; margin-top: -6px; border: 1px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+          </div>
+        </div>
+      </td></tr>
+      <tr><td style="font-size:11px; text-align: center; border: 1px solid #ccc;">体重比</td><td style="position: relative; height: 75px; vertical-align: middle; border: 1px solid #ccc; padding: 0 10px;">
+        <div style="background: #eee; height: 8px; width: 100%; position: relative; border-radius: 4px; margin-top: 15px;">
+          <div style="position: absolute; left: 0; width: 30%; height: 100%; background: #91d5ff; border-radius: 4px 0 0 4px;"></div><div style="position: absolute; left: 30%; width: 20%; height: 100%; background: #b7eb8f;"></div><div style="position: absolute; left: 50%; width: 50%; height: 100%; background: #ffa39e; border-radius: 0 4px 4px 0;"></div>
+          <div style="position: absolute; top: 12px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <div style="position: absolute; top: 25px; left: 30%; font-size: 9px; color: green; white-space: nowrap; font-weight: bold;">理想: 1.5-2.5%</div>
+          <div style="position: absolute; left: ${Math.min((total_bw / 5) * 100, 98)}%; top: 50%; transform: translateX(-50%); z-index: 2;">
+            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: ${bw_color}; white-space: nowrap; background: rgba(255,255,255,0.9); padding: 0 2px; border-radius: 2px;">${total_bw.toFixed(1)}%</div>
+            <div style="width: 12px; height: 12px; background: ${bw_color}; border-radius: 50%; margin-top: -6px; border: 1px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+          </div>
+        </div>
+      </td></tr>
   </table>`;
   document.getElementById("result-balance").innerHTML = htmlbalance;
 
-
-const alertEl = document.getElementById("alert-messages");
+  // メッセージ判定
+  const alertEl = document.getElementById("alert-messages");
   let messages = [];
-
   const weightSelect = document.getElementById("weight");
   const selectedOption = weightSelect.options[weightSelect.selectedIndex];
 
-  if (selectedOption.classList.contains("senior")) {
-      messages.push("<span>&#12959; 高齢馬なので濃厚は控えめに．</span>");
-  }
+  if (selectedOption.classList.contains("senior")) messages.push("<span>&#12959; 高齢馬なので濃厚は控えめに．</span>");
   if (selectedOption.classList.contains("nobeet")) {
-      const beetRow = document.querySelectorAll("#feed-body tr")[0]; // ビートは一番上の行
-      const beetVal1 = parseFloat(beetRow.querySelector(".feed-amount1").value || 0);
-      const beetVal2 = parseFloat(beetRow.querySelector(".feed-amount2").value || 0);
-      const beetTotal = (beetVal1 + beetVal2) * 2;
-      if (beetTotal > 0) {
-          messages.push("<span style='color: firebrick;'>&#9888; クライムは喉詰まりを起こすのでビートNG</span>");
-      } else {
-          messages.push("<span style='color: darkgreen;'>&#12959; クライムは喉詰まりを起こすのでビートNG</span>");
-      }
+    const beetRow = document.querySelectorAll("#feed-body tr")[0];
+    const beetTotal = (parseFloat(beetRow.querySelector(".feed-amount1").value || 0) + parseFloat(beetRow.querySelector(".feed-amount2").value || 0)) * 2;
+    messages.push(beetTotal > 0 ? "<span style='color: firebrick;'>&#9888; クライムは喉詰まりを起こすのでビートNG</span>" : "<span style='color: darkgreen;'>&check; クライムは喉詰まりを起こすのでビートNG</span>");
   }
 
-  //エネルギー
   const deRate = (sum["エネルギー"] / req["エネルギー"]) * 100;
-  if (deRate < 90) {
-      messages.push("<span style='color: darkblue;'>&#9888; エネルギーが不足しています（" + deRate.toFixed(1) + "%）</span>");
-  } else if (deRate > 120) {
-      messages.push("<span style='color: firebrick;'>&#9888; エネルギーが過剰です（" + deRate.toFixed(1) + "%）</span>");
-  } else {
-      messages.push("<span style='color: darkgreen;'>&check; エネルギーは十分です（" + deRate.toFixed(1) + "%）</span>");
-  }
+  messages.push(deRate < 90 ? `<span style='color: darkblue;'>&#9888; エネルギーが不足しています（${deRate.toFixed(1)}%）</span>` : deRate > 120 ? `<span style='color: firebrick;'>&#9888; エネルギーが過剰です（${deRate.toFixed(1)}%）</span>` : `<span style='color: darkgreen;'>&check; エネルギーは十分です（${deRate.toFixed(1)}%）</span>`);
 
-  //タンパク質
   const cpRate = (sum["タンパク質"] / req["タンパク質"]) * 100;
-  if (cpRate < 90) {
-      messages.push("<span style='color: darkblue;'>&#9888; タンパク質が不足しています（" + cpRate.toFixed(1) + "%）</span>");
-  } else if (cpRate > 150) {
-      messages.push("<span style='color: firebrick;'>&#9888; タンパク質が過剰です（" + cpRate.toFixed(1) + "%）</span>");
-  } else {
-      messages.push("<span style='color: darkgreen;'>&check; タンパク質は十分です（" + cpRate.toFixed(1) + "%）</span>");
-  }
+  messages.push(cpRate < 90 ? `<span style='color: darkblue;'>&#9888; タンパク質が不足しています（${cpRate.toFixed(1)}%）</span>` : cpRate > 150 ? `<span style='color: firebrick;'>&#9888; タンパク質が過剰です（${cpRate.toFixed(1)}%）</span>` : `<span style='color: darkgreen;'>&check; タンパク質は十分です（${cpRate.toFixed(1)}%）</span>`);
 
-  // Ca/P
-  if (ca_p < 1.0) {
-      messages.push("<span style='color: darkblue;'>&#9888; Ca/Pが低すぎます</span>");
-  } else if (ca_p > 6.0) {
-      messages.push("<span style='color: firebrick;'>&#9888; Ca/Pが高すぎます</span>");
-  } else {
-      messages.push("<span style='color: darkgreen;'>&check; Ca/Pは適正です</span>");
-  }
-
-  //Zn/Cu
-  if (zn_cu < 3.0) {
-      messages.push("<span style='color: darkblue;'>&#9888; Zn/Cuが低すぎます</span>");
-  } else if (zn_cu > 6.0) {
-      messages.push("<span style='color: firebrick;'>&#9888; Zn/Cuが高すぎます</span>");
-  } else {
-      messages.push("<span style='color: darkgreen;'>&check; Zn/Cuは適正です</span>");
-  }
-
-  //体重比
-  if (total_bw < 1.5) {
-      messages.push("<span style='color: darkblue;'>&#9888; 総量が少ないです</span>");
-  } else if (total_bw > 2.5) {
-      messages.push("<span style='color: firebrick;'>&#9888; 総量が過剰です</span>");
-  } else {
-      messages.push("<span style='color: darkgreen;'>&check; 総量は適正です</span>");
-  }
+  messages.push(ca_p < 1.0 ? "<span style='color: darkblue;'>&#9888; Ca/Pが低すぎます</span>" : ca_p > 6.0 ? "<span style='color: firebrick;'>&#9888; Ca/Pが高すぎます</span>" : "<span style='color: darkgreen;'>&check; Ca/Pは適正です</span>");
+  messages.push(zn_cu < 3.0 ? "<span style='color: darkblue;'>&#9888; Zn/Cuが低すぎます</span>" : zn_cu > 6.0 ? "<span style='color: firebrick;'>&#9888; Zn/Cuが高すぎます</span>" : "<span style='color: darkgreen;'>&check; Zn/Cuは適正です</span>");
+  messages.push(total_bw < 1.5 ? "<span style='color: darkblue;'>&#9888; 総量が不足しています</span>" : total_bw > 2.5 ? "<span style='color: firebrick;'>&#9888; 総量が過剰です</span>" : "<span style='color: darkgreen;'>&check; 総量は適正です</span>");
 
   alertEl.innerHTML = messages.join("<br>");
 
-
-  // 合計表用の計算
+  // 合計行の表示
   let sum1 = 0, sum2 = 0, totalSum = 0;
   document.querySelectorAll("#feed-body tr").forEach(tr => {
     const val1 = parseFloat(tr.querySelector(".feed-amount1").value || 0);
     const val2 = parseFloat(tr.querySelector(".feed-amount2").value || 0);
-    sum1 += val1;
-    sum2 += val2;
-    totalSum += (val1 + val2) * 2;
+    sum1 += val1; sum2 += val2; totalSum += (val1 + val2) * 2;
   });
 
   document.getElementById("sum-body").innerHTML = `
-    <tr>
-      <td><b>合計</b></td>
-      <td><input type="number" class="sum" value="${sum1.toFixed(2)}" readonly>kg</td></td>
-      <td><input type="number" class="sum" value="${sum2.toFixed(2)}" readonly>kg</td></td>
-      <td><input type="number" class="sum" value="${totalSum.toFixed(2)}" readonly>kg</td></td>
-    </tr>
-  `;
+    <tr><td><b>合計</b></td><td><input type="number" class="sum" value="${sum1.toFixed(2)}" readonly>kg</td>
+    <td><input type="number" class="sum" value="${sum2.toFixed(2)}" readonly>kg</td>
+    <td><input type="number" class="sum" value="${totalSum.toFixed(2)}" readonly>kg</td></tr>`;
 }
 
-
-// リセット
+// リセット機能
 function resetInputs() {
-  const rows = document.querySelectorAll("#feed-body tr");
-  rows.forEach((tr, i) => {
+  document.querySelectorAll("#feed-body tr").forEach((tr, i) => {
     const feed = feeds[i];
-    const input1 = tr.querySelector(".feed-amount1");
-    const input2 = tr.querySelector(".feed-amount2");
-    const total = tr.querySelector(".feed-total");
-
-    // 初期値を設定
-    input1.value = feed.default1 || "";
-    input2.value = feed.default2 || "";
-
-    total.value = ((parseFloat(input1.value || 0) + parseFloat(input2.value || 0)) * 2).toFixed(2);
+    tr.querySelector(".feed-amount1").value = feed.default1 || "";
+    tr.querySelector(".feed-amount2").value = feed.default2 || "";
+    tr.querySelector(".feed-total").value = ((parseFloat(tr.querySelector(".feed-amount1").value || 0) + parseFloat(tr.querySelector(".feed-amount2").value || 0)) * 2).toFixed(2);
   });
-  calculate();
-
-	let sum1 = 0, sum2 = 0;
-	  document.querySelectorAll("#feed-body tr").forEach(tr=>{
-	    sum1 += parseFloat(tr.querySelector(".feed-amount1").value || 0);
-	    sum2 += parseFloat(tr.querySelector(".feed-amount2").value || 0);
-	    const totalInput = tr.querySelector(".feed-total");
-	    totalInput.value = ((parseFloat(tr.querySelector(".feed-amount1").value||0)+parseFloat(tr.querySelector(".feed-amount2").value||0))*2).toFixed(2);
-	  });
-	  document.getElementById("sum1").innerText = sum1.toFixed(2);
-	  document.getElementById("sum2").innerText = sum2.toFixed(2);
-	  document.getElementById("totalSum").innerText = ((sum1+sum2)*2).toFixed(2);
-
-
+  calculate(); 
 }
 
 window.onload = () => {
@@ -395,7 +310,7 @@ window.onload = () => {
   document.getElementById("weight").addEventListener("change", calculate);
   document.getElementById("work").addEventListener("change", calculate);
 };
+
 </script>
 </body>
 </html>
-

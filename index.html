@@ -198,7 +198,7 @@ function calculate() {
   const total_bw = (totalFeedWeight / weight * 100) || 0;
 
   // 栄養素テーブル生成
-  let html = `<table style="table-layout: fixed; width: 100%;"><thead><tr><th>栄養素</th><th width="50%">充足率</th></tr></thead><tbody>`;
+  let html = `<table style="table-layout: fixed; width: 100%;"><thead><tr><th>栄養素</th><th>充足率</th></tr></thead><tbody>`;
   for (const key in sum) {
     const rate = (sum[key] / req[key] * 100);
     const rateText = rate.toFixed(1);
@@ -333,6 +333,7 @@ window.onload = () => {
   html += "</tbody></table>";
   document.getElementById("result").innerHTML = html;
 -->
+
 
 
 

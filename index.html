@@ -5,16 +5,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>飼料計算</title>
 	<style>
-	body { font-size: 16px; margin:0; padding: 1rem; background:#ffffff; width: 100%; max-width: 600px; user-select: none; }
+	body { font-family: Times New Roman, serif; font-size: 16px; margin:0; padding: 1rem; background:#ffffff; width: 100%; max-width: 600px; user-select: none; }
 	.table-container { padding:1rem; }
 	table { border-collapse:collapse; width: 100%; }
-	th, td { border:1px solid #ccc; padding-left:0.5rem; padding-right:0.5rem; text-align:center; vertical-align:middle;}
+	th, td { border:1px solid #ccc; padding-left:0.3rem; padding-right:0.3rem; text-align:center; vertical-align:middle;}
 	thead { background:#eee; }
-	input { font-size: 20px; width: 2.2em; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
+	input { font-size: 20px; width: 2.5em; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
 	input:focus { border-color: #3182ce; outline: none; }
 	.feed-total{border: 0px; background:#ffffff; }
 	.sum{border: 0px; background:#ffffff; }
-	select { font-size: 20px; margin-bottom:0.5rem; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
+	select { font-size: 20px; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
 	.bar-container {width: 100%; height: 24px; background: silver; border-radius: 14px; overflow: hidden; display:inline-block; position: relative; }
 	.bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease; }
 	.bar-container .bar-label{position: absolute; line-height: 1; color: #fff; font-size: 15px; right: 4px; }
@@ -55,10 +55,10 @@
 	      <option value="400">汎用：400 kg</option>
 	      <option value="450">汎用：450 kg</option>
 	      <option value="500">汎用：500 kg</option>
-		　<option value="550">汎用：550 kg</option>
+	      <option value="540">汎用：540 kg</option>
 	    </select>
 	  </label>
-	  <br>
+	  <br><br>
 	  <label>運動強度：
 	    <select id="work">
 <!--	  <option value="" selected disabled>--選択してください--</option>  -->
@@ -218,22 +218,22 @@ function calculate() {
 
   // 数直線グラフHTML生成
   let htmlbalance = `
-  <table border="0" class="balance-table" style="table-layout: fixed; width: 100%; border: 0px;">
+  <table class="balance-table" style="table-layout: fixed; width: 100%;">
     <tbody>
-<tr>
-  <td style="width: 15px;">${ca_p < 1.0 ? `<span style="color: ${ca_p_color};">&#9888;<br><small>Low</small></span>` : (ca_p > 6.0 ? `<span style="color: ${ca_p_color};">&#9888;<br><small>High</small></span>` : '<span style="color: darkgreen;">&check;</span>')}</td>
-        <td style="width: 50px; text-align: center; color: ${ca_p_color};">Ca/P</td><td style="position: relative; height: 45px; vertical-align: middle; padding: 0 10px;">
-        <div style="background: #eee; height: 10px; width: 100%; position: relative;">
-          <div style="position: absolute; left: 0; width: 12.5%; height: 100%; background: darkblue; text-align: left;"></div><div style="position: absolute; left: 12.5%; width: 6.25%; height: 100%; background: limegreen;"></div><div style="position: absolute; left: 18.75%; width: 12.5%; height: 100%; background: darkgreen;"></div><div style="position: absolute; left: 31.25%; width: 43.75%; height: 100%; background: limegreen;"></div><div style="position: absolute; left: 75%; width: 25%; height: 100%; background: firebrick; text-align: right;"></div>
-          <div style="position: absolute; top: 12px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
-          <div style="position: absolute; bottom: 0px; left: 15%; font-size: 9px; color: white; white-space: nowrap;">理想 1.0~6.0（1.5~2.5が最適）</div>
-          <div style="position: absolute; left: ${Math.min((ca_p / 8) * 100, 98)}%; top: 50%; transform: translateX(-50%); z-index: 2;">
-            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; color: ${ca_p_color}; white-space: nowrap;">${ca_p.toFixed(1)}</div>
-            <div style="width: 12px; height: 12px; background: #fff; border-radius: 50%; margin-top: -6px; border: 1px solid #000; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
-          </div>
-        </div>
-      </td>
-</tr>
+	<tr>
+	  <td style="width: 15px;">${ca_p < 1.0 ? `<span style="color: ${ca_p_color};">&#9888;<br><small>Low</small></span>` : (ca_p > 6.0 ? `<span style="color: ${ca_p_color};">&#9888;<br><small>High</small></span>` : '<span style="color: darkgreen;">&check;</span>')}</td>
+	        <td style="width: 50px; text-align: center; color: ${ca_p_color};">Ca/P</td><td style="position: relative; height: 45px; vertical-align: middle; padding: 0 10px;">
+	        <div style="background: #eee; height: 10px; width: 100%; position: relative;">
+	          <div style="position: absolute; left: 0; width: 12.5%; height: 100%; background: darkblue; text-align: left;"></div><div style="position: absolute; left: 12.5%; width: 6.25%; height: 100%; background: limegreen;"></div><div style="position: absolute; left: 18.75%; width: 12.5%; height: 100%; background: darkgreen;"></div><div style="position: absolute; left: 31.25%; width: 43.75%; height: 100%; background: limegreen;"></div><div style="position: absolute; left: 75%; width: 25%; height: 100%; background: firebrick; text-align: right;"></div>
+	          <div style="position: absolute; top: 12px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+	          <div style="position: absolute; bottom: 0px; left: 15%; font-size: 9px; color: white; white-space: nowrap;">理想 1.0~6.0（1.5~2.5が最適）</div>
+	          <div style="position: absolute; left: ${Math.min((ca_p / 8) * 100, 98)}%; top: 50%; transform: translateX(-50%); z-index: 2;">
+	            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; color: ${ca_p_color}; white-space: nowrap;">${ca_p.toFixed(1)}</div>
+	            <div style="width: 12px; height: 12px; background: #fff; border-radius: 50%; margin-top: -6px; border: 1px solid #000; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+	          </div>
+	        </div>
+	      </td>
+	</tr>
       <tr><td>${zn_cu < 3.0 ? `<span style="color: ${zn_cu_color};">&#9888;<br><small>Low</small></span>` : (zn_cu > 6.0 ? `<span style="color: ${zn_cu_color};">&#9888;<br><small>High</small></span>` : '<span style="color: darkgreen;">&check;</span>')}</td>
         <td style="text-align: center; color: ${zn_cu_color};">Zn/Cu</td><td style="position: relative; height: 45px; vertical-align: middle; padding: 0 10px;">
         <div style="background: #eee; height: 10px; width: 100%; position: relative;">
@@ -301,7 +301,7 @@ function calculate() {
     <td><input type="number" class="sum" value="${totalSum.toFixed(2)}" readonly>kg</td></tr>`;
 }
 
-// リセット機能（修正済み）
+// リセット機能
 function resetInputs() {
   document.querySelectorAll("#feed-body tr").forEach((tr, i) => {
     const feed = feeds[i];

@@ -15,12 +15,12 @@
 	.feed-total{border: 0px; background:#ffffff; }
 	.sum{border: 0px; background:#ffffff; }
 	select { font-size: 20px; margin-bottom:0.5rem; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
-	.bar-container {width: 100%; height: 24px; background: silver; border-radius: 4px; overflow: hidden; display:inline-block; position: relative; }
+	.bar-container {width: 100%; height: 24px; background: silver; border-radius: 14px; overflow: hidden; display:inline-block; position: relative; }
 	.bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease; }
-	.bar-container .bar-label{position: absolute; line-height: 1; color: #fff; font-size: 15px; right: 4px; font-weight: bold; }
+	.bar-container .bar-label{position: absolute; line-height: 1; color: #fff; font-size: 15px; right: 4px; }
 	button{ background: darkgrey; color: #000; width: 20%; }
 	button:hover{ background: #fff; color: #000; cursor: pointer; }
-	#result th:nth-child(1), #result td:nth-child(1) { width: 50px; }
+	#result th:nth-child(1), #result td:nth-child(1) { width: 100px; }
 	#result th:nth-child(2), #result td:nth-child(2) { width: auto; }
 	a{ color: blue; }
 	a:visited{ color: blue; }
@@ -212,44 +212,49 @@ function calculate() {
   document.getElementById("result").innerHTML = html;
 
   // 数直線グラフの色判定
-  let ca_p_color = ca_p < 1 ? "#1890ff" : (ca_p <= 6 ? (ca_p >= 1.5 && ca_p <= 2.5 ? "#52c41a" : "#73d13d") : "#f5222d");
-  let zn_cu_color = zn_cu < 3 ? "#1890ff" : (zn_cu <= 6 ? "#52c41a" : "#f5222d");
-  let bw_color = total_bw < 1.5 ? "#1890ff" : (total_bw <= 2.5 ? "#52c41a" : "#f5222d");
+  let ca_p_color = ca_p < 1 ? "darkblue" : (ca_p <= 6 ? "darkgreen" : "firebrick");
+  let zn_cu_color = zn_cu < 3 ? "darkblue" : (zn_cu <= 6 ? "darkgreen" : "firebrick");
+  let bw_color = total_bw < 1.5 ? "darkblue" : (total_bw <= 2.5 ? "darkgreen" : "firebrick");
 
   // 数直線グラフHTML生成
   let htmlbalance = `
-  <table class="balance-table" style="table-layout: fixed; width: 100%; border-collapse: collapse;">
+  <table border="0" class="balance-table" style="table-layout: fixed; width: 100%; border: 0px;">
     <tbody>
-      <tr><td style="width: 45px; text-align: center; border: 1px solid #ccc;">Ca/P</td><td style="position: relative; height: 75px; vertical-align: middle; border: 1px solid #ccc; padding: 0 10px;">
-        <div style="background: #eee; height: 8px; width: 100%; position: relative; border-radius: 4px; margin-top: 15px;">
-          <div style="position: absolute; left: 0; width: 12.5%; height: 100%; background: #91d5ff; border-radius: 4px 0 0 4px; text-align: left;">不足</div><div style="position: absolute; left: 12.5%; width: 6.25%; height: 100%; background: #b7eb8f;"></div><div style="position: absolute; left: 18.75%; width: 12.5%; height: 100%; background: #52c41a;"></div><div style="position: absolute; left: 31.25%; width: 43.75%; height: 100%; background: #b7eb8f;"></div><div style="position: absolute; left: 75%; width: 25%; height: 100%; background: #ffa39e; border-radius: 0 4px 4px 0; text-align: right;">過剰</div>
+<tr>
+  <td style="width: 15px;">${ca_p < 1.0 ? `<span style="color: ${ca_p_color};">&#9888;<br><small>Low</small></span>` : (ca_p > 6.0 ? `<span style="color: ${ca_p_color};">&#9888;<br><small>High</small></span>` : '<span style="color: darkgreen;">&check;</span>')}</td>
+        <td style="width: 50px; text-align: center; color: ${ca_p_color};">Ca/P</td><td style="position: relative; height: 45px; vertical-align: middle; padding: 0 10px;">
+        <div style="background: #eee; height: 10px; width: 100%; position: relative;">
+          <div style="position: absolute; left: 0; width: 12.5%; height: 100%; background: darkblue; text-align: left;"></div><div style="position: absolute; left: 12.5%; width: 6.25%; height: 100%; background: limegreen;"></div><div style="position: absolute; left: 18.75%; width: 12.5%; height: 100%; background: darkgreen;"></div><div style="position: absolute; left: 31.25%; width: 43.75%; height: 100%; background: limegreen;"></div><div style="position: absolute; left: 75%; width: 25%; height: 100%; background: firebrick; text-align: right;"></div>
           <div style="position: absolute; top: 12px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
-          <div style="position: absolute; top: 25px; left: 18.75%; font-size: 9px; color: #237804; white-space: nowrap; font-weight: bold;">最適: 1.5-2.5</div>
+          <div style="position: absolute; bottom: 0px; left: 15%; font-size: 9px; color: white; white-space: nowrap;">理想 1.0~6.0（1.5~2.5が最適）</div>
           <div style="position: absolute; left: ${Math.min((ca_p / 8) * 100, 98)}%; top: 50%; transform: translateX(-50%); z-index: 2;">
-            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: ${ca_p_color}; white-space: nowrap; background: rgba(255,255,255,0.9); padding: 0 2px; border-radius: 2px;">${ca_p.toFixed(1)}</div>
-            <div style="width: 12px; height: 12px; background: ${ca_p_color}; border-radius: 50%; margin-top: -6px; border: 1px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; color: ${ca_p_color}; white-space: nowrap; background: rgba(255,255,255,0.9); padding: 0 2px;">${ca_p.toFixed(1)}</div>
+            <div style="width: 12px; height: 12px; background: #fff; border-radius: 50%; margin-top: -6px; border: 1px solid #000; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
           </div>
         </div>
-      </td></tr>
-      <tr><td style="text-align: center; border: 1px solid #ccc;">Zn/Cu</td><td style="position: relative; height: 75px; vertical-align: middle; border: 1px solid #ccc; padding: 0 10px;">
-        <div style="background: #eee; height: 8px; width: 100%; position: relative; border-radius: 4px; margin-top: 15px;">
-          <div style="position: absolute; left: 0; width: 37.5%; height: 100%; background: #91d5ff; border-radius: 4px 0 0 4px;"></div><div style="position: absolute; left: 37.5%; width: 37.5%; height: 100%; background: #b7eb8f;"></div><div style="position: absolute; left: 75%; width: 25%; height: 100%; background: #ffa39e; border-radius: 0 4px 4px 0;"></div>
-          <div style="position: absolute; top: 12px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
-          <div style="position: absolute; top: 25px; left: 37.5%; font-size: 9px; color: green; white-space: nowrap; font-weight: bold;">理想: 3.0-6.0</div>
+      </td>
+</tr>
+      <tr><td>${zn_cu < 3.0 ? `<span style="color: ${zn_cu_color};">&#9888;<br><small>Low</small></span>` : (zn_cu > 6.0 ? `<span style="color: ${zn_cu_color};">&#9888;<br><small>High</small></span>` : '<span style="color: darkgreen;">&check;</span>')}</td>
+        <td style="text-align: center; color: ${zn_cu_color};">Zn/Cu</td><td style="position: relative; height: 45px; vertical-align: middle; padding: 0 10px;">
+        <div style="background: #eee; height: 10px; width: 100%; position: relative;">
+          <div style="position: absolute; left: 0; width: 37.5%; height: 100%; background: darkblue; border-radius: 4px 0 0 4px;"></div><div style="position: absolute; left: 37.5%; width: 37.5%; height: 100%; background: limegreen;"></div><div style="position: absolute; left: 75%; width: 25%; height: 100%; background: firebrick; border-radius: 0 4px 4px 0;"></div>
+          <div style="position: absolute; top: 15px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+          <div style="position: absolute; bottom: 0px; left: 37.5%; font-size: 9px; color: white; white-space: nowrap;">理想: 3.0-6.0</div>
           <div style="position: absolute; left: ${Math.min((zn_cu / 8) * 100, 98)}%; top: 50%; transform: translateX(-50%); z-index: 2;">
-            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: ${zn_cu_color}; white-space: nowrap; background: rgba(255,255,255,0.9); padding: 0 2px; border-radius: 2px;">${zn_cu.toFixed(1)}</div>
-            <div style="width: 12px; height: 12px; background: ${zn_cu_color}; border-radius: 50%; margin-top: -6px; border: 1px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; color: ${zn_cu_color}; white-space: nowrap;  padding: 0 2px; border-radius: 2px;">${zn_cu.toFixed(1)}</div>
+            <div style="width: 12px; height: 12px; background: #fff; border-radius: 50%; margin-top: -6px; border: 1px solid #000; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
           </div>
         </div>
       </td></tr>
-      <tr><td style="text-align: center; border: 1px solid #ccc;">体重比</td><td style="position: relative; height: 75px; vertical-align: middle; border: 1px solid #ccc; padding: 0 10px;">
-        <div style="background: #eee; height: 8px; width: 100%; position: relative; border-radius: 4px; margin-top: 15px;">
-          <div style="position: absolute; left: 0; width: 30%; height: 100%; background: #91d5ff; border-radius: 4px 0 0 4px;"></div><div style="position: absolute; left: 30%; width: 20%; height: 100%; background: #b7eb8f;"></div><div style="position: absolute; left: 50%; width: 50%; height: 100%; background: #ffa39e; border-radius: 0 4px 4px 0;"></div>
+      <tr><td>${total_bw <= 1.5 ? `<span style="color: ${bw_color};">&#9888;<br><small>Low</small></span>` : (total_bw >= 2.5 ? `<span style="color: ${bw_color};">&#9888;<br><small>High</small></span>` : '<span style="color: darkgreen;">&check;</span>')}</td>
+        <td style="text-align: center; color: ${bw_color};">体重比</td><td style="position: relative; height: 45px; vertical-align: middle; padding: 0 10px;">
+        <div style="background: #eee; height: 10px; width: 100%; position: relative;">
+          <div style="position: absolute; left: 0; width: 30%; height: 100%; background: darkblue; border-radius: 4px 0 0 4px;"></div><div style="position: absolute; left: 30%; width: 20%; height: 100%; background: limegreen;"></div><div style="position: absolute; left: 50%; width: 50%; height: 100%; background: firebrick; border-radius: 0 4px 4px 0;"></div>
           <div style="position: absolute; top: 12px; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 9px; color: #999; padding: 0 2px;"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-          <div style="position: absolute; top: 25px; left: 30%; font-size: 9px; color: green; white-space: nowrap; font-weight: bold;">理想: 1.5-2.5%</div>
+          <div style="position: absolute; bottom: 0px; left: 30%; font-size: 9px; color: white;  white-space: nowrap;">理想: 1.5~2.5%</div>
           <div style="position: absolute; left: ${Math.min((total_bw / 5) * 100, 98)}%; top: 50%; transform: translateX(-50%); z-index: 2;">
-            <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: ${bw_color}; white-space: nowrap; background: rgba(255,255,255,0.9); padding: 0 2px; border-radius: 2px;">${total_bw.toFixed(1)}%</div>
-            <div style="width: 12px; height: 12px; background: ${bw_color}; border-radius: 50%; margin-top: -6px; border: 1px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
+          <div style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-size: 11px; color: ${bw_color}; white-space: nowrap; background: rgba(255,255,255,0.9); padding: 0 2px; border-radius: 2px;">${total_bw.toFixed(1)}%</div>
+            <div style="width: 12px; height: 12px; background: #fff; border-radius: 50%; margin-top: -6px; border: 1px solid #000; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>
           </div>
         </div>
       </td></tr>
@@ -275,10 +280,10 @@ function calculate() {
 
   const cpRate = (sum["タンパク質"] / req["タンパク質"]) * 100;
   messages.push(cpRate < 90 ? `<span style='color: darkblue;'>&#9888; タンパク質が不足しています（${cpRate.toFixed(1)}%）</span>` : cpRate > 150 ? `<span style='color: firebrick;'>&#9888; タンパク質が過剰です（${cpRate.toFixed(1)}%）</span>` : `<span style='color: darkgreen;'>&check; タンパク質は十分です（${cpRate.toFixed(1)}%）</span>`);
-
-  messages.push(ca_p < 1.0 ? "<span style='color: darkblue;'>&#9888; Ca/Pが低すぎます</span>" : ca_p > 6.0 ? "<span style='color: firebrick;'>&#9888; Ca/Pが高すぎます</span>" : "<span style='color: darkgreen;'>&check; Ca/Pは適正です</span>");
-  messages.push(zn_cu < 3.0 ? "<span style='color: darkblue;'>&#9888; Zn/Cuが低すぎます</span>" : zn_cu > 6.0 ? "<span style='color: firebrick;'>&#9888; Zn/Cuが高すぎます</span>" : "<span style='color: darkgreen;'>&check; Zn/Cuは適正です</span>");
-  messages.push(total_bw < 1.5 ? "<span style='color: darkblue;'>&#9888; 総量が不足しています</span>" : total_bw > 2.5 ? "<span style='color: firebrick;'>&#9888; 総量が過剰です</span>" : "<span style='color: darkgreen;'>&check; 総量は適正です</span>");
+//
+//  messages.push(ca_p < 1.0 ? "<span style='color: darkblue;'>&#9888; Ca/Pが低すぎます</span>" : ca_p > 6.0 ? "<span style='color: firebrick;'>&#9888; Ca/Pが高すぎます</span>" : "<span style='color: darkgreen;'>&check; Ca/Pは適正です</span>");
+//  messages.push(zn_cu < 3.0 ? "<span style='color: darkblue;'>&#9888; Zn/Cuが低すぎます</span>" : zn_cu > 6.0 ? "<span style='color: firebrick;'>&#9888; Zn/Cuが高すぎます</span>" : "<span style='color: darkgreen;'>&check; Zn/Cuは適正です</span>");
+//  messages.push(total_bw < 1.5 ? "<span style='color: darkblue;'>&#9888; 総量が不足しています</span>" : total_bw > 2.5 ? "<span style='color: firebrick;'>&#9888; 総量が過剰です</span>" : "<span style='color: darkgreen;'>&check; 総量は適正です</span>");
 
   alertEl.innerHTML = messages.join("<br>");
 
@@ -316,24 +321,3 @@ window.onload = () => {
 };</script>
 </body>
 </html>
-
-<!--  // 栄養素テーブル生成
-  let html = `<table><thead><tr><th colspan="2">栄養素</th><th>要求量</th><th>給餌量</th>
-<th width="50%">充足率</th></tr></thead><tbody>`;
-  for (const key in sum) {
-    const rate = (sum[key] / req[key] * 100);
-    const rateText = rate.toFixed(1);
-    let color = "darkgreen";
-    if (rate > 120) color = "firebrick";
-    else if (rate < 80) color = "darkblue";
-
-    html += `<tr><td>${key}</td><td style="font-size: 15px;">${units[key] || ""}</td><td style="text-align: right;">${req[key]}</td><td style="text-align: right;">${sum[key].toFixed(2)}</td>
-      <td><div class="bar-container"><span class="bar-label">${rateText}%</span><div class="bar-fill" style="width:${Math.min(rate,150)}%; background:${color};"></div></div></td></tr>`;
-  }
-  html += "</tbody></table>";
-  document.getElementById("result").innerHTML = html;
--->
-
-
-
-

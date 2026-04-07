@@ -52,7 +52,7 @@
 
 <img src="/2025秋.png">
 <img src="/2025冬.png">
-<img src="/2026夏.png">
+<img src="/2026真夏.png">
 
 <hr>
 

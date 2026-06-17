@@ -17,6 +17,9 @@
 <br>	※入力値は一食あたり。<br>
 <br>	※各値の表示：	青＝不足、緑＝理想、赤＝過剰
 <br>
+<div font color="red">
+ 詳細な値や値段まで加味したい場合はExcelファイルを使ってください。
+</div>
 <table border="1">
   <thead>
     <tr><th>飼料名</th><th>分類</th><th>特徴・注意事項</th></tr>
@@ -50,9 +53,9 @@
 <br>		VD：	ビタミンD　不足でも日光浴びれば大丈夫
 <br>		VE：	ビタミンE	
 
-<img src="/2025秋。png">
-<img src="/2025冬。png">
-<img src="/2026真夏。png">
+<img src="/2025秋.png">
+<img src="/2025冬.png">
+<img src="/2026真夏.png">
 
 <hr>
 不具合、改善のご要望、ご質問等あれば何でもどうぞ	

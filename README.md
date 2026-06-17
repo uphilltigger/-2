@@ -17,7 +17,7 @@
 <br>	※入力値は一食あたり。<br>
 <br>	※各値の表示：	青＝不足、緑＝理想、赤＝過剰
 <br>
-<div font-color="red">
+<div style="color:red;">
  詳細な値や値段まで加味したい場合はExcelファイルを使ってください。
 </div>
 <br>

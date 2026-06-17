@@ -16,10 +16,7 @@
  
 <br>	※入力値は一食あたり。<br>
 <br>	※各値の表示：	青＝不足、緑＝理想、赤＝過剰
-<br>
-<div style="color:red;">
- 詳細な値や値段まで加味したい場合はExcelファイルを使ってください。
-</div>
+<br><b>詳細な値や値段まで加味したい場合はExcelファイルを使ってください。</b>
 <br>
 <table border="1">
   <thead>
@@ -59,5 +56,7 @@
 <img src="/2026真夏.png">
 
 <hr>
-不具合、改善のご要望、ご質問等あれば何でもどうぞ	
-<b>&copy;2025-2026 MIURA SOTA</b>
+<div style="text-align: center;">
+不具合、改善のご要望、ご質問等あれば何でもどうぞ
+<br><b>&copy;2025-2026 MIURA SOTA</b>
+</div>

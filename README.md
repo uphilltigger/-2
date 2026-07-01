@@ -35,22 +35,80 @@
   </tbody>
 </table>
 <br>
-<br>		Lys：	リジン
-<br>		Ca：	カルシウム
-<br>		P：		リン
-<br>		Mg：	マグネシウム　ウマの興奮を抑える
-<br>		Na：	ナトリウム
-<br>		K：		カリウム
-<br>		Fe：	鉄
-<br>		Cu：	銅
-<br>		Zn：	亜鉛　蹄の角質化に必要
-<br>		Mn：	マンガン
-<br>		Se：	セレン
-<br>		Co：	コバルト
-<br>		VA：	ビタミンA　過剰に注意
-<br>		VD：	ビタミンD　不足でも日光浴びれば大丈夫
-<br>		VE：	ビタミンE	
-
+<table>
+	<tr><td colspan="2">栄養素</td><td>効果</td><td>不足</td><td>過剰</td></tr>
+	<tr><td colspan="2">エネルギー</td><td>原動力</td><td>体重減</td><td>肥満</td></tr>
+	<tr><td colspan="2">タンパク質</td><td></td><td>筋肉の衰え，蹄もろく</td><td>内臓への負担</td></tr>
+	<tr><td>Lys</td><td>リジン</td><td>必須アミノ酸</td><td>筋肉つかない</td><td>×</td></tr>
+	<tr><td>Ca</td><td>カルシウム</td><td>骨・歯の主成分</td><td>骨がもろく</td><td>他のミネラル吸収阻害</td></tr>
+	<tr><td>P</td><td>リン</td><td>骨を丈夫に</td><td>食欲不振</td><td>骨がもろく</td></tr>
+	<tr><td>Mg</td><td>マグネシウム</td><td>興奮を抑える</td><td>神経質，イライラ</td><td>下痢</td></tr>
+	<tr><td>Na</td><td>ナトリウム</td><td>浸透圧コントロール</td><td>脱水，熱中症</td><td>×</td></tr>
+	<tr><td>K</td><td>カリウム</td><td>水分バランス維持</td><td>脱水</td><td>心不全</td></tr>
+	<tr>
+		<td>Fe</td>
+		<td>鉄</td>
+		<td>酸素の運搬</td>
+		<td>貧血</td>
+		<td>×</td>
+	</tr>
+	<tr>
+		<td>Cu</td>
+		<td>銅</td>
+		<td>コラーゲン生成</td>
+		<td>毛艶悪化</td>
+		<td>×</td>
+	</tr>
+	<tr>
+		<td>Zn</td>
+		<td>亜鉛</td>
+		<td>皮膚・蹄の維持，免疫</td>
+		<td>皮膚病，蹄悪化</td>
+		<td>骨の発育異常</td>
+	</tr>
+	<tr>
+		<td>Mn</td>
+		<td>マンガン</td>
+		<td>軟骨・骨の形成</td>
+		<td>骨の異常</td>
+		<td>×</td>
+	</tr>
+	<tr>
+		<td>Se</td>
+		<td>セレン</td>
+		<td>抗酸化作用，筋肉痛予防</td>
+		<td>筋肉痛</td>
+		<td>×</td>
+	</tr>
+	<tr>
+		<td>Co</td>
+		<td>コバルト</td>
+		<td>VB12合成</td>
+		<td>×</td>
+		<td>×</td>
+	</tr>
+	<tr>
+		<td>VA</td>
+		<td>ビタミンA</td>
+		<td>目の健康</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>VD</td>
+		<td>ビタミンD</td>
+		<td>Ca吸収を助ける</td>
+		<td>日光浴びれば大丈夫</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>VE</td>
+		<td>ビタミンE</td>
+		<td>免疫，生殖機能</td>
+		<td>筋肉症</td>
+		<td>×</td>
+	</tr>
+</table>
 <img src="/2025秋.png">
 <img src="/2025冬.png">
 <img src="/2026真夏.png">

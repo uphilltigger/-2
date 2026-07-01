@@ -36,9 +36,9 @@
 </table>
 <br>
 <table>
-	<tr><td>栄養素</td><td></td><td>効果</td><td>不足</td><td>過剰</td></tr>
+	<tr><td colspan="2"><b>栄養素</b></td><td><b>効果</b></td><td><b>不足</b></td><td><b>過剰</b></td></tr>
 	<tr><td colspan="2">エネルギー</td><td>原動力</td><td>体重減</td><td>肥満</td></tr>
-	<tr><td colspan="2">タンパク質</td><td></td><td>筋肉の衰え，蹄もろく</td><td>内臓への負担</td></tr>
+	<tr><td colspan="2">タンパク質</td><td>体の維持</td><td>筋肉の衰え，蹄もろく</td><td>内臓への負担</td></tr>
 	<tr><td>Lys</td><td>リジン</td><td>必須アミノ酸</td><td>筋肉つかない</td><td>×</td></tr>
 	<tr><td>Ca</td><td>カルシウム</td><td>骨・歯の主成分</td><td>骨がもろく</td><td>他のミネラル吸収阻害</td></tr>
 	<tr><td>P</td><td>リン</td><td>骨を丈夫に</td><td>食欲不振</td><td>骨がもろく</td></tr>

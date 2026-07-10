@@ -55,6 +55,22 @@
 	<tr><td>VD</td><td>ビタミンD</td><td>Ca吸収を助ける</td><td>骨の異常</td><td></td></tr>
 	<tr><td>VE</td><td>ビタミンE</td><td>免疫，生殖機能</td><td>筋肉症</td><td>×</td></tr>
 </table>
+<table>
+	<tr><td colspan="2">馬名</td><td>誕生日</td><td>目安</td></tr>
+	<tr><td>グランシエロ</td><td>北冴</td><td>2019/2/18</td><td>540</td></tr>
+	<tr><td>ノガロ</td><td>北陽</td><td>2013/2/7</td><td>540</td></tr>
+	<tr><td>ダノンクライム</td><td>北叡</td><td>2014/4/17</td><td>540</td></tr>
+	<tr><td>テイエムシュンソク</td><td>北駿</td><td>2017/5/1</td><td>540</td></tr>
+	<tr><td>タイダルベイスン</td><td>北汐</td><td>2010/3/6</td><td>520</td></tr>
+	<tr><td colspan="2">キタノインパクト</td><td>2016/1/12</td><td>500</td></tr>
+	<tr><td colspan="2">アドマイヤカーリン</td><td>2008/3/25</td><td>500</td></tr>
+	<tr><td colspan="2">ファーブルトン</td><td>2014/3/15</td><td>500</td></tr>
+	<tr><td>フェンネル</td><td>北香</td><td>2016/5/15</td><td>500</td></tr>
+	<tr><td>ドラゴンケーニッヒ</td><td>北琉</td><td>2012/2/5</td><td>470</td></tr>
+	<tr><td colspan="2">ピースオブエイト</td><td>2019/1/7</td><td>470</td></tr>
+	<tr><td>キタノブルー</td><td>北蒼</td><td>2017/2/13</td><td>470</td></tr>
+	<tr><td>ワイルドヒロイン</td><td>北玖</td><td>2018/2/19</td><td>470</td></tr>
+</table>
 <img src="/2025秋.png">
 <img src="/2025冬.png">
 <img src="/2026真夏.png">

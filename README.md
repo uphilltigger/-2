@@ -56,7 +56,7 @@
 	<tr><td>VE</td><td>ビタミンE</td><td>免疫，生殖機能</td><td>筋肉症</td><td>×</td></tr>
 </table>
 <table>
-	<tr><td colspan="2">馬名</td><td>誕生日</td><td>目安</td></tr>
+	<tr><td colspan="2">馬名</td><td>誕生日</td><td>馬体重</td></tr>
 	<tr><td>グランシエロ</td><td>北冴</td><td>2019/2/18</td><td>540</td></tr>
 	<tr><td>ノガロ</td><td>北陽</td><td>2013/2/7</td><td>540</td></tr>
 	<tr><td>ダノンクライム</td><td>北叡</td><td>2014/4/17</td><td>540</td></tr>

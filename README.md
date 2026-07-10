@@ -71,7 +71,7 @@
 	<tr><td>キタノブルー</td><td>北蒼</td><td>2017/2/13</td><td>470</td></tr>
 	<tr><td>ワイルドヒロイン</td><td>北玖</td><td>2018/2/19</td><td>470</td></tr>
 </table>
-<table style="background-color: blue;">
+<table>
 	<tr><td><b>2025秋</b></td><td>齢</td><td>ビート</td><td>燕麦</td><td>キューブ</td><td>大豆粕</td><td>ベルテ</td><td>濃厚</td><td>ふすま</td></tr>
 	<tr><td>カーリン</td><td>17</td><td>0.4</td><td>1.4</td><td>1.8</td><td>0.2</td><td>0.2</td><td>0.2</td><td>1.0</td></tr>
 	<tr><td>シエロ</td><td>6</td><td>1.2</td><td>1.4</td><td>2.4</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>

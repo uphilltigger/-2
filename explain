@@ -1,0 +1,98 @@
+<nobr>
+＜使い方＞
+<br>※スマホ、PCどちらもいけます！※
+<br><b>ウマ</b>と<b>運動強度</b>を選んで、給餌量を入力すれば充足率がわかるようになっています。
+<br>(1)まずは現在の給餌量を入れて、なにがどのくらい満たされているのかを確認する。
+<br>(2)主にエネルギー、タンパク質、総量、Ca/P比、Zn/Cu比に注意してそれぞれの値をいじる。
+<br>(3)黒板に反映。後世のために記録もしておく。
+<br>
+<br>・注意点
+<br>特別な配慮が必要な馬もいる。
+<br>　クライム：喉詰まりを起こすのでビートはあげない。 
+<br>　ノガロ：なぜかあまり増やさなくても痩せない。
+<br>　パク：蹄が弱いので白サプリを入れること
+<br>　高齢馬や胃腸が弱い馬：麦や濃厚ばかりだと消化管に負担大。ビートやキューブは消化に良いほか、ふすまは整腸作用があるのでこれらを重視したい。
+<br>　新馬：乗馬クラブからなのか競走馬あがりなのかとかで変わってくるが、原則として体重が同じくらいの馬に合わせる。例：ワイルドヒロイン→セノーテ、ファーブルトン→ノガロ。食べ慣れない飼いは徐々に増やす。ふすまは特に残しやすい。
+<br>　去勢手術が控えている馬（レア）：体力つけてあげないとかわいそうなので、気持ち多めに作って与えてあげた方がいいかも。
+ 
+<br>	※入力値は一食あたり。<br>
+<br>	※各値の表示：	青＝不足、緑＝理想、赤＝過剰
+<br><b>詳細な値や値段まで加味したい場合はExcelファイルを使ってください。</b>
+<br>
+<table border="1">
+  <thead>
+    <tr><th>飼料名</th><th>特徴・注意事項</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ビート</td><td>食物繊維が豊富で消化によい。水でふやかしてから与える。<br>クライムは過去に喉詰まりをしたので極力避けること。</td></tr>
+    <tr><td>燕麦</td><td>エネルギー源。与えすぎるとテンションが上がることがある。<br>高齢馬や胃腸が弱い馬には多給しないこと。</td></tr>
+    <tr><td>キューブ</td><td>消化によい。水でふやかしてから与える。</td></tr>
+    <tr><td>大豆粕</td><td>タンパク質が豊富。</td></tr>
+    <tr><td>Ver18（ベルテ）</td><td>ビタミンやミネラルを多く含む。</td></tr>
+    <tr><td>Ver14（濃厚）</td><td>高エネルギー・高嗜好性。あげすぎ注意。</td></tr>
+    <tr><td>ふすま</td><td>タンパク・繊維豊富。整腸作用あり。高齢馬にはぜひあげたい。</td></tr>
+    <tr><td>塩</td><td>しょっぱくして飲水を促すために入れる。夏は多めに入れて脱水を避ける。</td></tr>
+    <tr><td>乾草</td><td>いっぱいあげましょう。</td></tr>
+  </tbody>
+</table>
+<br>
+<table>
+	<tr><th colspan="2"><b>栄養素</b></th><th><b>効果</b></th><th><b>不足</b></th><th><b>過剰</b></th></tr>
+	<tr><td colspan="2">エネルギー</td><td>原動力</td><td>体重減</td><td>肥満</td></tr>
+	<tr><td colspan="2">タンパク質</td><td>体の維持</td><td>筋肉の衰え，蹄もろく</td><td>内臓への負担</td></tr>
+	<tr><td>Lys</td><td>リジン</td><td>必須アミノ酸</td><td>筋肉つかない</td><td>×</td></tr>
+	<tr><td>Ca</td><td>カルシウム</td><td>骨・歯の主成分</td><td>骨がもろく</td><td>他のミネラル吸収阻害</td></tr>
+	<tr><td>P</td><td>リン</td><td>骨を丈夫に</td><td>食欲不振</td><td>骨がもろく</td></tr>
+	<tr><td>Mg</td><td>マグネシウム</td><td>興奮を抑える</td><td>神経質，イライラ</td><td>下痢</td></tr>
+	<tr><td>Na</td><td>ナトリウム</td><td>浸透圧コントロール</td><td>脱水，熱中症</td><td>×</td></tr>
+	<tr><td>K</td><td>カリウム</td><td>水分バランス維持</td><td>脱水</td><td>心不全</td></tr>
+	<tr><td>Fe</td><td>鉄</td><td>酸素の運搬</td><td>貧血</td><td>×</td></tr>
+	<tr><td>Cu</td><td>銅</td><td>コラーゲン生成</td><td>毛艶悪化</td><td>×</td></tr>
+	<tr><td>Zn</td><td>亜鉛</td><td>皮膚・蹄の維持，免疫</td><td>皮膚病，蹄悪化</td><td>骨の発育異常</td></tr>
+	<tr><td>Mn</td><td>マンガン</td><td>軟骨・骨の形成</td><td>骨の異常</td><td>×</td></tr>
+	<tr><td>Se</td><td>セレン</td><td>抗酸化作用，筋肉痛予防</td><td>筋肉痛</td><td>×</td></tr>
+	<tr><td>Co</td><td>コバルト</td><td>VB12合成</td><td>×</td><td>×</td></tr>
+	<tr><td>VA</td><td>ビタミンA</td><td>目の健康</td><td></td><td></td></tr>
+	<tr><td>VD</td><td>ビタミンD</td><td>Ca吸収を助ける</td><td>骨の異常</td><td></td></tr>
+	<tr><td>VE</td><td>ビタミンE</td><td>免疫，生殖機能</td><td>筋肉症</td><td>×</td></tr>
+</table>
+<table>
+	<tr><td colspan="2">馬名</td><td>誕生日</td><td>馬体重</td></tr>
+	<tr><td>グランシエロ</td><td>北冴</td><td>2019/2/18</td><td>540</td></tr>
+	<tr><td>ノガロ</td><td>北陽</td><td>2013/2/7</td><td>540</td></tr>
+	<tr><td>ダノンクライム</td><td>北叡</td><td>2014/4/17</td><td>540</td></tr>
+	<tr><td>テイエムシュンソク</td><td>北駿</td><td>2017/5/1</td><td>540</td></tr>
+	<tr><td><nobr>タイダルベイスン</td><td>北汐</td><td>2010/3/6</td><td>520</td></tr>
+	<tr><td colspan="2">キタノインパクト</td><td>2016/1/12</td><td>500</td></tr>
+	<tr><td colspan="2">アドマイヤカーリン</td><td>2008/3/25</td><td>500</td></tr>
+	<tr><td colspan="2">ファーブルトン</td><td>2014/3/15</td><td>500</td></tr>
+	<tr><td>フェンネル</td><td>北香</td><td>2016/5/15</td><td>500</td></tr>
+	<tr><td>ドラゴンケーニッヒ</td><td>北琉</td><td>2012/2/5</td><td>470</td></tr>
+	<tr><td colspan="2">ピースオブエイト</td><td>2019/1/7</td><td>470</td></tr>
+	<tr><td>キタノブルー</td><td>北蒼</td><td>2017/2/13</td><td>470</td></tr>
+	<tr><td>ワイルドヒロイン</td><td>北玖</td><td>2018/2/19</td><td>470</td></tr>
+</table>
+<table>
+	<tr><td><b>2025秋</b></td><td>齢</td><td>ビート</td><td>燕麦</td><td>キューブ</td><td>大豆粕</td><td>ベルテ</td><td>濃厚</td><td>ふすま</td></tr>
+	<tr><td>カーリン</td><td>17</td><td>0.4</td><td>1.4</td><td>1.8</td><td>0.2</td><td>0.2</td><td>0.2</td><td>1.0</td></tr>
+	<tr><td>シエロ</td><td>6</td><td>1.2</td><td>1.4</td><td>2.4</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>パク</td><td>9</td><td>1.0</td><td>1.4</td><td>2.0</td><td>0.2</td><td>0.2</td><td>0.6</td><td>0.8</td></tr>
+	<tr><td>シュンソク</td><td>8</td><td>1.4</td><td>1.4</td><td>2.0</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ワイン</td><td>7</td><td>1.0</td><td>1.4</td><td>1.4</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ドラゴン</td><td>13</td><td>1.2</td><td>1.4</td><td>2.0</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ネル</td><td>9</td><td>0.4</td><td>1.4</td><td>2.0</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ベイ</td><td>15</td><td>1.2</td><td>1.4</td><td>2.4</td><td>0.2</td><td>0.2</td><td></td><td>1.4</td></tr>
+	<tr><td>ガロ</td><td>12</td><td>0.8</td><td>1.4</td><td>1.4</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>クライム</td><td>11</td><td></td><td>1.4</td><td>3.6</td><td>0.2</td><td>0.2</td><td>0.4</td><td>1.8</td></tr>
+	<tr><td>ピース</td><td>6</td><td>0.8</td><td>1.4</td><td>1.6</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>アンチョ</td><td>18</td><td>1.2</td><td>1.4</td><td>1.6</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ブルー</td><td>8</td><td>1.0</td><td>1.4</td><td>2.4</td><td>0.2</td><td>0.2</td><td>0.3</td><td>0.8</td></tr>
+	<tr><td>セノーテ</td><td>18</td><td>1.4</td><td>0.8</td><td>1.6</td><td>0.2</td><td>0.2</td><td></td><td>1.2</td></tr>
+</table>
+
+<img src="/2025冬.png">
+<img src="/2026真夏.png">
+
+<hr>
+不具合、改善のご要望、ご質問等あれば何でもどうぞ
+<br><b>&copy;2025-2026 MIURA SOTA</b>

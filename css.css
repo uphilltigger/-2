@@ -2,7 +2,7 @@
 
 	body { font-size: 16px; margin:0; padding: 1rem; background:#ffffff; width: 100%; max-width: 600px; user-select: none; font-family: 'Verdana','ヒラギノ角ゴシック','Hiragino Sans',YuGothic,'Yu Gothic',sans-serif; }
 	.table-container { padding:1rem; }
-	table { border-collapse:collapse; width: 100%; }
+	table { border-collapse:collapse; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 	th, td { border:1px solid #ccc; padding-left:0.3rem; padding-right:0.3rem; text-align:center; vertical-align:middle; white-space: nowrap;}
 	thead { background:#eee; }
 	input { font-size: 20px; width: 2.5em; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); font-family: 'Arial','ヒラギノ角ゴシック','Hiragino Sans',YuGothic,'Yu Gothic',sans-serif; }

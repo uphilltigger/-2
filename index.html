@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>飼料計算</title>
 	<style>
@@ -14,6 +13,7 @@
 	input:focus { border-color: #3182ce; outline: none; }
 	.feed-total{border: 0px; background:#ffffff; }
 	.sum{border: 0px; background:#ffffff; }
+    .past-text{ font-size: 10px; }
 	select { font-size: 20px; border-color: red; background-color:rgba(255, 255, 0, 0.2); font-family: 'Verdana','ヒラギノ角ゴシック','Hiragino Sans',YuGothic,'Yu Gothic',sans-serif; }
 	.bar-container {width: 100%; height: 24px; background: silver; border-radius: 14px; overflow: hidden; display:inline-block; position: relative; }
 	.bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease; }
@@ -36,7 +36,6 @@
 	<div>
 	  <label>ウマ：
 	    <select id="weight">
-<!--	  <option value="" selected disabled>--選択してください--</option>  -->
 	      <option value="500" class="senior">アップヒルティガー</option>
 	      <option value="540" selected>グランシエロ</option>
 	      <option value="470">ドラゴンケーニッヒ</option>
@@ -50,7 +49,7 @@
 	      <option value="540" class="nobeet">ダノンクライム</option>
 	      <option value="470">ピースオブエイト</option>
 	      <option value="500">ファーブルトン</option>
-	    　<option value="500" class="senior">アドマイヤカーリン</option>
+	     <option value="500" class="senior">アドマイヤカーリン</option>
 	      <hr>
 	      <option value="400">汎用：400 kg</option>
 	      <option value="450">汎用：450 kg</option>
@@ -61,7 +60,6 @@
 	  <br><br>
 	  <label>運動強度：
 	    <select id="work">
-<!--	  <option value="" disabled>--選択してください--</option>  -->
 	      <option value="無">無（積雪期）</option>
 	      <option value="軽">軽（春先，馬場凍結前）</option>
 	      <option value="中">中（普段）</option>
@@ -74,7 +72,10 @@
 		<button id="reset-btn">初期化する</button>
 		<div class="table-container">
 		  <table id="feed-table">
-		    <thead><tr><th>飼料名</th><th>朝夕</th><th>昼夜</th><th>合計</th></tr></thead>
+		    <thead>
+		      <tr><th rowspan="2">飼料名</th><th colspan="2"></th><th rowspan="2">合計</th><th colspan="2" class="past-text">前年同期</th></tr>
+		      <tr><th>朝夕</th><th>昼夜</th><th class="past-text">朝夕</th><th class="past-text">昼夜</th></tr>
+		    </thead>
 		    <tbody id="feed-body"></tbody>
 		    <tbody id="sum-body"></tbody>
 		  </table>
@@ -82,10 +83,6 @@
 		<hr>
 		<div class="table-container" id="alert-messages"><span id="horse-attribute"></span></div>
 		<div class="table-container" id="result-balance"></div>
-<!--		<div style="display: flex; align-items: flex-start;">
-		    <div class="table-container" id="alert-messages" style="flex: 1; white-space: nowrap;"><span id="horse-attribute"></span></div>
-		    <div class="table-container" id="result-balance" style="flex: 1;"></div>
-		</div>-->
 		<small>（表に値を入れると文言が変わります）</small>
 		<div class="table-container" id="result"></div>
 <hr>
@@ -97,15 +94,15 @@
 // 飼料
 const feeds = [
   {name:"ビート", エネルギー:2.85, タンパク質:109.00, Lys:7.20, Ca:5.11, P:0.78, Mg:2.68, Na:1.04, K:4.16, Fe:519.60, Cu:9.27, Zn:27.71, Mn:53.69, Se:0.00, Co:0.20, VA:28, VD:9, VE:0.00, default1:"1.0", default2:""},
-  {name:"麦", エネルギー:3.27, タンパク質:106.00, Lys:3.60, Ca:0.60, P:3.33, Mg:1.33, Na:0.53, K:4.07, Fe:88.20, Cu:6.33, Zn:31.73, Mn:15.00, Se:0.15, Co:0.00, VA:0, VD:0.00, VE:0, default1:"", default2:"0.7"},
+  {name:"麦", エネルギー:3.27, タンパク質:106.00, Lys:3.60, Ca:0.60, P:3.33, Mg:1.33, Na:0.53, K:4.07, Fe:88.20, Cu:6.33, Zn:31.73, Mn:15.00, Se:0.15, Co:0.00, VA:0, VD:0.00, VE:0, default1:"", default2:0.7},
+  {name:"vertex riding", エネルギー:3.00, タンパク質:158.00, Lys:9.00, Ca:18.00, P:9.00, Mg:3.00, Na:3.00, K:10.00, Fe:209.90, Cu:51.10, Zn:135.00, Mn:125.20, Se:0.60, Co:0.00, VA:14931, VD:1458, VE:816.6, default1:"", default2:""},
   {name:"キューブ", エネルギー:2.40, タンパク質:149.95, Lys:6.60, Ca:12.41, P:2.38, Mg:2.45, Na:1.41, K:22.00, Fe:264.00, Cu:8.80, Zn:24.64, Mn:40.48, Se:0.26, Co:0.18, VA:0, VD:0, VE:0, default1:"0.6", default2:""},
   {name:"大豆粕", エネルギー:13.13, タンパク質:461.00, Lys:28.30, Ca:2.90, P:6.20, Mg:3.20, Na:0.30, K:0.00, Fe:0.00, Cu:18.00, Zn:56.00, Mn:0.00, Se:0.45, Co:0.00, VA:56, VD:18, VE:0.45, default1:"0.1", default2:""},
   {name:"ベルテ", エネルギー:2.52, タンパク質:184.8, Lys:9.90, Ca:13.40, P:24.20, Mg:2.50, Na:12.00, K:13.40, Fe:563.42, Cu:133.63, Zn:331.66, Mn:206.02, Se:1.90, Co:0.53, VA:45866, VD:4080, VE:688, default1:"0.1", default2:"0.3"},
   {name:"濃厚", エネルギー:3.12, タンパク質:144.00, Lys:7.00, Ca:31.00, P:12.30, Mg:2.20, Na:9.30, K:9.80, Fe:340.01, Cu:88.69, Zn:219.27, Mn:153.67, Se:1.21, Co:0.54, VA:29, VD:3, VE:865, default1:"0.3", default2:""},
   {name:"ふすま", エネルギー:2.68, タンパク質:157.00, Lys:6.30, Ca:1.20, P:9.80, Mg:4.40, Na:0.80, K:0.00, Fe:0.00, Cu:11.00, Zn:70.00, Mn:0.00, Se:0.00, Co:0.00, VA:70, VD:11, VE:0.51, default1:"", default2:0.5},
-  {name:"塩", エネルギー:0.00, タンパク質:0.00, Lys:0.00, Ca:0.30, P:0.00, Mg:0.00, Na:392.00, K:0.00, Fe:0.00, Cu:0.00, Zn:0.00, Mn:0.00, Se:0.00, Co:0.00, VA:0.00, VD:0.00, VE:0.00, default1:0.01, default2:0.01},
-  {name:"乾草", エネルギー:1.67, タンパク質:79.30, Lys:3.10, Ca:2.10, P:1.90, Mg:1.10, Na:0.40, K:15.10, Fe:70.27, Cu:5.06, Zn:21.22, Mn:82.55, Se:0.02, Co:0.20, VA:1584.19, VD:0, VE:27, default1:1, default2:1},
-  {name:"vertex riding", エネルギー:3.00, タンパク質:158.00, Lys:9.00, Ca:18.00, P:9.00, Mg:3.00, Na:3.00, K:10.00, Fe:209.90, Cu:51.10, Zn:135.00, Mn:125.20, Se:0.60, Co:0.00, VA:14931, VD:1458, VE:816.6, default1:"", default2:""}
+  {name:"塩", エネルギー:0.00, タンパク質:0.00, Lys:0.00, Ca:0.30, P:0.00, Mg:0.00, Na:392.00, K:0.00, Fe:0.00, Cu:0.00, Zn:0.00, Mn:0.00, Se:0.00, Co:0.00, VA:0.00, VD:0.00, VE:0.00, default1:"0.02", default2:"0.02"},
+  {name:"乾草", エネルギー:1.67, タンパク質:79.30, Lys:3.10, Ca:2.10, P:1.90, Mg:1.10, Na:0.40, K:15.10, Fe:70.27, Cu:5.06, Zn:21.22, Mn:82.55, Se:0.02, Co:0.20, VA:1584.19, VD:0, VE:27, default1:"1.0", default2:"1.0"}
 ];
 
 // 要求量
@@ -134,19 +131,95 @@ const reqTable = [
   {weight:540, work:"軽", エネルギー:21.12, タンパク質:844.8, Lys:36.33, Ca:32.4, P:19.44, Mg:9.72, Na:28.35, K:66.15, Fe:432, Cu:162, Zn:486, Mn:486, Se:2.363, Co:0.54, VA:21600, VD:3564, VE:864},
   {weight:540, work:"中", エネルギー:24.64, タンパク質:985.6, Lys:42.38, Ca:37.8, P:22.68, Mg:11.33, Na:28.35, K:66.15, Fe:486, Cu:182.25, Zn:546.75, Mn:546.75, Se:3.038, Co:0.608, VA:24300, VD:3564, VE:972},
   {weight:540, work:"強", エネルギー:28.16, タンパク質:1126, Lys:48.44, Ca:43.2, P:31.32, Mg:12.95, Na:36.45, K:85.05, Fe:540, Cu:202.5, Zn:607.5, Mn:607.5, Se:3.375, Co:0.675, VA:27000, VD:3564, VE:1080},
-
 ];
-function getRequirements(weight, work){
-  return reqTable.find(r=>r.weight==weight && r.work==work) || reqTable[0];
-}
 
 //単位
 const units = {
   エネルギー: "Mcal", タンパク質: "g", Lys: "g", Ca: "g", P: "g", Mg: "g", Na: "g", K: "g", Fe: "mg", Cu: "mg", Zn: "mg", Mn: "mg", Se: "mg", Co: "mg", VA: "IU", VD: "IU", VE: "IU"
 };
 
+const pastData = {
+  "アドマイヤカーリン": {
+    "無": { "ビート": [0.5, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.9, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0.2, 0.4], "塩": [0.01, 0.01] }
+  },
+  "キタノインパクト": {
+    "無": { "ビート": [0.5, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.5, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "濃厚": [0.3, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.5, 0], "麦": [0, 0.5], "キューブ": [1.0, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.2, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.5, 0], "麦": [0, 0.7], "キューブ": [1.0, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.3, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  },
+  "キタノブルー": {
+    "無": { "ビート": [0.5, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.5, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "濃厚": [0.2, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.5, 0], "麦": [0, 0.5], "キューブ": [1.2, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.2, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.5, 0], "麦": [0, 0.7], "キューブ": [1.2, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.3, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  },
+  "グランシエロ": {
+    "無": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "濃厚": [0.2, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [1.0, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.8, 0], "麦": [0, 0.7], "キューブ": [1.3, 0], "大豆粕": [0.4, 0], "ベルテ": [0.2, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  },
+  "タイダルベイスン": {
+    "無": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0.2, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0.2, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [1.0, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0.3, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.6, 0], "麦": [0, 0.7], "キューブ": [1.2, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.4, 0], "ふすま": [0.3, 0.4], "塩": [0.02, 0.01] }
+  },
+  "ダノンクライム": {
+    "無": { "麦": [0, 0.5], "キューブ": [1.2, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0.5, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "麦": [0, 0.5], "キューブ": [1.2, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0.5, 0.4], "塩": [0.01, 0.01] },
+    "中": { "麦": [0, 0.7], "キューブ": [1.4, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.2, 0], "ふすま": [0.5, 0.4], "塩": [0.01, 0.01] },
+    "強": { "麦": [0.5, 0.7], "キューブ": [1.8, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.7, 0], "ふすま": [0.5, 0.4], "塩": [0.02, 0.01] }
+  },
+  "テイエムシュンソク": {
+    "無": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "濃厚": [0.2, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [1.0, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.8, 0], "麦": [0, 0.7], "キューブ": [1.2, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  },
+  "ドラゴンケーニッヒ": {
+    "無": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [1.0, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.2, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.6, 0], "麦": [0, 0.7], "キューブ": [0.7, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  },
+  "ノガロ": {
+    "無": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.7, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.4, 0], "麦": [0, 0.7], "キューブ": [0.7, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  },
+  "ピースオブエイト": {
+    "無": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.4, 0], "麦": [0.2, 0.7], "キューブ": [0.8, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.2, 0], "麦": [0.6, 0.7], "キューブ": [0.2, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  },
+  "ファーブルトン": {
+    "軽": { "ビート": [0.6, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0, 0.4], "塩": [0.01, 0.01] }
+  },
+  "フェンネル": {
+    "無": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.2, 0], "麦": [0, 0.7], "キューブ": [1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  },
+  "ワイルドヒロイン": {
+    "無": { "ビート": [0.4, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "軽": { "ビート": [0.5, 0], "麦": [0, 0.5], "キューブ": [0.6, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0.2], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "中": { "ビート": [0.5, 0], "麦": [0, 0.7], "キューブ": [0.7, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "ふすま": [0, 0.4], "塩": [0.01, 0.01] },
+    "強": { "ビート": [0.6, 0], "麦": [0, 0.7], "キューブ": [0.8, 0], "大豆粕": [0.1, 0], "ベルテ": [0.1, 0], "濃厚": [0.3, 0], "ふすま": [0, 0.4], "塩": [0.02, 0.01] }
+  }
+};
 
-// 行作成
+function getRequirements(weight, work){
+  return reqTable.find(r=>r.weight==weight && r.work==work) || reqTable[0];
+}
+
+// 行作成（全6列構成）
 function createRows(){
   const feedBody = document.getElementById("feed-body");
   feeds.forEach(f=>{
@@ -156,6 +229,8 @@ function createRows(){
       <td><input type="number" class="feed-amount1" value="${f.default1}" step="0.1" min="0">kg</td>
       <td><input type="number" class="feed-amount2" value="${f.default2}" step="0.1" min="0">kg</td>
       <td><input type="number" class="feed-total" value="0" readonly>kg</td>
+      <td class="past-text"><span class="past-amount1">-</span></td>
+      <td class="past-text"><span class="past-amount2">-</span></td>
     `;
     feedBody.appendChild(row);
 
@@ -164,7 +239,7 @@ function createRows(){
     const total = row.querySelector(".feed-total");
 
     function updateTotal(){
-      total.value = ((parseFloat(input1.value||0)+parseFloat(input2.value||0))*2).toFixed(2);
+      total.value = ((parseFloat(input1.value||0)+parseFloat(input2.value||0))*2).toFixed(1);
       calculate();
     }
 
@@ -175,9 +250,15 @@ function createRows(){
 }
 
 function calculate() {
-  const weightVal = document.getElementById("weight").value;
+  const weightSelect = document.getElementById("weight");
+  const horseName = weightSelect.options[weightSelect.selectedIndex].text;
   const workVal = document.getElementById("work").value;
+  const weightVal = document.getElementById("weight").value;
+  const horsePast = pastData[horseName];
+  const workPast = horsePast ? horsePast[workVal] : null;
   
+  let pastSum1 = 0;
+  let pastSum2 = 0;
   let sum = {エネルギー:0, タンパク質:0, Lys:0, Ca:0, P:0, Mg:0, Na:0, K:0, Fe:0, Cu:0, Zn:0, Mn:0, Se:0, Co:0, VA:0, VD:0, VE:0};
   let totalFeedWeight = 0; 
 
@@ -185,16 +266,26 @@ function calculate() {
     const val1 = parseFloat(tr.querySelector(".feed-amount1").value || 0);
     const val2 = parseFloat(tr.querySelector(".feed-amount2").value || 0);
     const total = (val1 + val2) * 2;
-    totalFeedWeight += total;
-
     const feed = feeds[i];
+    
+    const pastArray = (workPast && workPast[feed.name]) ? workPast[feed.name] : [0, 0];
+    const pastAm1 = parseFloat(pastArray[0] || 0);
+    const pastAm2 = parseFloat(pastArray[1] || 0);
+
+    tr.querySelector(".past-amount1").textContent = pastAm1 > 0 ? pastAm1.toFixed(1) : "-";
+    tr.querySelector(".past-amount2").textContent = pastAm2 > 0 ? pastAm2.toFixed(1) : "-";
+    
+    pastSum1 += pastAm1;
+    pastSum2 += pastAm2;
+
+    totalFeedWeight += total;
     for(const key in sum) sum[key] += feed[key] * total;
   });
 
   const weight = parseInt(weightVal);
   const work = workVal;
   const req = getRequirements(weight, work);
-  const ca_p = sum["Ca"] / sum["P"] || 0; // 0除算対策
+  const ca_p = sum["Ca"] / sum["P"] || 0;
   const zn_cu = sum["Zn"] / sum["Cu"] || 0;
   const total_bw = (totalFeedWeight / weight * 100) || 0;
 
@@ -266,7 +357,6 @@ function calculate() {
   // メッセージ判定
   const alertEl = document.getElementById("alert-messages");
   let messages = [];
-  const weightSelect = document.getElementById("weight");
   const selectedOption = weightSelect.options[weightSelect.selectedIndex];
 
   if (selectedOption.classList.contains("senior")) messages.push("<span>&#12959; 高齢馬なので濃厚は控えめに．</span>");
@@ -280,15 +370,11 @@ function calculate() {
   messages.push(deRate < 90 ? `<span style='color: darkblue;'>&#9888; エネルギーが不足しています（${deRate.toFixed(1)}%）</span>` : deRate > 120 ? `<span style='color: firebrick;'>&#9888; エネルギーが過剰です（${deRate.toFixed(1)}%）</span>` : `<span style='color: darkgreen;'>&check; エネルギーは十分です（${deRate.toFixed(1)}%）</span>`);
 
   const cpRate = (sum["タンパク質"] / req["タンパク質"]) * 100;
-  messages.push(cpRate < 90 ? `<span style='color: darkblue;'>&#9888; タンパク質が不足しています（${cpRate.toFixed(1)}%）</span>` : cpRate > 150 ? `<span style='color: firebrick;'>&#9888; タンパク質が過剰です（${cpRate.toFixed(1)}%）</span>` : `<span style='color: darkgreen;'>&check; タンパク質は十分です（${cpRate.toFixed(1)}%）</span>`);
-//
-//  messages.push(ca_p < 1.0 ? "<span style='color: darkblue;'>&#9888; Ca/Pが低すぎます</span>" : ca_p > 6.0 ? "<span style='color: firebrick;'>&#9888; Ca/Pが高すぎます</span>" : "<span style='color: darkgreen;'>&check; Ca/Pは適正です</span>");
-//  messages.push(zn_cu < 3.0 ? "<span style='color: darkblue;'>&#9888; Zn/Cuが低すぎます</span>" : zn_cu > 6.0 ? "<span style='color: firebrick;'>&#9888; Zn/Cuが高すぎます</span>" : "<span style='color: darkgreen;'>&check; Zn/Cuは適正です</span>");
-//  messages.push(total_bw < 1.5 ? "<span style='color: darkblue;'>&#9888; 総量が不足しています</span>" : total_bw > 2.5 ? "<span style='color: firebrick;'>&#9888; 総量が過剰です</span>" : "<span style='color: darkgreen;'>&check; 総量は適正です</span>");
+  messages.push(cpRate < 90 ? `<span style='color: darkblue;'>&#9888; タンパク質が不足しています（${cpRate.toFixed(1)}%）</span>` : cpRate > 120 ? `<span style='color: firebrick;'>&#9888; タンパク質が過剰です（${cpRate.toFixed(1)}%）</span>` : `<span style='color: darkgreen;'>&check; タンパク質は十分です（${cpRate.toFixed(1)}%）</span>`);
 
   alertEl.innerHTML = messages.join("<br>");
 
-  // 合計行の表示
+  // 今年の合計値の計算
   let sum1 = 0, sum2 = 0, totalSum = 0;
   document.querySelectorAll("#feed-body tr").forEach(tr => {
     const val1 = parseFloat(tr.querySelector(".feed-amount1").value || 0);
@@ -296,10 +382,18 @@ function calculate() {
     sum1 += val1; sum2 += val2; totalSum += (val1 + val2) * 2;
   });
 
+  // 前年同期の合計を算出
+  const totalPastSum = (pastSum1 + pastSum2) * 2;
+
   document.getElementById("sum-body").innerHTML = `
-    <tr><td><b>合計</b></td><td><input type="number" class="sum" value="${sum1.toFixed(2)}" readonly>kg</td>
-    <td><input type="number" class="sum" value="${sum2.toFixed(2)}" readonly>kg</td>
-    <td><input type="number" class="sum" value="${totalSum.toFixed(2)}" readonly>kg</td></tr>`;
+    <tr>
+      <td><b>合計</b></td>
+      <td><input type="number" class="sum" value="${sum1.toFixed(1)}" readonly>kg</td>
+      <td><input type="number" class="sum" value="${sum2.toFixed(1)}" readonly>kg</td>
+      <td><input type="number" class="sum" value="${totalSum.toFixed(1)}" readonly>kg</td>
+      <td class="past-text">${pastSum1 > 0 ? pastSum1.toFixed(1) : "-"}</td>
+      <td class="past-text">${pastSum2 > 0 ? pastSum2.toFixed(1) : "-"}</td>
+    </tr>`;
 }
 
 // リセット機能
@@ -308,7 +402,7 @@ function resetInputs() {
     const feed = feeds[i];
     tr.querySelector(".feed-amount1").value = feed.default1 || "";
     tr.querySelector(".feed-amount2").value = feed.default2 || "";
-    tr.querySelector(".feed-total").value = ((parseFloat(tr.querySelector(".feed-amount1").value || 0) + parseFloat(tr.querySelector(".feed-amount2").value || 0)) * 2).toFixed(2);
+    tr.querySelector(".feed-total").value = ((parseFloat(tr.querySelector(".feed-amount1").value || 0) + parseFloat(tr.querySelector(".feed-amount2").value || 0)) * 2).toFixed(1);
   });
   calculate(); 
 }
@@ -319,6 +413,7 @@ window.onload = () => {
   document.getElementById("reset-btn").addEventListener("click", resetInputs);
   document.getElementById("weight").addEventListener("change", calculate);
   document.getElementById("work").addEventListener("change", calculate);
-};</script>
+};
+</script>
 </body>
 </html>

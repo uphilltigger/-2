@@ -226,7 +226,7 @@ function createRows(){
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${f.name}</td>
-      <td><input type="number" class="feed-amount1" value="${f.default1}" step="0.1" min="0">kg</td>
+      <td><nobr><input type="number" class="feed-amount1" value="${f.default1}" step="0.1" min="0">kg</nobr></td>
       <td><input type="number" class="feed-amount2" value="${f.default2}" step="0.1" min="0">kg</td>
       <td><input type="number" class="feed-total" value="0" readonly>kg</td>
       <td class="past-text"><span class="past-amount1">-</span></td>

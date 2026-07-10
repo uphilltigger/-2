@@ -71,7 +71,24 @@
 	<tr><td>キタノブルー</td><td>北蒼</td><td>2017/2/13</td><td>470</td></tr>
 	<tr><td>ワイルドヒロイン</td><td>北玖</td><td>2018/2/19</td><td>470</td></tr>
 </table>
-<img src="/2025秋.png">
+<table>
+	<tr><td><b>2025秋</b></td><td>齢</td><td>ビート</td><td>燕麦</td><td>キューブ</td><td>大豆粕</td><td>ベルテ</td><td>濃厚</td><td>ふすま</td></tr>
+	<tr><td>カーリン</td><td>17</td><td>0.4</td><td>1.4</td><td>1.8</td><td>0.2</td><td>0.2</td><td>0.2</td><td>1.0</td></tr>
+	<tr><td>シエロ</td><td>6</td><td>1.2</td><td>1.4</td><td>2.4</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>パク</td><td>9</td><td>1.0</td><td>1.4</td><td>2.0</td><td>0.2</td><td>0.2</td><td>0.6</td><td>0.8</td></tr>
+	<tr><td>シュンソク</td><td>8</td><td>1.4</td><td>1.4</td><td>2.0</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ワイン</td><td>7</td><td>1.0</td><td>1.4</td><td>1.4</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ドラゴン</td><td>13</td><td>1.2</td><td>1.4</td><td>2.0</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ネル</td><td>9</td><td>0.4</td><td>1.4</td><td>2.0</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ベイ</td><td>15</td><td>1.2</td><td>1.4</td><td>2.4</td><td>0.2</td><td>0.2</td><td></td><td>1.4</td></tr>
+	<tr><td>ガロ</td><td>12</td><td>0.8</td><td>1.4</td><td>1.4</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>クライム</td><td>11</td><td></td><td>1.4</td><td>3.6</td><td>0.2</td><td>0.2</td><td>0.4</td><td>1.8</td></tr>
+	<tr><td>ピース</td><td>6</td><td>0.8</td><td>1.4</td><td>1.6</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>アンチョ</td><td>18</td><td>1.2</td><td>1.4</td><td>1.6</td><td>0.2</td><td>0.2</td><td></td><td>0.8</td></tr>
+	<tr><td>ブルー</td><td>8</td><td>1.0</td><td>1.4</td><td>2.4</td><td>0.2</td><td>0.2</td><td>0.3</td><td>0.8</td></tr>
+	<tr><td>セノーテ</td><td>18</td><td>1.4</td><td>0.8</td><td>1.6</td><td>0.2</td><td>0.2</td><td></td><td>1.2</td></tr>
+</table>
+
 <img src="/2025冬.png">
 <img src="/2026真夏.png">
 

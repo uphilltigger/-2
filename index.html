@@ -53,13 +53,12 @@
         <thead>
           <tr>
             <th rowspan="2">飼料名</th>
-            <th colspan="2"></th>
+            <th rowspan="2">朝夕</th>
+            <th rowspan="2">昼夜</th>
             <th rowspan="2">合計</th>
             <th colspan="2" class="past-text">前年同期</th>
           </tr>
           <tr>
-            <th>朝夕</th>
-            <th>昼夜</th>
             <th class="past-text">朝夕</th>
             <th class="past-text">昼夜</th>
           </tr>
@@ -317,7 +316,7 @@
       let zn_cu_color = zn_cu < 3 ? "darkblue" : (zn_cu <= 6 ? "darkgreen" : "firebrick");
       let bw_color = total_bw < 1.5 ? "darkblue" : (total_bw <= 2.5 ? "darkgreen" : "firebrick");
 
-      // 数直線グラフHTML生成
+      // 数直線グラフ生成
       let htmlbalance = `
       <table class="balance-table" style="table-layout: fixed; width: 100%;">
         <tbody>
@@ -386,7 +385,7 @@
       messages.push(cpRate < 90 ? `<span style='color: darkblue;'>&#9888; タンパク質が不足しています（${cpRate.toFixed(1)}%）</span>` : cpRate > 120 ? `<span style='color: firebrick;'>&#9888; タンパク質が過剰です（${cpRate.toFixed(1)}%）</span>` : `<span style='color: darkgreen;'>&check; タンパク質は十分です（${cpRate.toFixed(1)}%）</span>`);
       alertEl.innerHTML = messages.join("<br>");
 
-      // 今年の「合計」行を計算
+      // 今年の「合計」行
       let sum1 = 0, sum2 = 0, totalSum = 0;
       document.querySelectorAll("#feed-body tr").forEach((tr, i) => {
         const feed = feeds[i];

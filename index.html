@@ -415,7 +415,7 @@
     function resetInputs() {
       document.querySelectorAll("#feed-body tr").forEach((tr, i) => {
         const feed = feeds[i];
-        const isCupFeed = f.name === "塩" || f.name === "ニュークラウン";        
+        const isCupFeed = feed.name === "塩" || feed.name === "ニュークラウン";        
         // 塩の場合は100倍にしてinputに戻す（空文字ならそのまま）
         let def1 = feed.default1;
         let def2 = feed.default2;

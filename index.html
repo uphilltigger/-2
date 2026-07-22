@@ -299,18 +299,36 @@
       const total_bw = (totalFeedWeight / weight * 100) || 0;
 
       // 栄養素テーブル生成
-      let html = `<table style="table-layout: fixed; width: 100%;"><thead><tr><th>栄養素</th><th>充足率</th></tr></thead><tbody>`;
-      for (const key in sum) {
-        const rate = (sum[key] / req[key] * 100);
-        const rateText = rate.toFixed(1);
-        let color = "darkgreen";
-        if (rate > 120) color = "firebrick";
-        else if (rate < 80) color = "darkblue";
+		let html = `<table style="table-layout: fixed; width: 100%;"><thead><tr><th>栄養素</th><th>充足率</th></tr></thead><tbody>`;
+		const bgColor = "lightgrey";
+		for (const key in sum) {
+		  const rate = (sum[key] / req[key] * 100);
+		  const rateText = rate.toFixed(1);
+		  
+		  let gradColor = `linear-gradient(to right, #003300 0%, #008000 90%, ${bgColor} 100%)`;
+		  if (rate > 120) {
+		    gradColor = `linear-gradient(to right, #8b0000 0%, #ff0000 100%)`;
+		  } else if (rate < 80) {
+		    gradColor = `linear-gradient(to right, #004080 0%, #0099ff 90%, ${bgColor} 100%)`;
+		  }
 
-        html += `<tr><td>${key}</td><td><div class="bar-container"><span class="bar-label">${rateText}%</span><div class="bar-fill" style="width:${Math.min(rate, 150)}%; background:${color};"></div></div></td></tr>`;
-      }
-      html += "</tbody></table>";
-      document.getElementById("result").innerHTML = html;
+		  const barWidth = Math.min(rate/1.2, 100);
+		  const markPosition = (100 / 120) * 100;
+
+		  html += `<tr>
+		    <td>${key}</td>
+		    <td>
+		      <div class="bar-container" style="position: relative; width: 100%;">
+		        <span class="bar-label">${rateText}%</span>
+		        <div class="bar-fill" style="width: ${barWidth}%; background: ${gradColor}; height: 20px;"></div>
+		        <div class="line-100" style="position: absolute; left: ${markPosition}%; top: 0; bottom: 0; border-left: 2px dashed #333; z-index: 2; pointer-events: none;"></div>
+		      </div>
+		    </td>
+		  </tr>`;
+		}
+
+		html += "</tbody></table>";
+		document.getElementById("result").innerHTML = html;
 
       // 数直線グラフの色判定
       let ca_p_color = ca_p < 1 ? "darkblue" : (ca_p <= 6 ? "darkgreen" : "firebrick");

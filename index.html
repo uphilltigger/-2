@@ -300,7 +300,7 @@
 
       // 栄養素テーブル生成
 		let html = `<table style="table-layout: fixed; width: 100%;"><thead><tr><th>栄養素</th><th>充足率</th></tr></thead><tbody>`;
-		const bgColor = "lightgrey";
+		const bgColor = "silver";
 		for (const key in sum) {
 		  const rate = (sum[key] / req[key] * 100);
 		  const rateText = rate.toFixed(1);

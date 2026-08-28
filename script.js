@@ -351,30 +351,34 @@ function resetInputs() {
 
 async function saveDataToSpreadsheet() {
   const GAS_URL = WEB_APP_URL;
-  
+
   const weightSelect = document.getElementById("weight");
-  const horseName = weightSelect.options[weightSelect.selectedIndex].text;
+  const horseName =
+    weightSelect.options[weightSelect.selectedIndex].text;
+
+  const weight = weightSelect.value;
   const workVal = document.getElementById("work").value;
-  
-  let feedDetails = [];
-  document.querySelectorAll("#feed-body tr").forEach((tr) => {
+
+  // 朝夕・昼夜それぞれのデータを作る
+  const morningEvening = {};
+  const dayNight = {};
+
+  document.querySelectorAll("#feed-body tr").forEach((tr, i) => {
     const feedName = tr.cells[0].innerText;
-    const amount1 = tr.querySelector(".feed-amount1").value;
-    const amount2 = tr.querySelector(".feed-amount2").value;
-    const total = tr.querySelector(".feed-total").value;
-    
-    feedDetails.push({
-      name: feedName,
-      morningEvening: amount1,
-      dayNight: amount2,
-      total: total
-    });
+
+    morningEvening[feedName] =
+      tr.querySelector(".feed-amount1").value || "";
+
+    dayNight[feedName] =
+      tr.querySelector(".feed-amount2").value || "";
   });
 
   const payload = {
     horseName: horseName,
+    weight: weight,
     workVal: workVal,
-    feedDetails: feedDetails
+    morningEvening: morningEvening,
+    dayNight: dayNight
   };
 
   try {
@@ -382,15 +386,17 @@ async function saveDataToSpreadsheet() {
       method: "POST",
       body: JSON.stringify(payload)
     });
+
     const result = await response.json();
-    
+
     if (result.status === "success") {
       alert("スプレッドシートにデータを保存しました！");
     } else {
       alert("保存に失敗しました: " + result.message);
     }
+
   } catch (error) {
     console.error("通信エラー:", error);
-    alert("通信エラーが発生しました。URLやCORS設定をご確認ください。");
+    alert("通信エラーが発生しました。");
   }
 }

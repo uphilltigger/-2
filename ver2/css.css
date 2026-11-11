@@ -1,0 +1,75 @@
+	@charset "UTF-8";
+	body { font-size: 16px; margin:0; padding: 1rem; background:#ffffff; width: 100%; max-width: 600px; user-select: none; font-family: serif; }
+	.table-container { padding:1rem; }
+	table { border-collapse:collapse; width: 100%; }
+	th, td { border:1px solid #ccc; padding-left:0.2rem; padding-right:0.2rem; text-align:center; vertical-align:middle; white-space: nowrap; }
+	thead { background:#eee; }
+	input { font-size: 20px; width: 2.5em; text-align: right; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
+	input:focus { border-color: #3182ce; outline: none; }
+	.feed-total{border: 0px; background:#ffffff; }
+	.sum{border: 0px; background:#ffffff; }
+    .past-text{ font-size: 16px; }
+	select { font-size: 20px; border-color: red; background-color:rgba(255, 255, 0, 0.2); }
+	.bar-container {width: 100%; height: 20px; background: silver; border-radius: 4px; overflow: hidden; display:inline-block; position: relative; }
+	.bar-fill { height:100%; width:0%; border-radius: 2px; transition: width 0.25s ease; }
+	.bar-container .bar-label{position: absolute; line-height: 1; color: #fff; font-size: 15px; right: 4px; }
+	button{ background: darkgrey; color: #000; width: 30%; }
+	button:hover{ background: #fff; color: #000; cursor: pointer; }
+	#result th:nth-child(1), #result td:nth-child(1) { width: 100px; }
+	#result th:nth-child(2), #result td:nth-child(2) { width: auto; }
+	a{ color: blue; }
+	a:visited{ color: blue; }
+	a:hover{ color: red; }
+	.copyright{ text-align: center; font-family: Book Antiqua; }
+/* 充足率の表示 */
+.result-cell {
+  min-width: 65px;
+  padding: 4px;
+  font-size: 14px;
+}
+
+.result-number {
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.bar-container {
+  width: 55px;
+  height: 7px;
+  background: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: auto;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 5px;
+}
+
+.result-low {
+  background: #f8d7da;
+  color: #a00000;
+}
+
+.result-normal {
+  background: #d8f0df;
+  color: #176b35;
+}
+
+.result-high {
+  background: #ffe7bd;
+  color: #945500;
+}
+
+.result-low .bar-fill {
+  background: #d9534f;
+}
+
+.result-normal .bar-fill {
+  background: #36a269;
+}
+
+.result-high .bar-fill {
+  background: #e5a12b;
+}

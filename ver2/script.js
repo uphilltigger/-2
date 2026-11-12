@@ -73,17 +73,12 @@ function findFeed(name) {
 function getInitialAmount(horse, feedName, feedIndex) {
   const horseData = initialFeedAmounts[horse.name];
 
-  if (Array.isArray(horseData)) {
-    return Number(horseData[feedIndex]) || 0;
-  }
-
   if (horseData && typeof horseData === "object") {
-    return Number(horseData[feedName]) || 0;
+    return horseData[feedName] ?? "";
   }
 
-  return 0;
+  return "";
 }
-
 
 /* =========================
    馬ごとの入力表

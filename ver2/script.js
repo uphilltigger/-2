@@ -1,3 +1,4 @@
+
 const WEB_APP_URL =
   "https://script.google.com/macros/s/AKfycbyAMUYBycyKkciLnV-V5-Ny6PWzxEqElXNoxZPVy55R7Tyt9dL-UzGJPC5nwL-C9CoC/exec";
 
@@ -39,6 +40,7 @@ async function loadData() {
     createInputTable();
     createCommonFeedTable();
     createResultTable();
+    createRationTable();
 
     const workSelect = document.getElementById("work");
 
@@ -79,6 +81,7 @@ function getInitialAmount(horse, feedName, feedIndex) {
 
   return "";
 }
+
 
 /* =========================
    馬ごとの入力表
@@ -201,10 +204,27 @@ function createResultTable() {
       </tr>
     `;
   });
-
   table.innerHTML = html;
 }
 
+
+function createRationTable() {
+  const table = document.getElementById("ratioTable");
+
+  let html = "";
+
+  horses.forEach((horse, horseIndex) => {
+    html += `
+      <tr>
+        <td>${horse.name}</td>
+        <td id="ratio-ca-p-${horseIndex}" class="result-cell">-</td>
+        <td id="ratio-zn-cu-${horseIndex}" class="result-cell">-</td>
+      </tr>
+    `;
+  });
+
+  table.innerHTML = html;
+}
 
 /* =========================
    必要量の取得
@@ -347,6 +367,57 @@ function calculate(horseIndex) {
 
     cell.className = `result-cell ${status}`;
   });
+  
+  
+  // Ca/P比
+  const caP = document.getElementById(`ratio-ca-p-${horseIndex}`);
+
+  if (caP) {
+    const ratio = intake["P"] > 0
+      ? intake["Ca"] / intake["P"]
+      : null;
+
+    caP.textContent = ratio !== null
+      ? ratio.toFixed(2)
+      : "-";
+
+    caP.className = "result-cell";
+
+    if (ratio !== null) {
+      if (ratio < 1) {
+        caP.classList.add("result-low");
+      } else if (ratio <= 6) {
+        caP.classList.add("result-normal");
+      } else {
+        caP.classList.add("result-high");
+      }
+    }
+  }
+
+  // Zn/Cu比
+  const znCu = document.getElementById(`ratio-zn-cu-${horseIndex}`);
+
+  if (znCu) {
+    const ratio = intake["Cu"] > 0
+      ? intake["Zn"] / intake["Cu"]
+      : null;
+
+    znCu.textContent = ratio !== null
+      ? ratio.toFixed(2)
+      : "-";
+
+    znCu.className = "result-cell";
+
+    if (ratio !== null) {
+      if (ratio < 3) {
+        znCu.classList.add("result-low");
+      } else if (ratio <= 6) {
+        znCu.classList.add("result-normal");
+      } else {
+        znCu.classList.add("result-high");
+      }
+    }
+  }
 }
 
 

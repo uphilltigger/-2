@@ -1,12 +1,11 @@
 	@charset "UTF-8";
-	body { font-size: 16px; margin:0; padding: 1rem; background:#ffffff; width: 100%; max-width: 600px; user-select: none; }
-	.table-container { padding:1rem; }
+	body { margin:0; padding: 1rem; background:#ffffff; width: 100%; max-width: 600px; user-select: none; }
 	table { border-collapse:collapse; width: 100%; }
-	th, td { border:1px solid #ccc; padding-left:0.2rem; padding-right:0.2rem; text-align:center; vertical-align:middle; white-space: nowrap; }
-	thead { background:#eee; }
-	input { border: 0,0,0,1px; font-size: 20px; width: 2.5em; text-align: right; }
-	input:focus { border-color: #3182ce; outline: none; }
-	select { font-size: 20px; border-color: red; }
+	th, td { border:1px solid #8a8a8a; padding-left:0.2rem; text-align:center; vertical-align:middle; white-space: nowrap; }
+	thead { background:#eeeeee7d; }
+	input { width: 2.5em; text-align: right; }
+	/*input:focus { border-color: #3182ce; outline: none; }*/
+	select { border-color: red; }
 
 	.copyright{ text-align: center; font-family: Book Antiqua; }
 input[type="number"]::-webkit-inner-spin-button,
@@ -35,8 +34,7 @@ input[type="number"] {
 }
 /* 充足率の基本表示 */
 .result-cell {
-  text-align: center;
-  padding: 8px 4px;
+  text-align: right;
 }
 
 /* 不足：90%未満 */
@@ -48,7 +46,7 @@ input[type="number"] {
 /* 適正：90〜120% */
 .result-normal {
   background-color: #31dc8f4c;
-  color: #19965c;
+  color: darkgreen;
 }
 
 /* 過剰：120%超 */

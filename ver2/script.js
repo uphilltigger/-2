@@ -1,238 +1,246 @@
 
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyAMUYBycyKkciLnV-V5-Ny6PWzxEqElXNoxZPVy55R7Tyt9dL-UzGJPC5nwL-C9CoC/exec";
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbyAMUYBycyKkciLnV-V5-Ny6PWzxEqElXNoxZPVy55R7Tyt9dL-UzGJPC5nwL-C9CoC/exec";
 
-// 1回分の給与量を入力する場合は2
-// 1日合計量を入力する場合は1
 const FEEDINGS_PER_DAY = 2;
 
-// 表示する飼料
 const feedNames = [
-  "ビート",
-  "麦",
-  "キューブ",
-  "大豆粕",
-  "ベルテ",
-  "濃厚",
-  "ふすま",
-  "塩",
-  "乾草"
+  "ビート", "麦", "キューブ", "大豆粕",
+  "ベルテ", "濃厚", "ふすま", "塩", "乾草"
 ];
 
-// 計算する栄養素
 const nutrients = [
-  "エネルギー",
-  "タンパク質",
-  "Lys",
-  "Ca",
-  "P",
-  "Mg",
-  "Na",
-  "K",
-  "Fe",
-  "Cu",
-  "Zn",
-  "Mn",
-  "Se",
-  "Co",
-  "VA",
-  "VD",
-  "VE"
+  "エネルギー", "タンパク質", "Lys", "Ca", "P",
+  "Mg", "Na", "K", "Fe", "Cu", "Zn", "Mn",
+  "Se", "Co", "VA", "VD", "VE"
 ];
-
-const workOptions = ["無", "軽", "中", "強"];
 
 let horses = [];
 let feeds = [];
 let requirements = [];
 let initialFeedAmounts = {};
+let commonFeedAmounts = {};
 
-// 飼料名の対応
-const feedAliases = {
-  "キューブ": ["キューブ", "ヘイキューブ"],
-  "麦": ["麦", "燕麦"]
-};
 
-// 数値変換
-function toNumber(value) {
-  const number = Number(value);
-  return Number.isFinite(number) ? number : 0;
-}
-
-// 飼料名から成分データを探す
-function findFeed(name) {
-  const names = feedAliases[name] || [name];
-
-  return feeds.find(feed =>
-    names.includes(String(feed.name).trim())
-  );
-}
-
-// ==========================
-// GASからデータを取得
-// ==========================
+/* =========================
+   データ読み込み
+========================= */
 
 async function loadData() {
   try {
     const response = await fetch(WEB_APP_URL);
-
-    if (!response.ok) {
-      throw new Error("データ取得に失敗しました");
-    }
-
     const data = await response.json();
 
     horses = data.horses || [];
     feeds = data.feeds || [];
     requirements = data.requirements || [];
     initialFeedAmounts = data.initialFeedAmounts || {};
+    commonFeedAmounts = data.commonFeedAmounts || {};
 
     createInputTable();
+    createCommonFeedTable();
+    createResultTable();
+
+    const workSelect = document.getElementById("work");
+
+    if (workSelect) {
+      workSelect.addEventListener("change", calculateAll);
+    }
+
+    calculateAll();
 
   } catch (error) {
-    console.error(error);
-
-    document.getElementById("inputTable").innerHTML =
-      '<tr><td colspan="13">データを取得できませんでした</td></tr>';
+    console.error("データ読み込みエラー:", error);
+    alert("データの読み込みに失敗しました。");
   }
 }
 
-// ==========================
-// 上の入力表を作成
-// ==========================
+
+/* =========================
+   飼料検索
+========================= */
+
+function findFeed(name) {
+  return feeds.find(feed =>
+    String(feed.name).trim() === name
+  );
+}
+
+
+/* =========================
+   初期給与量
+========================= */
+
+function getInitialAmount(horse, feedName, feedIndex) {
+  const horseData = initialFeedAmounts[horse.name];
+
+  if (Array.isArray(horseData)) {
+    return Number(horseData[feedIndex]) || 0;
+  }
+
+  if (horseData && typeof horseData === "object") {
+    return Number(horseData[feedName]) || 0;
+  }
+
+  return 0;
+}
+
+
+/* =========================
+   馬ごとの入力表
+   元の形：入力欄は1つ
+========================= */
 
 function createInputTable() {
   const table = document.getElementById("inputTable");
-  table.innerHTML = "";
 
-  horses.forEach((horse, index) => {
-    const row = document.createElement("tr");
+  let html = "";
 
-    // 馬名
-    const nameCell = document.createElement("td");
-    nameCell.textContent = horse.name;
-    row.appendChild(nameCell);
+  horses.forEach((horse, horseIndex) => {
+    html += `<tr><td>${horse.name}</td>`;
 
-    // 強度プルダウン
-    const workCell = document.createElement("td");
-    const select = document.createElement("select");
-
-    select.id = `work-${index}`;
-
-    workOptions.forEach(work => {
-      const option = document.createElement("option");
-      option.value = work;
-      option.textContent = work;
-      select.appendChild(option);
-    });
-
-    select.addEventListener("change", () => {
-      calculate(index);
-    });
-
-    workCell.appendChild(select);
-    row.appendChild(workCell);
-
-    // 飼料入力欄
     feedNames.forEach((feedName, feedIndex) => {
-      const cell = document.createElement("td");
-      const input = document.createElement("input");
-      const initialValue =
-       initialFeedAmounts[horse.name]?.[feedName] ?? 0;
+      const amount = getInitialAmount(
+        horse,
+        feedName,
+        feedIndex
+      );
 
-      input.value = initialValue;
-      input.type = "number";
-      input.min = "0";
-      input.step = "0.1";
-      input.id = `feed-${index}-${feedIndex}`;
-
-      input.addEventListener("input", () => {
-        calculate(index);
-      });
-
-      cell.appendChild(input);
-      row.appendChild(cell);
+      html += `
+        <td>
+          <input
+            type="number"
+            inputmode="decimal"
+            step="0.1"
+            min="0"
+            id="feed-${horseIndex}-${feedIndex}"
+            value="${amount}"
+          >
+        </td>
+      `;
     });
 
-    table.appendChild(row);
+    html += "</tr>";
   });
 
-  createResultTable();
+  table.innerHTML = html;
 
-  // 初期計算
-  horses.forEach((horse, index) => {
-    calculate(index);
+  table.addEventListener("input", event => {
+    if (!event.target.id.startsWith("feed-")) return;
+
+    const horseIndex = Number(event.target.id.split("-")[1]);
+    calculate(horseIndex);
   });
 }
 
-// ==========================
-// 下の結果表を作成
-// ==========================
+
+/* =========================
+   昼・夜の共通入力表
+========================= */
+
+function createCommonFeedTable() {
+  const table = document.getElementById("commonFeedTable");
+
+  // 昼夜に与える飼料だけ
+  const commonFeedNames = [
+    "麦", "ベルテ", "ふすま", "塩", "乾草"
+  ];
+
+  let html = `
+    <thead>
+      <tr>
+        <th colspan="2">昼夜</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
+  commonFeedNames.forEach(feedName => {
+    const feedIndex = feedNames.indexOf(feedName);
+
+    html += `
+      <tr>
+        <td>${feedName}</td>
+        <td>
+          <input
+            type="number"
+            inputmode="decimal"
+            step="0.1"
+            min="0"
+            id="common-feed-${feedIndex}"
+            value="${commonFeedAmounts[feedName] ?? 0}"
+          >
+        </td>
+      </tr>
+    `;
+  });
+
+  html += "</tbody>";
+  table.innerHTML = html;
+
+  table.addEventListener("input", event => {
+    if (!event.target.id.startsWith("common-feed-")) return;
+    calculateAll();
+  });
+}
+
+
+/* =========================
+   結果表
+========================= */
 
 function createResultTable() {
   const table = document.getElementById("resultTable");
-  table.innerHTML = "";
 
-  horses.forEach((horse, index) => {
-    const row = document.createElement("tr");
+  let html = "";
 
-    // 馬名
-    const nameCell = document.createElement("td");
-    nameCell.textContent = horse.name;
-    row.appendChild(nameCell);
-
-    // 栄養素の結果欄
-    nutrients.forEach((nutrient, nutrientIndex) => {
-      const cell = document.createElement("td");
-
-      cell.id = `result-${index}-${nutrientIndex}`;
-      cell.textContent = "-";
-
-      row.appendChild(cell);
-    });
-
-    table.appendChild(row);
+  horses.forEach((horse, horseIndex) => {
+    html += `
+      <tr>
+        <td>${horse.name}</td>
+        ${nutrients.map((n, nutrientIndex) => `
+          <td
+            id="result-${horseIndex}-${nutrientIndex}"
+            class="result-cell"
+          >-</td>
+        `).join("")}
+      </tr>
+    `;
   });
+
+  table.innerHTML = html;
 }
 
-// ==========================
-// 要求量を取得
-// 体重と強度から要求量を補間
-// ==========================
+
+/* =========================
+   必要量の取得
+   体重による線形補間
+========================= */
 
 function getRequirement(weight, work, nutrient) {
-  const rows = requirements
-    .filter(row =>
-      String(row["強度"]).trim() === work &&
-      Number.isFinite(Number(row["体重"]))
-    )
-    .sort((a, b) =>
-      Number(a["体重"]) - Number(b["体重"])
-    );
+  const rows = requirements.filter(row =>
+    String(row["強度"]).trim() === String(work).trim() &&
+    Number(row["体重"]) > 0 &&
+    row[nutrient] !== undefined &&
+    row[nutrient] !== ""
+  );
 
   if (rows.length === 0) return null;
 
-  // 体重が最小以下
+  rows.sort((a, b) =>
+    Number(a["体重"]) - Number(b["体重"])
+  );
+
   if (weight <= Number(rows[0]["体重"])) {
-    return toNumber(rows[0][nutrient]);
+    return Number(rows[0][nutrient]);
   }
 
-  // 体重が最大以上
   const last = rows[rows.length - 1];
 
   if (weight >= Number(last["体重"])) {
-    return toNumber(last[nutrient]);
+    return Number(last[nutrient]);
   }
 
-  // 体重が一致する行を探す
-  const exact = rows.find(row =>
-    Number(row["体重"]) === weight
-  );
-
-  if (exact) {
-    return toNumber(exact[nutrient]);
-  }
-
-  // 前後の体重から線形補間
   for (let i = 0; i < rows.length - 1; i++) {
     const lower = rows[i];
     const upper = rows[i + 1];
@@ -240,107 +248,127 @@ function getRequirement(weight, work, nutrient) {
     const lowerWeight = Number(lower["体重"]);
     const upperWeight = Number(upper["体重"]);
 
-    if (weight > lowerWeight && weight < upperWeight) {
-      const lowerValue = toNumber(lower[nutrient]);
-      const upperValue = toNumber(upper[nutrient]);
-
+    if (weight >= lowerWeight && weight <= upperWeight) {
       const ratio =
         (weight - lowerWeight) /
         (upperWeight - lowerWeight);
 
-      return lowerValue +
-        (upperValue - lowerValue) * ratio;
+      return Number(lower[nutrient]) +
+        (Number(upper[nutrient]) - Number(lower[nutrient])) * ratio;
     }
   }
 
   return null;
 }
 
-// ==========================
-// 充足率を計算
-// ==========================
+
+/* =========================
+   1頭分の計算
+========================= */
 
 function calculate(horseIndex) {
   const horse = horses[horseIndex];
-
   if (!horse) return;
 
-  const weight = Number(horse.weight);
+  const work = document.getElementById("work")?.value;
 
-  const work = document.getElementById(
-    `work-${horseIndex}`
-  ).value;
+  const weight = Number(
+    horse.weight ?? horse["体重"]
+  );
 
-  // 飼料ごとの給与量を取得
-  const amounts = feedNames.map((name, feedIndex) => {
-    const input = document.getElementById(
-      `feed-${horseIndex}-${feedIndex}`
-    );
+  const intake = {};
 
-    return Math.max(0, toNumber(input.value));
+  nutrients.forEach(nutrient => {
+    intake[nutrient] = 0;
   });
 
-  // 栄養素ごとに計算
-  nutrients.forEach((nutrient, nutrientIndex) => {
+  feedNames.forEach((feedName, feedIndex) => {
+    const feed = findFeed(feedName);
+    if (!feed) return;
 
-    // 飼料からの栄養摂取量を合計
-    let intake = 0;
+    // 馬ごとの飼料量
+    const horseAmount = Number(
+      document.getElementById(
+        `feed-${horseIndex}-${feedIndex}`
+      )?.value
+    ) || 0;
 
-    feedNames.forEach((feedName, feedIndex) => {
-      const feed = findFeed(feedName);
+    // 昼・夜の共通飼料量
+    const commonAmount = Number(
+      document.getElementById(
+        `common-feed-${feedIndex}`
+      )?.value
+    ) || 0;
 
-      if (!feed) return;
+    // 朝＋夕＋昼＋夜
+    const totalAmount =
+      horseAmount * FEEDINGS_PER_DAY +
+      commonAmount * FEEDINGS_PER_DAY;
 
-      const amount = amounts[feedIndex];
+    nutrients.forEach(nutrient => {
+      const value = Number(feed[nutrient]) || 0;
 
-      const nutrientValue = toNumber(feed[nutrient]);
-
-      intake += amount *
-        nutrientValue *
-        FEEDINGS_PER_DAY;
+      intake[nutrient] += totalAmount * value;
     });
+  });
 
-    // 要求量を取得
+
+  // 充足率の表示
+  nutrients.forEach((nutrient, nutrientIndex) => {
+    const cell = document.getElementById(
+      `result-${horseIndex}-${nutrientIndex}`
+    );
+
+    if (!cell) return;
+
     const requirement = getRequirement(
       weight,
       work,
       nutrient
     );
 
-    const cell = document.getElementById(
-      `result-${horseIndex}-${nutrientIndex}`
-    );
-
-    if (requirement === null || requirement <= 0) {
+    if (
+      requirement === null ||
+      !Number.isFinite(requirement) ||
+      requirement <= 0
+    ) {
       cell.textContent = "-";
+      cell.className = "result-cell";
       return;
     }
 
-    // 充足率
-    const percentage = intake / requirement * 100;
+    const percentage =
+      intake[nutrient] / requirement * 100;
 
-// 色分け
-let status = "result-normal";
+    cell.textContent =
+      `${Math.round(percentage)}%`;
 
-if (percentage < 90) {
-  status = "result-low";
-} else if (percentage > 120) {
-  status = "result-high";
+    let status = "result-normal";
+
+    if (percentage < 90) {
+      status = "result-low";
+    } else if (percentage > 120) {
+      status = "result-high";
+    }
+
+    cell.className = `result-cell ${status}`;
+  });
 }
 
-// 棒グラフの幅（最大150%）
-const barWidth = Math.min(percentage / 150 * 100, 100);
 
-cell.className = `result-cell ${status}`;
+/* =========================
+   全頭再計算
+========================= */
 
-cell.innerHTML = `
-  <div class="result-number">
-    ${percentage.toFixed(1)}%
-  </div>
-  <div class="bar-container">
-    <div class="bar-fill" style="width:${barWidth}%"></div>
-  </div>
-`;  });
+function calculateAll() {
+  horses.forEach((horse, index) => {
+    calculate(index);
+  });
 }
+
+
+/* =========================
+   起動
+========================= */
 
 loadData();

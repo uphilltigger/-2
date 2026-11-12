@@ -4,9 +4,9 @@
 	th, td { border:1px solid #8a8a8a; padding-left:0.2rem; text-align:center; vertical-align:middle; white-space: nowrap; }
 	thead { background:#eeeeee7d; }
 	input { width: 2.5em; text-align: right; }
-	/*input:focus { border-color: #3182ce; outline: none; }*/
+	input:focus { border-color: red; outline: none; }
 	select { border-color: red; }
- .copyright{ text-align: center; font-family: Book Antiqua; }
+    .copyright{ text-align: center; font-family: Book Antiqua; }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

@@ -2,41 +2,49 @@
 <html lang="ja">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>飼料計算・改</title>
+  <title>飼料計算ver.2</title>
   <link rel="stylesheet" href="css.css">
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-<nobr><h1 color="red"><b><u>制作中につき使用はお控えください</b></u></h1></nobr>
-<h2>飼料給与量入力</h2>
 
+<h1>飼料計算ver.2</h1>
+<div class="work-setting">
+  <label for="work">運動強度</label>
+  <select id="work">
+    <option value="無">無</option>
+    <option value="軽" selected>軽</option>
+    <option value="中">中</option>
+    <option value="強">強</option>
+  </select>
+</div>
+<div class="feed-tables">
+  <table border="1">
+    <thead>
+      <tr>
+        <th></th>
+        <th>ビート</th>
+        <th>麦</th>
+        <th>キューブ</th>
+        <th>大豆</th>
+        <th>ベルテ</th>
+        <th>濃厚</th>
+        <th>ふすま</th>
+        <th>塩</th>
+        <th>乾草</th>
+      </tr>
+    </thead>
+    <tbody id="inputTable"></tbody>
+  </table>
+  <table id="commonFeedTable"></table>
+</div>
+<h2>充足率</h2>
 <table border="1">
   <thead>
     <tr>
-      <th>馬名</th>
-      <th>強度</th>
-      <th>ビート</th>
-      <th>麦</th>
-      <th>キューブ</th>
-      <th>大豆粕</th>
-      <th>ベルテ</th>
-      <th>濃厚</th>
-      <th>ふすま</th>
-      <th>塩</th>
-      <th>乾草</th>
-    </tr>
-  </thead>
-  <tbody id="inputTable"></tbody>
-</table>
-
-<h2>栄養充足率</h2>
-
-<table border="1">
-  <thead>
-    <tr>
-      <th>馬名</th>
+      <th></th>
       <th>エネルギー</th>
-      <th>タンパク質</th>
+      <th>タンパク</th>
       <th>Lys</th>
       <th>Ca</th>
       <th>P</th>
@@ -57,4 +65,7 @@
   <tbody id="resultTable"></tbody>
 </table>
 </body>
+<p class="copyright">
+    <b>&copy;2025-2026 MIURA SOTA</b>
+</p>
 </html>

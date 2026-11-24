@@ -7,49 +7,13 @@
 	input:focus { border-color: red; outline: none; }
 	select { border-color: red; }
     .copyright{ text-align: center; font-family: Book Antiqua; }
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-.feed-tables {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.feed-tables table {
-  height: fit-content;
-}
-
-.feed-tables > div {
-  flex-shrink: 0;
-}
-/* 充足率の基本表示 */
-.result-cell {
-  text-align: right;
-}
-
-/* 不足：90%未満 */
-.result-low {
-  background-color: #b0b0fa8a;
-  color: #0022ff;
-}
-
-/* 適正：90〜120% */
-.result-normal {
-  background-color: #31dc8f4c;
-  color: darkgreen;
-}
-
-/* 過剰：120%超 */
-.result-high {
-  background-color: #ffcdcd;
-  color: #ff0000;
-}
+	input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+	input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+	.feed-tables { display: flex; align-items: flex-start; gap: 20px; }
+	.feed-tables table { height: fit-content; }
+	.feed-tables > div { flex-shrink: 0; }
+	.result-cell { text-align: right; }/* 充足率の基本表示 */
+	.result-low { background-color: #b0b0fa8a; color: #0022ff; }/* 不足：80%未満 */
+	.result-normal { background-color: #31dc8f4c; color: darkgreen; }/* 適正：80〜120% */
+	.result-high { background-color: #ffcdcd; color: #ff0000; }/* 過剰：120%超 */

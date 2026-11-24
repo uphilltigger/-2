@@ -359,7 +359,7 @@ function calculate(horseIndex) {
 
     let status = "result-normal";
 
-    if (percentage < 90) {
+    if (percentage < 80) {
       status = "result-low";
     } else if (percentage > 120) {
       status = "result-high";
